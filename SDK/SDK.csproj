@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SDK</RootNamespace>
+    <AssemblyName>SDK</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.8.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common.cs" />
+    <Compile Include="Core\API.cs" />
+    <Compile Include="Core\AppInfo.cs" />
+    <Compile Include="Core\PermissionConstant.cs" />
+    <Compile Include="Core\SilkHelp.cs" />
+    <Compile Include="Core\TextFormat.cs" />
+    <Compile Include="Core\XLZMain.cs" />
+    <Compile Include="Enum\APIJsonEnum.cs" />
+    <Compile Include="Enum\AudioTypeEnum.cs" />
+    <Compile Include="Enum\EventProcessEnum.cs" />
+    <Compile Include="Enum\EventTypeEnum.cs" />
+    <Compile Include="Enum\FiletypeEnum.cs" />
+    <Compile Include="Enum\FreeGiftEnum.cs" />
+    <Compile Include="Enum\FriendVerificationOperateEnum.cs" />
+    <Compile Include="Enum\GroupFindMethodEnum.cs" />
+    <Compile Include="Enum\GroupNoticeMethodEnum.cs" />
+    <Compile Include="Enum\GroupPermission_SetInviteMethodEnum.cs" />
+    <Compile Include="Enum\GroupVerificationOperateEnum.cs" />
+    <Compile Include="Enum\IMEStatusEnum.cs" />
+    <Compile Include="Enum\IsGroupRecviceEnum.cs" />
+    <Compile Include="Enum\MessageSubTypeEnum.cs" />
+    <Compile Include="Enum\MessageTypeEnum.cs" />
+    <Compile Include="Enum\MusicAppTypeEnum.cs" />
+    <Compile Include="Enum\PermissionEnum.cs" />
+    <Compile Include="Enum\ProfessionEnum.cs" />
+    <Compile Include="Enum\ServiceInformation.cs" />
+    <Compile Include="Enum\SexEnum.cs" />
+    <Compile Include="Enum\ShowPicEnum.cs" />
+    <Compile Include="Enum\StatusOnlineTypeEnum.cs" />
+    <Compile Include="Enum\StatusTypeEnum.cs" />
+    <Compile Include="Events\AppEnableEvent.cs" />
+    <Compile Include="Events\EventTypeBase.cs" />
+    <Compile Include="Events\GroupMessageEvent.cs" />
+    <Compile Include="Events\MessageEvent.cs" />
+    <Compile Include="Events\PrivateMessageEvent.cs" />
+    <Compile Include="Events\ServiceInfo.cs" />
+    <Compile Include="Interface\IAppEnableEvent.cs" />
+    <Compile Include="Interface\IAppSetting.cs" />
+    <Compile Include="Interface\IAppUninstall.cs" />
+    <Compile Include="Interface\IDisabledEvent.cs" />
+    <Compile Include="Interface\IEventcallBack.cs" />
+    <Compile Include="Interface\IGroupMessage.cs" />
+    <Compile Include="Interface\IRecvicetPrivateMessage.cs" />
+    <Compile Include="Model\CaptchaInformation.cs" />
+    <Compile Include="Model\FriendInfo.cs" />
+    <Compile Include="Model\GroupFileInformation.cs" />
+    <Compile Include="Model\GroupInfo.cs" />
+    <Compile Include="Model\GroupMemberBriefInfo.cs" />
+    <Compile Include="Model\GroupMemberInfo.cs" />
+    <Compile Include="Model\NotReRedEnvelopes.cs" />
+    <Compile Include="Model\OrderDetail.cs" />
+    <Compile Include="Model\PersonalInfo.cs" />
+    <Compile Include="Model\QQWalletInformation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
