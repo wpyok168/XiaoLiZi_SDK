@@ -94,6 +94,7 @@
     <Compile Include="Enum\GroupVerificationOperateEnum.cs" />
     <Compile Include="Enum\IMEStatusEnum.cs" />
     <Compile Include="Enum\IsGroupRecviceEnum.cs" />
+    <Compile Include="Enum\EventMessageEnum.cs" />
     <Compile Include="Enum\MessageSubTypeEnum.cs" />
     <Compile Include="Enum\MessageTypeEnum.cs" />
     <Compile Include="Enum\MusicAppTypeEnum.cs" />

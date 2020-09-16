@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace SDK.Enum
 {
     /// <summary>
-    /// 启动事件处理
+    /// 消息事件处理
     /// </summary>
-    public enum EventProcessEnum
+    public enum EventMessageEnum
     {
         // 阻止其他插件继续处理此事件
         /// <summary>
         /// 阻止其他插件继续处理此事件
         /// </summary>
-        Block = 8,
+        Block = 1,
         // 允许其他插件继续处理此事件
         /// <summary>
         /// 允许其他插件继续处理此事件

@@ -21,9 +21,9 @@ namespace SDK.Core
 
         public delegate int RecvicePrivateMsg(IntPtr intPtr);
         public delegate int RecviceGroupMesg(IntPtr intPtr);
-        public delegate EventProcessEnum RotbotAppEnable();
-        public delegate void RecviceEventCallBack(IntPtr intPtr);
-        public delegate void AppSetting();
+        public delegate int RotbotAppEnable();
+        public delegate int RecviceEventCallBack(IntPtr intPtr);
+        public delegate int AppSetting();
         public delegate void AppUninstall();
         public delegate void AppDisabled();
         public static RecvicePrivateMsg staticRecvicePrivateMsg = new RecvicePrivateMsg(RecvicetPrivateMessage);
@@ -42,8 +42,9 @@ namespace SDK.Core
                 data = (GroupMessageEvent)Marshal.PtrToStructure(intPtr, typeof(GroupMessageEvent));
                 //string txt = Marshal.PtrToStringAnsi(data.MessageContent);
                 Common.unityContainer.Resolve<IGroupMessage>().ReceviceGroupMsg(data);
+                return (int)EventMessageEnum.Ignore;
             }
-            return 1;
+            return (int)EventMessageEnum.Ignore;
         }
 
         public static int RecvicetPrivateMessage(IntPtr intPtr)
@@ -54,23 +55,24 @@ namespace SDK.Core
                 data = (PrivateMessageEvent)Marshal.PtrToStructure(intPtr, typeof(PrivateMessageEvent));
                 //string content = Marshal.PtrToStringAnsi(data.MessageContent);
                 Common.unityContainer.Resolve<IRecvicetPrivateMessage>().RecvicetPrivateMsg(data);
+                return (int)EventMessageEnum.Ignore;
             }
-            return 1;
+            return (int)EventMessageEnum.Ignore;
         }
 
-        public static EventProcessEnum AppEnable()
+        public static int AppEnable()
         {
             //AppEnableEvent appEnableEvent =(AppEnableEvent) Marshal.PtrToStructure(intPtr,typeof(AppEnableEvent));
             if (Common.unityContainer.IsRegistered<IAppEnableEvent>())
             {
                 AppEnableEvent ae = new AppEnableEvent();
                 Common.unityContainer.Resolve<IAppEnableEvent>().AppEnableEvent(ae);
-                return EventProcessEnum.Ignore;
+                return (int)EventProcessEnum.Ignore;
             }
-            return EventProcessEnum.Block;
+            return (int)EventProcessEnum.Ignore;
         }
 
-        public static void RecviceEventcallBack(IntPtr intPtr)
+        public static int RecviceEventcallBack(IntPtr intPtr)
         {
             if (Common.unityContainer.IsRegistered<IEventcallBack>())
             {
@@ -80,15 +82,19 @@ namespace SDK.Core
                 //Enum.EventTypeEnum eventType = data.EventType;
                 //string a = eventType.ToString();
                 Common.unityContainer.Resolve<IEventcallBack>().EventcallBack(data);
+                return (int)EventMessageEnum.Ignore;
             }
+            return (int)EventMessageEnum.Ignore;
         }
 
-        public static void AppSettingEvent()
+        public static int AppSettingEvent()
         {
             if (Common.unityContainer.IsRegistered<IAppSetting>())
             {
                 Common.unityContainer.Resolve<IAppSetting>().AppSetting();
+                return (int)EventMessageEnum.Ignore;
             }
+            return (int)EventMessageEnum.Ignore;
         }
         public static void AppUninstallEvent()
         {
