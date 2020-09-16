@@ -51,7 +51,7 @@ namespace MsTool
             //    Common.xlzAPI.SendPrivateMessage(e.ThisQQ, e.SenderQQ, i.ToString());
             //    System.Threading.Thread.Sleep(200);
             //}
-           // Common.xlzAPI.GetGroupMemberBriefInfoEvent(e.ThisQQ, 480325208);
+            //Common.xlzAPI.GetGroupMemberBriefInfoEvent(e.ThisQQ, 480325208);
         }
     }
 }

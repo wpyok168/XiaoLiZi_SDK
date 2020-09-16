@@ -190,7 +190,7 @@ namespace SDK.Core
         delegate bool FriendjoinGroup(string pkey, long thisQQ, long GroupQQ, long otherQQ, long otherGroupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GroupNoticeMethod(string pkey, long thisQQ, long GroupQQ, long otherQQ, int metohd);
-        delegate string GetGroupMemberBriefInfo(string pkey, long thisQQ, long GroupQQ, ref GMBriefDataList[] gMBriefDataLists);
+        delegate IntPtr GetGroupMemberBriefInfo(string pkey, long thisQQ, long GroupQQ, ref GMBriefDataList[] gMBriefDataLists);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2376,7 +2376,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群成员简略信息").ToString());
             GetGroupMemberBriefInfo sendmsg = (GetGroupMemberBriefInfo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetGroupMemberBriefInfo));
             GMBriefDataList[] gMBriefDataLists = new GMBriefDataList[2];
-            string ret = sendmsg(pluginkey, thisQQ, GroupQQ, ref gMBriefDataLists);
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, ref gMBriefDataLists));
             AdminListDataList adminList = (AdminListDataList)Marshal.PtrToStructure(gMBriefDataLists[0].groupMemberBriefInfo.AdminiList, typeof(AdminListDataList));
             GroupMemberBriefInfo groupMemberBriefInfo = new GroupMemberBriefInfo();
             groupMemberBriefInfo.GroupMAax = gMBriefDataLists[0].groupMemberBriefInfo.GroupMAax;
