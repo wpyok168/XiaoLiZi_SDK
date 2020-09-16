@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoLiZi", "XiaoLiZi\XiaoLiZi.csproj", "{A551CAED-CAD4-420B-BC8C-47B069989D34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDK", "SDK\SDK.csproj", "{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsTool", "MsTool\MsTool.csproj", "{D50C9C80-2B97-4175-BFC7-144F866B34A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotMenuDemo", "RobotMenuDemo\RobotMenuDemo.csproj", "{B9AF7446-3BAD-4672-ACCD-D3FDDF341A14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A551CAED-CAD4-420B-BC8C-47B069989D34}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A551CAED-CAD4-420B-BC8C-47B069989D34}.Debug|Any CPU.Build.0 = Debug|x86
+		{A551CAED-CAD4-420B-BC8C-47B069989D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A551CAED-CAD4-420B-BC8C-47B069989D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}.Debug|Any CPU.Build.0 = Debug|x86
+		{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D38811AE-6DAA-4DAB-9E14-DAAB99246B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D50C9C80-2B97-4175-BFC7-144F866B34A0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D50C9C80-2B97-4175-BFC7-144F866B34A0}.Debug|Any CPU.Build.0 = Debug|x86
+		{D50C9C80-2B97-4175-BFC7-144F866B34A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50C9C80-2B97-4175-BFC7-144F866B34A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9AF7446-3BAD-4672-ACCD-D3FDDF341A14}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B9AF7446-3BAD-4672-ACCD-D3FDDF341A14}.Debug|Any CPU.Build.0 = Debug|x86
+		{B9AF7446-3BAD-4672-ACCD-D3FDDF341A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9AF7446-3BAD-4672-ACCD-D3FDDF341A14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52C950B2-1F28-4007-A29B-DE34CB1E6A6F}
+	EndGlobalSection
+EndGlobal
