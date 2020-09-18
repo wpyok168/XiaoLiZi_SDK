@@ -55,6 +55,8 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GetGroupInfo(string pkey, long thisQQ, long otherGroupQQ, ref GetGroupData[] getGroupDatas);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool GetGroupCardInfo(string pkey, long thisQQ, long otherGroupQQ, ref GroupCardInfoDatList[] groupCardInfo);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool Undo_Group(string pkey, long thisQQ, long groupQQ, long message_random, int message_req);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool Undo_Private(string pkey, long thisQQ, long otherQQ, long message_random, int message_req, int time);
@@ -191,6 +193,8 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GroupNoticeMethod(string pkey, long thisQQ, long GroupQQ, long otherQQ, int metohd);
         delegate IntPtr GetGroupMemberBriefInfo(string pkey, long thisQQ, long GroupQQ, ref GMBriefDataList[] gMBriefDataLists);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool UpdataGroupName(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string NewGroupName);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -528,14 +532,14 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="otherGroupQQ"></param>
         /// <returns></returns>
-        public GroupInfo GetGroupInfoEvent(long thisQQ, long otherGroupQQ)
+        public GroupCardInfo GetGroupInfoEvent(long thisQQ, long otherGroupQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("查询群信息").ToString());
-            GetGroupData[] ptrArray = new GetGroupData[2];
-            GetGroupInfo sendmsg = (GetGroupInfo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetGroupInfo));
+            GroupCardInfoDatList[] ptrArray = new GroupCardInfoDatList[2];
+            GetGroupCardInfo sendmsg = (GetGroupCardInfo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetGroupCardInfo));
             bool count = sendmsg(pluginkey, thisQQ, otherGroupQQ, ref ptrArray);
             sendmsg = null;
-            return ptrArray[0].groupInfo;
+            return ptrArray[0].groupCardInfo;
         }
         /// <summary>
         /// 撤回消息_群聊
@@ -2391,6 +2395,21 @@ namespace SDK.Core
             //UInt64 qq = BitConverter.ToUInt64(readbyte, 0);
             sendmsg = null;
             return groupMemberBriefInfo;
+        }
+        /// <summary>
+        /// 修改群名称<para>需要管理员权限</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="NewGroupName"></param>
+        /// <returns>成功返回真,失败或无权限返回假</returns>
+        public bool UpdataGroupNameEvent(long thisQQ,long GroupQQ, string NewGroupName)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改群名称").ToString());
+            UpdataGroupName sendmsg = (UpdataGroupName)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UpdataGroupName));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, NewGroupName);
+            sendmsg = null;
+            return ret;
         }
     }
 }

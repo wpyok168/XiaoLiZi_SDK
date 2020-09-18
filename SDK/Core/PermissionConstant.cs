@@ -125,6 +125,7 @@ namespace SDK.Core
             PermiCon.Add("API[115]", "群权限_设置群查找方式");
             PermiCon.Add("API[116]", "邀请好友加群");
             PermiCon.Add("API[117]", "置群内消息通知");
+            PermiCon.Add("API[118]", "修改群名称");
         }
     }
 }

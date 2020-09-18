@@ -120,6 +120,7 @@
     <Compile Include="Interface\IRecvicetPrivateMessage.cs" />
     <Compile Include="Model\CaptchaInformation.cs" />
     <Compile Include="Model\FriendInfo.cs" />
+    <Compile Include="Model\GroupCardInfo.cs" />
     <Compile Include="Model\GroupFileInformation.cs" />
     <Compile Include="Model\GroupInfo.cs" />
     <Compile Include="Model\GroupMemberBriefInfo.cs" />

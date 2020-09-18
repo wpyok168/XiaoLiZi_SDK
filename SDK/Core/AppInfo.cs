@@ -13,7 +13,7 @@ namespace SDK.Core
         /// <summary>
         /// SDK版本
         /// </summary>
-        public string sdkv = "2.7.4";
+        public string sdkv = "2.7.5";
         /// <summary>
         /// 应用名
         /// </summary>
