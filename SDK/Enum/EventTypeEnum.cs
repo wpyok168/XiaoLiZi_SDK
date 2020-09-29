@@ -13,82 +13,73 @@ namespace SDK.Enum
         /// <summary>
         /// 好友事件_被好友删除
         /// </summary>
-        Friend_Removed = 15,
+        Friend_Removed = 100,
         // 好友事件_签名变更
         /// <summary>
         /// 好友事件_签名变更
         /// </summary>
-        Friend_SignatureChanged = 16,
+        Friend_SignatureChanged = 101,
         // 好友事件_昵称改变
         /// <summary>
         /// 好友事件_昵称改变
         /// </summary>
-        Friend_NameChanged = 17,
+        Friend_NameChanged = 102,
         // 好友事件_某人撤回事件
         /// <summary>
         /// 好友事件_某人撤回事件
         /// </summary>
-        Friend_UserUndid = 18,
+        Friend_UserUndid = 103,
         // 好友事件_有新好友
         /// <summary>
         /// 好友事件_有新好友
         /// </summary>
-        Friend_NewFriend = 19,
+        Friend_NewFriend = 104,
         // 好友事件_好友请求
         /// <summary>
         /// 好友事件_好友请求
         /// </summary>
-        Friend_FriendRequest = 20,
+        Friend_FriendRequest = 105,
         // 好友事件_对方同意了您的好友请求
         /// <summary>
         /// 好友事件_对方同意了您的好友请求
         /// </summary>
-        Friend_FriendRequestAccepted = 21,
+        Friend_FriendRequestAccepted = 106,
         // 好友事件_对方拒绝了您的好友请求
         /// <summary>
         /// 好友事件_对方拒绝了您的好友请求
         /// </summary>
-        Friend_FriendRequestRefused = 22,
+        Friend_FriendRequestRefused = 107,
         // 好友事件_资料卡点赞
         /// <summary>
         /// 好友事件_资料卡点赞
         /// </summary>
-        Friend_InformationLiked = 23,
+        Friend_InformationLiked = 108,
         // 好友事件_签名点赞
         /// <summary>
         /// 好友事件_签名点赞
         /// </summary>
-        Friend_SignatureLiked = 24,
+        Friend_SignatureLiked = 109,
         // 好友事件_签名回复
         /// <summary>
         /// 好友事件_签名回复
         /// </summary>
-        Friend_SignatureReplied = 25,
+        Friend_SignatureReplied = 110,
         // 好友事件_个性标签点赞
         /// <summary>
         /// 好友事件_个性标签点赞
         /// </summary>
-        Friend_TagLiked = 26,
+        Friend_TagLiked = 111,
         // 好友事件_随心贴回复
         /// <summary>
         /// 好友事件_随心贴回复
         /// </summary>
-        Friend_StickerLiked = 27,
+        Friend_StickerLiked = 112,
         // 好友事件_随心贴增添
         /// <summary>
         /// 好友事件_随心贴增添
         /// </summary>
-        Friend_StickerAdded = 28,
-        // 空间事件_与我相关
-        /// <summary>
-        /// 空间事件_与我相关
-        /// </summary>
-        QZone_Related = 30,
-        // 框架事件_登录成功
-        /// <summary>
-        /// 框架事件_登录成功
-        /// </summary>
-        This_SignInSuccess = 32,
+        Friend_StickerAdded = 113,
+        
         // 群事件_我被邀请加入群
         /// <summary>
         /// 群事件_我被邀请加入群
@@ -218,16 +209,36 @@ namespace SDK.Enum
         /// <summary>
         /// 群事件_展示成员群头衔
         /// </summary>
-        Group_ShowMemberTitle = 27,
+        Group_ShowMemberTitle = 26,
         // 群事件_隐藏成员群头衔
         /// <summary>
         /// 群事件_隐藏成员群头衔
         /// </summary>
-        Group_HideMemberTitle = 28,
+        Group_HideMemberTitle = 27,
         // 群事件_某人被解除禁言
         /// <summary>
         /// 群事件_某人被解除禁言
         /// </summary>
-        Group_MemberNotShutUp = 29
+        Group_MemberNotShutUp = 28,
+        // 空间事件_与我相关
+        /// <summary>
+        /// 空间事件_与我相关
+        /// </summary>
+        QZone_Related = 29,
+        /// <summary>
+        /// 群事件_我被踢出
+        /// </summary>
+        Group_MemberKickOut = 30,
+        // 框架事件_登录成功
+        /// <summary>
+        /// 框架事件_登录成功
+        /// </summary>
+        This_SignInSuccess = 31,
+        /// <summary>
+        /// 群事件_群名变更
+        /// </summary>
+        Group_GroupNameUpdate = 32,
+        
+        
     }
 }

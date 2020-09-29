@@ -191,5 +191,59 @@ namespace SDK.Enum
         FriendAudioRedEnvelope = 90,
         // 好友接龙红包
         FriendFollowRedEnvelope = 91,
+        //.常量 权限_重命名群文件夹, "92", 公开
+        Grour_RenmeFolder = 92,
+        //.常量 权限_删除群文件夹, "93", 公开
+        Grour_DeleteFolder = 93,
+        //.常量 权限_删除群文件, "94", 公开
+        Grour_DeleteFile = 94,
+        //.常量 权限_保存文件到微云, "95", 公开
+        Grour_Save2WwiYun = 95,
+        //.常量 权限_移动群文件, "96", 公开
+        Grour_MoveFile = 96,
+        //.常量 权限_取群文件列表, "97", 公开
+        Grour_GetFileList = 97,
+        //.常量 权限_设置专属头衔, "98", 公开
+        Grour_SetMemerTitle = 98,
+        //.常量 权限_下线指定QQ, "99", 公开
+        Grour_OfflineQQ = 99,
+        //.常量 权限_登录指定QQ, "100", 公开
+        Grour_LoginQQ = 100,
+        //.常量 权限_取群未领红包, "101", 公开
+        Grour_UnclaimedRedEnvelope = 101,
+        //.常量 权限_发送输入状态, "102", 公开
+        Grour_SendInputStatusr = 102,
+        //.常量 权限_修改资料, "103", 公开
+        Grour_ModifyInformation = 103,
+        //.常量 权限_打好友电话, "104", 公开
+        Grour_CallFriendsTel = 104,
+        //.常量 权限_取群文件下载地址, "105", 公开
+        Grour_GetFileDownload = 105,
+        //.常量 权限_头像双击_好友, "106", 公开
+        DoubleClickFriend = 106,
+        //.常量 权限_头像双击_群, "107", 公开
+        DoubleClickGroup = 107,
+        //.常量 权限_取群成员简略信息, "108", 公开
+        Grour_SimpleInfo = 108,
+        //.常量 权限_群聊置顶, "109", 公开
+        Grour_ChatTop = 109,
+        //.常量 权限_私聊置顶, "110", 公开
+        Grour_PrivateTop = 110,
+        //.常量 权限_取加群链接, "111", 公开
+        Grour_AddUrl = 111,
+        //.常量 权限_设为精华, "112", 公开
+        Grour_SetEssence = 112,
+        //.常量 权限_群权限_设置群昵称规则, "113", 公开
+        Grour_SetNiceRules = 113,
+        //.常量 权限_群权限_设置群发言频率, "114", 公开
+        Grour_SpeckFrequency = 114,
+        //.常量 权限_群权限_设置群查找方式, "115", 公开
+        Grour_FindMethod = 115,
+        //.常量 权限_邀请好友加群, "116", 公开
+        Grour_SetInviteFrindeAdd = 116,
+        //.常量 权限_置群内消息通知, "117", 公开
+        Grour_Notification = 117,
+        //.常量 权限_修改群名称, "118", 公开
+        Grour_UpdateName = 118,
     }
 }
