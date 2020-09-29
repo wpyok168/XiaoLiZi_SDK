@@ -195,6 +195,12 @@ namespace SDK.Core
         delegate IntPtr GetGroupMemberBriefInfo(string pkey, long thisQQ, long GroupQQ, ref GMBriefDataList[] gMBriefDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool UpdataGroupName(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string NewGroupName);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate void ReloadItSelf(string pkey, [MarshalAs(UnmanagedType.LPStr)] string dllpath);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool OfflineQQ(string pkey, long QQ);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetFrameVersion(string pkey);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2408,6 +2414,42 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改群名称").ToString());
             UpdataGroupName sendmsg = (UpdataGroupName)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UpdataGroupName));
             bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, NewGroupName);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 重载自身
+        /// </summary>
+        /// <param name="dllpath">若需重载自身并替换更新自身，在此处填入新dll文件路径</param>
+        public void ReloadItSelfEvent(string dllpath = null)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("重载自身").ToString());
+            ReloadItSelf sendmsg = (ReloadItSelf)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ReloadItSelf));
+            sendmsg(pluginkey, dllpath);
+            sendmsg = null;
+        }
+        /// <summary>
+        /// 下线PCQQ
+        /// </summary>
+        /// <param name="QQ"></param>
+        /// <returns>成功返回真,失败或无权限返回假</returns>
+        public bool OfflineQQEvent(long QQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("下线PCQQ").ToString());
+            OfflineQQ sendmsg = (OfflineQQ)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(OfflineQQ));
+            bool ret = sendmsg(pluginkey, QQ);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取框架版本
+        /// </summary>
+        /// <returns></returns>
+        public string GetFrameVersionEvent()
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取框架版本").ToString());
+            GetFrameVersion sendmsg = (GetFrameVersion)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetFrameVersion));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey));
             sendmsg = null;
             return ret;
         }

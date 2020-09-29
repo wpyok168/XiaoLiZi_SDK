@@ -174,6 +174,19 @@ namespace SDK.Core
         {
             return $"[picShow,hash={pichash},showtype={showpictype.ToString()}]";
         }
+        /// <summary>
+        /// 自定义骰子
+        /// </summary>
+        /// <param name="num">默认为6</param>
+        /// <returns></returns>
+        public string RandomDice(int num = 6)
+        {
+            if (num < 1 || num > 6)
+            {
+                num = 6;
+            }
+            return "[bigFace,Id=11464,name=[随机骰子]" + num + ",hash=4823D3ADB15DF08014CE5D6796B76EE1,flag=409e2a69b16918f9]";
+        }
     }
 
 }
