@@ -198,7 +198,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void ReloadItSelf(string pkey, [MarshalAs(UnmanagedType.LPStr)] string dllpath);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool OfflineQQ(string pkey, long QQ);
+        delegate bool OfflinePCQQ(string pkey, long QQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetFrameVersion(string pkey);
         /// <summary>
@@ -2431,13 +2431,13 @@ namespace SDK.Core
         /// <summary>
         /// 下线PCQQ
         /// </summary>
-        /// <param name="QQ"></param>
+        /// <param name="PCQQ"></param>
         /// <returns>成功返回真,失败或无权限返回假</returns>
-        public bool OfflineQQEvent(long QQ)
+        public bool OfflinePCQQEvent(long PCQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("下线PCQQ").ToString());
-            OfflineQQ sendmsg = (OfflineQQ)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(OfflineQQ));
-            bool ret = sendmsg(pluginkey, QQ);
+            OfflinePCQQ sendmsg = (OfflinePCQQ)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(OfflinePCQQ));
+            bool ret = sendmsg(pluginkey, PCQQ);
             sendmsg = null;
             return ret;
         }
@@ -2453,6 +2453,5 @@ namespace SDK.Core
             sendmsg = null;
             return ret;
         }
-
     }
 }
