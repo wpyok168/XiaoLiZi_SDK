@@ -79,6 +79,10 @@ namespace SDK.Enum
         /// 好友事件_随心贴增添
         /// </summary>
         Friend_StickerAdded = 113,
+        /// <summary>
+        /// 好友事件_系统提示
+        /// </summary>
+        Friend_SystmHint = 114,
         
         // 群事件_我被邀请加入群
         /// <summary>
@@ -238,7 +242,9 @@ namespace SDK.Enum
         /// 群事件_群名变更
         /// </summary>
         Group_GroupNameUpdate = 32,
-        
-        
+        /// <summary>
+        /// 群事件_系统提示
+        /// </summary>
+        Group_SystmHint = 33,
     }
 }
