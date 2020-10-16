@@ -117,6 +117,10 @@ namespace SDK.Core
 
                 outjson = JsonConvert.SerializeObject(jObject);
             }
+            else
+            {
+                outjson = "设置权限出错，请检查PermissionConstant.CS 与AppRun.SetProperty()中的权限一一对应";
+            }
             return outjson ;
         }
 
