@@ -246,5 +246,9 @@ namespace SDK.Enum
         /// 群事件_系统提示
         /// </summary>
         Group_SystmHint = 33,
+        /// <summary>
+        /// 群事件_群头像事件
+        /// </summary>
+        Group_Face = 34,
     }
 }

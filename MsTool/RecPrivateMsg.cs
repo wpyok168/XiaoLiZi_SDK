@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -51,7 +52,18 @@ namespace MsTool
             //    Common.xlzAPI.SendPrivateMessage(e.ThisQQ, e.SenderQQ, i.ToString());
             //    System.Threading.Thread.Sleep(200);
             //}
-            //Common.xlzAPI.GetGroupMemberBriefInfoEvent(e.ThisQQ, 480325208);
+            //Common.xlzAPI.GetGroupMemberBriefInfoEvent(e.ThisQQ, 480325208);247681297
+            //string cookies = Common.xlzAPI.GetWebCookiesEvent(e.ThisQQ, "https://h5.qzone.qq.com/mqzone/index", "549000929", "5");
+            string picpath = System.Environment.CurrentDirectory + "\\图片.png";
+            if (e.MessageContent.Equals("发送群公告"))
+            {
+                if (File.Exists(picpath))
+                {
+                    string ret = Common.xlzAPI.SetAnnouncementEvent(e.ThisQQ, 247681297, "小栗子发公告", "测试发公告", picpath, null,true, true, true, true, true);
+                }
+            }
+           
+            
         }
     }
 }

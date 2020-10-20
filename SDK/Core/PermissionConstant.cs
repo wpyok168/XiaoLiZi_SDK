@@ -127,6 +127,8 @@ namespace SDK.Core
             PermiCon.Add("API[117]", "置群内消息通知");
             PermiCon.Add("API[118]", "修改群名称");
             PermiCon.Add("API[119]", "下线PCQQ");
+            PermiCon.Add("API[120]", "登录网页取ck");
+            PermiCon.Add("API[121]", "发送群公告");
         }
     }
 }

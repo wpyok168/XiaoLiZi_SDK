@@ -201,6 +201,10 @@ namespace SDK.Core
         delegate bool OfflinePCQQ(string pkey, long QQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetFrameVersion(string pkey);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool GetWebCookies(string pkey, long thisQQ, string JumpUrl, string appid, string daid, [MarshalAs(UnmanagedType.LPStr)] ref string retCookies);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SetAnnouncement(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string title, [MarshalAs(UnmanagedType.LPStr)] string msgcotent, [MarshalAs(UnmanagedType.LPStr)] string video, bool isShow, bool isConfrim, bool isTop, bool isSendNewMember, bool setGroupNickName, [MarshalAs(UnmanagedType.LPArray)] byte[] picpath, int picsize);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2450,6 +2454,52 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取框架版本").ToString());
             GetFrameVersion sendmsg = (GetFrameVersion)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetFrameVersion));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 登录网页取ck
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="JumpUrl">不能url编码！如QQ空间是：https://h5.qzone.qq.com/mqzone/index</param>
+        /// <param name="appid">如QQ空间是：549000929</param>
+        /// <param name="daid">如QQ空间是：5</param>
+        /// <returns></returns>
+        public string GetWebCookiesEvent(long thisQQ,string JumpUrl,string appid,string daid)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("登录网页取ck").ToString());
+            GetWebCookies sendmsg = (GetWebCookies)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetWebCookies));
+            string retCookies = string.Empty;
+            bool ret =sendmsg(pluginkey, thisQQ, JumpUrl, appid, daid, ref retCookies);
+            sendmsg = null;
+            return retCookies;
+        }
+        /// <summary>
+        /// 发送群公告
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="title">标题<para>支持emoji表情,如：\uD83D\uDE01</para></param>
+        /// <param name="msgcotent">内容<para>支持emoji表情,如：\uD83D\uDE01</para></param>
+        /// <param name="picpath">图片,图片必需大于300*200像素<para>在公告当中插入图片,如果设置了[腾讯视频]参数,则不显示图片只显示视频</para></param>
+        /// <param name="video">公告当中插入视频,只支持腾讯视频,如：https://v.qq.com/x/cover/4gl2i78zd9idpi0/j0024zknymk.html</param>
+        /// <param name="isShow">弹窗展示</param>
+        /// <param name="isConfrim">需要确认</param>
+        /// <param name="isTop">置顶</param>
+        /// <param name="isSendNewMember">发送给新成员</param>
+        /// <param name="setGroupNickName">引导修改群昵称</param>
+        /// <returns>ec=0表示成功</returns>
+        public string SetAnnouncementEvent(long thisQQ, long GroupQQ, string title, string msgcotent, string picpath,string video, bool isShow = false, bool isConfrim=false, bool isTop=false, bool isSendNewMember=false, bool setGroupNickName = false)
+        {
+            byte[] picture = null;
+            if (!string.IsNullOrEmpty(picpath))
+            {
+                Bitmap bitmap = new Bitmap(picpath);
+                picture = GetByteArrayByImage(bitmap);
+            }
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送群公告").ToString());
+            SetAnnouncement sendmsg = (SetAnnouncement)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetAnnouncement));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, title, msgcotent, video, isShow, isConfrim, isTop, isSendNewMember, setGroupNickName, picture, picture.Length));
             sendmsg = null;
             return ret;
         }
