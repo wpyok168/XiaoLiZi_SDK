@@ -84,6 +84,8 @@ namespace MsTool
         /// <summary>
         /// 取龙王简例
         /// </summary>
+        /// <param name="thisQQ">框架qq</param>
+        /// <param name="groupQQ">群号</param>
         /// <returns></returns>
         public string GetDragonKing(long thisQQ,long groupQQ)
         {
