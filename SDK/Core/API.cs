@@ -1012,7 +1012,7 @@ namespace SDK.Core
         /// <returns></returns>
         public string GetPSKeyEvent(long thisQQ, string domain)
         {
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取clientkey").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取pskey").ToString());
             GetPSKey sendmsg = (GetPSKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetPSKey));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, domain));
             sendmsg = null;
@@ -2461,9 +2461,9 @@ namespace SDK.Core
         /// 登录网页取ck
         /// </summary>
         /// <param name="thisQQ"></param>
-        /// <param name="JumpUrl">不能url编码！如QQ空间是：https://h5.qzone.qq.com/mqzone/index</param>
-        /// <param name="appid">如QQ空间是：549000929</param>
-        /// <param name="daid">如QQ空间是：5</param>
+        /// <param name="JumpUrl">不能url编码！如QQ空间是：https://h5.qzone.qq.com/mqzone/index 群：https://qun.qq.com</param>
+        /// <param name="appid">如QQ空间是：549000929，群：715030901</param>
+        /// <param name="daid">如QQ空间是：5；群：73</param>
         /// <returns></returns>
         public string GetWebCookiesEvent(long thisQQ,string JumpUrl,string appid,string daid)
         {
