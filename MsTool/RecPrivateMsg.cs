@@ -110,7 +110,7 @@ namespace MsTool
             {
                 outhtml = new StreamReader(new GZipStream(hws.GetResponseStream(), CompressionMode.Decompress)).ReadToEnd();
             }
-            if (hws.ContentEncoding.ToLower().Equals("deflate"))
+            else if (hws.ContentEncoding.ToLower().Equals("deflate"))
             {
                 outhtml = new StreamReader(new DeflateStream(hws.GetResponseStream(), CompressionMode.Decompress)).ReadToEnd();
             }
