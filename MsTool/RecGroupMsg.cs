@@ -27,10 +27,10 @@ namespace MsTool
             }
             // Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, "测试小栗子C# SDK", true);
             // Common.xlzAPI.RecviceImage(e.MessageContent, e.ThisQQ, e.SenderQQ);
-            if (e.MessageContent.Contains("转发"))
-            {
-                Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, e.MessageContent);
-            }
+            //if (e.MessageContent.Contains("转发"))
+            //{
+            //    Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, e.MessageContent);
+            //}
             if (e.MessageContent.Equals("谁是龙王"))
             {
                 string lKing = GetDragonKing(e.ThisQQ, e.MessageGroupQQ);
