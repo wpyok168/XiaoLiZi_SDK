@@ -17,31 +17,31 @@ namespace SDK.Model
         /// <summary>
         /// 群名称
         /// </summary>
-        [MarshalAs(UnmanagedType.LPTStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string GroupName;
         // 群地点
         /// <summary>
         /// 群地点
         /// </summary>
-        [MarshalAs(UnmanagedType.LPTStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string GroupLocation;
         // 群分类
         /// <summary>
         /// 群分类
         /// </summary>
-        [MarshalAs(UnmanagedType.LPTStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string GroupClassification;
         // 群标签 以|分割
         /// <summary>
         /// 群标签 以|分割
         /// </summary>
-        [MarshalAs(UnmanagedType.LPTStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string GroupTags;
         // 群介绍
         /// <summary>
         /// 群介绍
         /// </summary>
-        [MarshalAs(UnmanagedType.LPTStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string GroupDescription;
     }
     [StructLayout(LayoutKind.Sequential,Pack =1)]

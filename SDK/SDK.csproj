@@ -60,6 +60,8 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +93,7 @@
     <Compile Include="Enum\GroupFindMethodEnum.cs" />
     <Compile Include="Enum\GroupNoticeMethodEnum.cs" />
     <Compile Include="Enum\GroupPermission_SetInviteMethodEnum.cs" />
+    <Compile Include="Enum\GroupPosition.cs" />
     <Compile Include="Enum\GroupVerificationOperateEnum.cs" />
     <Compile Include="Enum\IMEStatusEnum.cs" />
     <Compile Include="Enum\IsGroupRecviceEnum.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="Model\GroupMemberBriefInfo.cs" />
     <Compile Include="Model\GroupMemberInfo.cs" />
     <Compile Include="Model\NotReRedEnvelopes.cs" />
+    <Compile Include="Model\OneGroupMemberInfo.cs" />
     <Compile Include="Model\OrderDetail.cs" />
     <Compile Include="Model\PersonalInfo.cs" />
     <Compile Include="Model\QQWalletInformation.cs" />

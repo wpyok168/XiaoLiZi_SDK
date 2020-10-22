@@ -205,6 +205,10 @@ namespace SDK.Core
         delegate bool GetWebCookies(string pkey, long thisQQ, string JumpUrl, string appid, string daid, [MarshalAs(UnmanagedType.LPStr)] ref string retCookies);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SetAnnouncement(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string title, [MarshalAs(UnmanagedType.LPStr)] string msgcotent, [MarshalAs(UnmanagedType.LPStr)] string video, bool isShow, bool isConfrim, bool isTop, bool isSendNewMember, bool setGroupNickName, [MarshalAs(UnmanagedType.LPArray)] byte[] picpath, int picsize);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetOneGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ,ref OneGroupMemberDataList[] oneGroupMemberDatas);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SendMail(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string mailaddr, [MarshalAs(UnmanagedType.LPStr)] string mailtitle, [MarshalAs(UnmanagedType.LPStr)] string msgContent);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2500,6 +2504,38 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送群公告").ToString());
             SetAnnouncement sendmsg = (SetAnnouncement)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetAnnouncement));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, title, msgcotent, video, isShow, isConfrim, isTop, isSendNewMember, setGroupNickName, picture, picture.Length));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取群成员信息
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="groupQQ">群号</param>
+        /// <param name="otherQQ">群成员QQ</param>
+        /// <returns></returns>
+        public OneGroupMemberInfo GetOneGroupMemberInfo(long thisQQ,long GroupQQ, long otherQQ)
+        {
+            OneGroupMemberDataList[] pdataLists = new OneGroupMemberDataList[2];
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群成员信息").ToString());
+            GetOneGroupMember sendmsg = (GetOneGroupMember)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetOneGroupMember));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, otherQQ,ref pdataLists));
+            sendmsg = null;
+            return pdataLists[0].oneGroupMemberInfo;
+        }
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="mailaddr">邮箱地址</param>
+        /// <param name="mailtitle">邮件标题</param>
+        /// <param name="msgContent">邮件内容<para>支持html</para></param>
+        /// <returns></returns>
+        public string SendMailEvent(long thisQQ,string mailaddr,string mailtitle,string msgContent)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送邮件").ToString());
+            SendMail sendmsg = (SendMail)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendMail));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, mailaddr, mailtitle, msgContent));
             sendmsg = null;
             return ret;
         }
