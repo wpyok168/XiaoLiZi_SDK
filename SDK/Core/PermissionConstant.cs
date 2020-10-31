@@ -131,6 +131,11 @@ namespace SDK.Core
             PermiCon.Add("API[121]", "发送群公告");
             PermiCon.Add("API[122]", "取群成员信息");
             PermiCon.Add("API[123]", "发送邮件");
+            PermiCon.Add("API[124]", "取钱包cookie");
+            PermiCon.Add("API[125]", "取群网页cookie");
+            PermiCon.Add("API[126]", "取手Q邮箱cookie");
+            PermiCon.Add("API[127]", "转账");
+            PermiCon.Add("API[128]", "余额提现");
         }
     }
 }

@@ -179,13 +179,29 @@ namespace SDK.Core
         /// </summary>
         /// <param name="num">默认为6</param>
         /// <returns></returns>
-        public string RandomDice(int num = 6)
+        public string GetRandomDice(int num = 6)
         {
             if (num < 1 || num > 6)
             {
                 num = 6;
             }
             return "[bigFace,Id=11464,name=[随机骰子]" + num + ",hash=4823D3ADB15DF08014CE5D6796B76EE1,flag=409e2a69b16918f9]";
+        }
+        /// <summary>
+        /// 粘贴消息<para>粘贴内容直接追加在本命令后面,粘贴内容只支持图片、表情</para>
+        /// </summary>
+        /// <param name="x">X值：与粘贴位置有关,由横向位置经过特定算法得到</param>
+        /// <param name="y">Y值：与粘贴位置有关,由纵向位置经过特定算法得到</param>
+        /// <param name="msgWitdh">粘贴内容宽值：可决定粘贴内容的宽度,由缩放宽度经过特定算法得到</param>
+        /// <param name="msgHight">粘贴内容高值：可决定粘贴内容的高度,由缩放高度经过特定算法得到</param>
+        /// <param name="msgAngle">粘贴倾角：粘贴内容与水平位置的倾角</param>
+        /// <param name="msgRecTime">消息接收时间</param>
+        /// <param name="msgReq">消息req</param>
+        /// <param name="msgRandom">消息random</param>
+        /// <returns></returns>
+        public string GetPasteMsg(string x, string y,string msgWitdh,string msgHight,string msgAngle,int msgRecTime,int msgReq,long msgRandom)
+        {
+            return $"[Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]";
         }
     }
 

@@ -108,6 +108,7 @@
     <Compile Include="Enum\ShowPicEnum.cs" />
     <Compile Include="Enum\StatusOnlineTypeEnum.cs" />
     <Compile Include="Enum\StatusTypeEnum.cs" />
+    <Compile Include="Enum\TransferTypeEnum.cs" />
     <Compile Include="Events\AppEnableEvent.cs" />
     <Compile Include="Events\EventTypeBase.cs" />
     <Compile Include="Events\GroupMessageEvent.cs" />

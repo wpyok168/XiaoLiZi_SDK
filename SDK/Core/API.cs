@@ -209,6 +209,10 @@ namespace SDK.Core
         delegate IntPtr GetOneGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ,ref OneGroupMemberDataList[] oneGroupMemberDatas);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SendMail(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string mailaddr, [MarshalAs(UnmanagedType.LPStr)] string mailtitle, [MarshalAs(UnmanagedType.LPStr)] string msgContent);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr Transfer(string pkey, long thisQQ, int Amount, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]string leaveMsg, int type, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD, int bankCard, ref GetCaptchaInfoDataList[] captchaInfo);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr BalanceWithdrawal(string pkey, long thisQQ, int Amount, int bankCard, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -1045,7 +1049,7 @@ namespace SDK.Core
         public OrderDetail GetOrderDetailEvent(long thisQQ, string orderID)
         {
             string ret = string.Empty;
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取skey").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取订单详情").ToString());
             GetOrderDetail sendmsg = (GetOrderDetail)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetOrderDetail));
             OrderDetaildDataList[] pdatalist = new OrderDetaildDataList[2];
             ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, orderID, ref pdatalist));
@@ -1363,12 +1367,12 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 群权限_新成员查看历史消息
+        /// 群权限_邀请方式设置
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="groupQQ"></param>
         /// <param name="method">审核方式 1 无需审核;2 需要管理员审核;3 100人以内无需审核 </param>
-        /// <returns></returns>
+        /// <returns>失败或无权限返回假</returns>
         public bool GroupPermission_SetInviteMethodEvent(long thisQQ, long groupQQ, GroupPermission_SetInviteMethodEnum method)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_邀请方式设置").ToString());
@@ -1813,7 +1817,7 @@ namespace SDK.Core
         /// <returns></returns>
         public bool SetLocationShareEvent(long thisQQ, long groupQQ, double Longitude, double Latitude, bool is_enabled)
         {
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上报当前位置").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("设置位置共享").ToString());
             SetLocationShare sendmsg = (SetLocationShare)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetLocationShare));
             bool ret = sendmsg(pluginkey, thisQQ, groupQQ, Longitude, Latitude, is_enabled);
             sendmsg = null;
@@ -1984,7 +1988,7 @@ namespace SDK.Core
         /// <returns>失败或无权限返回假</returns>
         public bool SetSignatureEvent(long thisQQ, string signature, string location)
         {
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("退群").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改个性签名").ToString());
             SetSignature sendmsg = (SetSignature)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetSignature));
             bool ret = sendmsg(pluginkey, thisQQ, signature, location);
             sendmsg = null;
@@ -2089,7 +2093,7 @@ namespace SDK.Core
         /// <returns>返回真表示成功投递下线任务，不代表对应QQ下线成功</returns>
         public bool SignoutQQEvent(long thisQQ)
         {
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("登录指定QQ").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("下线指定QQ").ToString());
             LoginSpecifyQQ sendmsg = (LoginSpecifyQQ)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(LoginSpecifyQQ));
             bool ret = sendmsg(pluginkey, thisQQ);
             sendmsg = null;
@@ -2104,7 +2108,7 @@ namespace SDK.Core
         /// <returns></returns>
         public bool SendIMEStatusEvent(long thisQQ,long ohterQQ, IMEStatusEnum iMEStatus)
         {
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("登录指定QQ").ToString());
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送输入状态").ToString());
             SendIMEStatus sendmsg = (SendIMEStatus)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendIMEStatus));
             bool ret = sendmsg(pluginkey, thisQQ, ohterQQ, (int)iMEStatus);
             sendmsg = null;
@@ -2536,6 +2540,112 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送邮件").ToString());
             SendMail sendmsg = (SendMail)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendMail));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, mailaddr, mailtitle, msgContent));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// QQ bkn
+        /// </summary>
+        /// <param name="skey"></param>
+        /// <returns></returns>
+        public long GetBkn(string skey)
+        {
+            var hash = 5381;
+            for (int i = 0, len = skey.Length; i < len; ++i)
+            {
+                hash += (hash << 5) + (int)skey[i];
+            }
+            return hash & 2147483647;
+        }
+        /// <summary>
+        /// QQ gtk
+        /// </summary>
+        /// <param name="sKey"></param>
+        /// <returns></returns>
+        public long GetGTK(string sKey)
+        {
+            int hash = 5381;
+            for (int i = 0, len = sKey.Length; i < len; ++i)
+            {
+                hash += (hash << 5) + (int)sKey[i];
+            }
+            return (hash & 0x7fffffff);
+        }
+        /// <summary>
+        /// 组Cookie<para>需要获取skey和获取pskey权限</para><para>有时效性，随时可能失效</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="domin"></param>
+        /// <param name="retCookie"></param>
+        /// <param name="skey"></param>
+        /// <param name="pskey"></param>
+        public void GetCookie(long thisQQ, string domin,ref string retCookie,ref string skey,ref string pskey)
+        {
+            skey = Common.xlzAPI.GetSKey(thisQQ, domin);
+            pskey = Common.xlzAPI.GetPSKeyEvent(thisQQ, domin);
+            retCookie = $"uin=o{thisQQ}; skey={skey}; pt2gguin=o{thisQQ}; p_uin=o{thisQQ}; p_skey={pskey};";
+        }
+        /// <summary>
+        /// 取钱包cookie<para>敏感API,框架4h刷新一次</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <returns></returns>
+        public string GetMoneyCookie(long thisQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取钱包cookie").ToString());
+            GetClientKey sendmsg = (GetClientKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetClientKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取手Q邮箱cookie<para>敏感API,框架4h刷新一次,邮箱sid在cookie当中,键名为xxsid</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <returns></returns>
+        public string GetMailCookie(long thisQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取手Q邮箱cookie").ToString());
+            GetClientKey sendmsg = (GetClientKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetClientKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 转账
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="Amount">转账金额 单位分</param>
+        /// <param name="otherQQ">对方QQ</param>
+        /// <param name="leaveMsg">转账留言<para>支持emoji</para></param>
+        /// <param name="type">转账类型</param>
+        /// <param name="PaymentPWD">支付密码</param>
+        /// <param name="bankCard">银行卡序列<para>大于0时使用银行卡支付</para></param>
+        /// <param name="captchaInfo">验证码信息<para>银行卡支付时，若需要短信验证码，将在此传回验证码信息</para></param>
+        /// <returns></returns>
+        public string TransferEvent(long thisQQ,int Amount,long otherQQ,string leaveMsg, TransferTypeEnum type,string PaymentPWD,int bankCard,ref CaptchaInformation captchaInfo)
+        {
+            GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("转账").ToString());
+            Transfer sendmsg = (Transfer)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(Transfer));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, otherQQ,leaveMsg, (int)type, PaymentPWD, bankCard, ref ciDataLists));
+            captchaInfo = ciDataLists[0].CaptchaInfo;
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 余额提现
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="Amount">提现金额 单位分</param>
+        /// <param name="PaymentPWD">支付密码</param>
+        /// <param name="bankCard">银行卡序列<para>指定提现到的银行卡</para></param>
+        /// <returns></returns>
+        public string BalanceWithdrawalEvent(long thisQQ,int Amount, string PaymentPWD, int bankCard)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("余额提现").ToString());
+            BalanceWithdrawal sendmsg = (BalanceWithdrawal)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(BalanceWithdrawal));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, bankCard, PaymentPWD));
             sendmsg = null;
             return ret;
         }
