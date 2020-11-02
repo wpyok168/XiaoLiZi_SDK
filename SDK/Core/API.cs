@@ -213,6 +213,7 @@ namespace SDK.Core
         delegate IntPtr Transfer(string pkey, long thisQQ, int Amount, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]string leaveMsg, int type, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD, int bankCard, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr BalanceWithdrawal(string pkey, long thisQQ, int Amount, int bankCard, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD);
+        delegate IntPtr GetRecPayment(string pkey, long thisQQ, int Amount, [MarshalAs(UnmanagedType.LPStr)] string desc);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2646,6 +2647,21 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("余额提现").ToString());
             BalanceWithdrawal sendmsg = (BalanceWithdrawal)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(BalanceWithdrawal));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, bankCard, PaymentPWD));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取收款链接
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="Amount">指定收款金额,单位：分</param>
+        /// <param name="desc">说明文本</param>
+        /// <returns>返回收款链接,可以借此生成收款二维码</returns>
+        public string GetRecPaymentEvent(long thisQQ, int Amount, string desc)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取收款链接").ToString());
+            GetRecPayment sendmsg = (GetRecPayment)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRecPayment));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, desc));
             sendmsg = null;
             return ret;
         }
