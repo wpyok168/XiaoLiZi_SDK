@@ -213,7 +213,20 @@ namespace SDK.Core
         delegate IntPtr Transfer(string pkey, long thisQQ, int Amount, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]string leaveMsg, int type, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD, int bankCard, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr BalanceWithdrawal(string pkey, long thisQQ, int Amount, int bankCard, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetRecPayment(string pkey, long thisQQ, int Amount, [MarshalAs(UnmanagedType.LPStr)] string desc);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SmallVideoDownloadUrl(string pkey, long thisQQ, long GroupQQ, long SourceQQ, [MarshalAs(UnmanagedType.LPStr)] string param, [MarshalAs(UnmanagedType.LPStr)] string harsh1, [MarshalAs(UnmanagedType.LPStr)] string filename);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr FriendSmallVideoDownloadUrl(string pkey, long thisQQ, long SourceQQ, [MarshalAs(UnmanagedType.LPStr)] string param, [MarshalAs(UnmanagedType.LPStr)] string harsh1, [MarshalAs(UnmanagedType.LPStr)] string filename);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr UploadVideo(string pkey, long thisQQ, long GroupQQ, string videolpath, [MarshalAs(UnmanagedType.LPArray)] byte[] picpath, int picsize);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SendFriendXml(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string xmlcode, ref long Random, ref int Req);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SendGroupXml(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string xmlcode, bool anonymous);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GroupMemberOverview(string pkey, long thisQQ, long GroupQQ);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -445,7 +458,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="gruopNumber"></param>
-        /// <returns></returns>
+        /// <returns>首个为群主</returns>
         public string[] GetAdministratorList(long thisQQ, long gruopNumber)
         {
             string ret = string.Empty;
@@ -2662,6 +2675,106 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取收款链接").ToString());
             GetRecPayment sendmsg = (GetRecPayment)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRecPayment));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, desc));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取群小视频下载地址
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ">来源群号</param>
+        /// <param name="SourceQQ">来源QQ</param>
+        /// <param name="param"></param>
+        /// <param name="harsh1"></param>
+        /// <param name="filename">文件名(如：xxx.mp4),必须带上文件后缀</param>
+        /// <returns>成功返回json含下载链接</returns>
+        public string GetGroupSmallVideoDownloadUrl(long thisQQ,long GroupQQ,long SourceQQ,string param,string harsh1,string filename)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群小视频下载地址").ToString());
+            SmallVideoDownloadUrl sendmsg = (SmallVideoDownloadUrl)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SmallVideoDownloadUrl));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, SourceQQ, param, harsh1, filename));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取私聊小视频下载地址
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="SourceQQ">来源QQ</param>
+        /// <param name="param"></param>
+        /// <param name="harsh1"></param>
+        /// <param name="filename">文件名(如：xxx.mp4),必须带上文件后缀</param>
+        /// <returns>成功返回json含下载链接</returns>
+        public string GetFrienderSmallVideoDownloadUrl(long thisQQ, long SourceQQ, string param, string harsh1, string filename)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取私聊小视频下载地址").ToString());
+            FriendSmallVideoDownloadUrl sendmsg = (FriendSmallVideoDownloadUrl)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(FriendSmallVideoDownloadUrl));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ,SourceQQ, param, harsh1, filename));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 上传小视频<para>请另开线程调用本API,使用的手机录小视频入口,因此不支持较大文件</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ">得到的文本代码也可在私聊使用,上传到私聊时,群号可乱填</param>
+        /// <param name="videopath">本地小视频路径</param>
+        /// <param name="picpath">小视频封面图</param>
+        /// <returns>成功返回文本代码</returns>
+        public string UploadVideoEvent(long thisQQ, long GroupQQ,string videopath,string picpath)
+        {
+            Bitmap bitmap = new Bitmap(picpath);
+            byte[] picture = GetByteArrayByImage(bitmap);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传小视频").ToString());
+            UploadVideo sendmsg = (UploadVideo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadVideo));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, videopath, picture, picture.Length));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 发送好友xml消息
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="otherQQ"></param>
+        /// <param name="xmlcode">xml代码</param>
+        /// <param name="Random">撤回消息用</param>
+        /// <param name="Req">撤回消息用</param>
+        /// <returns>成功返回的time用于撤回消息</returns>
+        public string SendFriendXmlEvent(long thisQQ, long otherQQ, string xmlcode, ref long Random,ref int Req)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送好友xml消息").ToString());
+            SendFriendXml sendmsg = (SendFriendXml)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendFriendXml));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ, xmlcode, ref Random, ref Req));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 发送群xml消息
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="xmlcode">xml代码</param>
+        /// <param name="anonymous">匿名发送</param>
+        /// <returns></returns>
+        public string SendGroupXmlEvent(long thisQQ, long GroupQQ, string xmlcode, bool anonymous = false)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送群xml消息").ToString());
+            SendGroupXml sendmsg = (SendGroupXml)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendGroupXml));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, xmlcode, anonymous));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取群成员概况
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <returns>成功返回json,含有群上限、群人数、群成员统计概况</returns>
+        public string GetGroupMemberOverview(long thisQQ, long GroupQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群成员概况").ToString());
+            GroupMemberOverview sendmsg = (GroupMemberOverview)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupMemberOverview));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ));
             sendmsg = null;
             return ret;
         }

@@ -20,6 +20,8 @@ namespace SDK.Core
             PermiCon.Add("API[6]", "删除好友");
             PermiCon.Add("API[7]", "置屏蔽好友");
             PermiCon.Add("API[8]", "置特别关心好友");
+            PermiCon.Add("API[9]", "发送好友xml消息");
+            PermiCon.Add("API[10]", "发送群xml消息");
             PermiCon.Add("API[11]", "发送好友json消息");
             PermiCon.Add("API[12]", "发送群json消息");
             PermiCon.Add("API[13]", "上传好友图片");
@@ -137,6 +139,10 @@ namespace SDK.Core
             PermiCon.Add("API[127]", "转账");
             PermiCon.Add("API[128]", "余额提现");
             PermiCon.Add("API[129]", "取收款链接");
+            PermiCon.Add("API[130]", "取群小视频下载地址");
+            PermiCon.Add("API[131]", "取私聊小视频下载地址");
+            PermiCon.Add("API[132]", "上传小视频");
+            PermiCon.Add("API[133]", "取群成员概况");
         }
     }
 }
