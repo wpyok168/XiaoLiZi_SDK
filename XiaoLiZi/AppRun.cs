@@ -40,9 +40,9 @@ namespace RobotCore
                 appInfo.unitproaddres = Marshal.GetFunctionPointerForDelegate(staticAppUninstall).ToInt64();//插件卸载
                 appInfo.banproaddres = Marshal.GetFunctionPointerForDelegate(staticAppDisabled).ToInt64();//插件禁用 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                Common.BugLog("AppRun：" + ex.ToString());
             }
             string json = appInfo.Info(appInfo);
             json = SetProperty(json, appInfo);
@@ -51,7 +51,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "2.8.5.6";
+            appInfo.sdkv = "2.8.6";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]

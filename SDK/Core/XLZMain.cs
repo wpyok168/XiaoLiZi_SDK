@@ -1,18 +1,9 @@
-﻿using SDK.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Unity;
+﻿using SDK.Enum;
+using SDK.Events;
 using SDK.Interface;
-using SDK.Enum;
+using System;
+using System.Runtime.InteropServices;
+using Unity;
 
 namespace SDK.Core
 {
@@ -36,79 +27,130 @@ namespace SDK.Core
 
         public static int RecvicetGroupMessage(IntPtr intPtr)
         {
-            if (Common.unityContainer.IsRegistered<IGroupMessage>())
+            try
             {
-                GroupMessageEvent data = new GroupMessageEvent();
-                data = (GroupMessageEvent)Marshal.PtrToStructure(intPtr, typeof(GroupMessageEvent));
-                //string txt = Marshal.PtrToStringAnsi(data.MessageContent);
-                Common.unityContainer.Resolve<IGroupMessage>().ReceviceGroupMsg(data);
-                return (int)EventMessageEnum.Ignore;
+                if (Common.unityContainer.IsRegistered<IGroupMessage>())
+                {
+                    GroupMessageEvent data = new GroupMessageEvent();
+                    data = (GroupMessageEvent)Marshal.PtrToStructure(intPtr, typeof(GroupMessageEvent));
+                    //string txt = Marshal.PtrToStringAnsi(data.MessageContent);
+                    Common.unityContainer.Resolve<IGroupMessage>().ReceviceGroupMsg(data);
+                    return (int)EventMessageEnum.Ignore;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("群聊：" + ex.ToString());
             }
             return (int)EventMessageEnum.Ignore;
         }
 
         public static int RecvicetPrivateMessage(IntPtr intPtr)
-        { 
-            if (Common.unityContainer.IsRegistered<IRecvicetPrivateMessage>())
+        {
+            try
             {
-                PrivateMessageEvent data = new PrivateMessageEvent();
-                data = (PrivateMessageEvent)Marshal.PtrToStructure(intPtr, typeof(PrivateMessageEvent));
-                //string content = Marshal.PtrToStringAnsi(data.MessageContent);
-                Common.unityContainer.Resolve<IRecvicetPrivateMessage>().RecvicetPrivateMsg(data);
-                return (int)EventMessageEnum.Ignore;
+                if (Common.unityContainer.IsRegistered<IRecvicetPrivateMessage>())
+                {
+                    PrivateMessageEvent data = new PrivateMessageEvent();
+                    data = (PrivateMessageEvent)Marshal.PtrToStructure(intPtr, typeof(PrivateMessageEvent));
+                    //string content = Marshal.PtrToStringAnsi(data.MessageContent);
+                    Common.unityContainer.Resolve<IRecvicetPrivateMessage>().RecvicetPrivateMsg(data);
+                    return (int)EventMessageEnum.Ignore;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("私聊：" + ex.ToString());
             }
             return (int)EventMessageEnum.Ignore;
         }
 
         public static int AppEnable()
         {
-            //AppEnableEvent appEnableEvent =(AppEnableEvent) Marshal.PtrToStructure(intPtr,typeof(AppEnableEvent));
-            if (Common.unityContainer.IsRegistered<IAppEnableEvent>())
+            try
             {
-                AppEnableEvent ae = new AppEnableEvent();
-                Common.unityContainer.Resolve<IAppEnableEvent>().AppEnableEvent(ae);
-                return (int)EventProcessEnum.Ignore;
+                //AppEnableEvent appEnableEvent =(AppEnableEvent) Marshal.PtrToStructure(intPtr,typeof(AppEnableEvent));
+                if (Common.unityContainer.IsRegistered<IAppEnableEvent>())
+                {
+                    AppEnableEvent ae = new AppEnableEvent();
+                    Common.unityContainer.Resolve<IAppEnableEvent>().AppEnableEvent(ae);
+                    return (int)EventProcessEnum.Ignore;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("启动：" + ex.ToString());
             }
             return (int)EventProcessEnum.Ignore;
         }
 
         public static int RecviceEventcallBack(IntPtr intPtr)
         {
-            if (Common.unityContainer.IsRegistered<IEventcallBack>())
+            try
             {
-                EventTypeBase data = new EventTypeBase();
-                data = (EventTypeBase)Marshal.PtrToStructure(intPtr, typeof(EventTypeBase));
-                //string eventname = Marshal.PtrToStringAnsi(data.MessageContent);
-                //Enum.EventTypeEnum eventType = data.EventType;
-                //string a = eventType.ToString();
-                Common.unityContainer.Resolve<IEventcallBack>().EventcallBack(data);
-                return (int)EventMessageEnum.Ignore;
+                if (Common.unityContainer.IsRegistered<IEventcallBack>())
+                {
+                    EventTypeBase data = new EventTypeBase();
+                    data = (EventTypeBase)Marshal.PtrToStructure(intPtr, typeof(EventTypeBase));
+                    //string eventname = Marshal.PtrToStringAnsi(data.MessageContent);
+                    //Enum.EventTypeEnum eventType = data.EventType;
+                    //string a = eventType.ToString();
+                    Common.unityContainer.Resolve<IEventcallBack>().EventcallBack(data);
+                    return (int)EventMessageEnum.Ignore;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("事件：" + ex.ToString());
             }
             return (int)EventMessageEnum.Ignore;
         }
 
         public static int AppSettingEvent()
         {
-            if (Common.unityContainer.IsRegistered<IAppSetting>())
+            try
             {
-                Common.unityContainer.Resolve<IAppSetting>().AppSetting();
-                return (int)EventMessageEnum.Ignore;
+                if (Common.unityContainer.IsRegistered<IAppSetting>())
+                {
+                    Common.unityContainer.Resolve<IAppSetting>().AppSetting();
+                    return (int)EventMessageEnum.Ignore;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("窗体：" + ex.ToString());
             }
             return (int)EventMessageEnum.Ignore;
         }
         public static void AppUninstallEvent()
         {
-            if (Common.unityContainer.IsRegistered<IAppUninstall>())
+            try
             {
-                Common.unityContainer.Resolve<IAppUninstall>().AppUninstall();
+                if (Common.unityContainer.IsRegistered<IAppUninstall>())
+                {
+                    Common.unityContainer.Resolve<IAppUninstall>().AppUninstall();
+                }
             }
+            catch (Exception ex)
+            {
+                Common.BugLog("卸载：" + ex.ToString());
+            }
+
         }
         public static void AppDisabledEvent()
         {
-            if (Common.unityContainer.IsRegistered<IDisabledEvent>())
+            try
             {
-                Common.unityContainer.Resolve<IDisabledEvent>().DisabledEvent();
+                if (Common.unityContainer.IsRegistered<IDisabledEvent>())
+                {
+                    Common.unityContainer.Resolve<IDisabledEvent>().DisabledEvent();
+                }
             }
+            catch (Exception ex)
+            {
+                Common.BugLog("禁用：" + ex.ToString());
+            }
+
         }
     }
 }
