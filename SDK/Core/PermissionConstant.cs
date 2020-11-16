@@ -143,6 +143,7 @@ namespace SDK.Core
             PermiCon.Add("API[131]", "取私聊小视频下载地址");
             PermiCon.Add("API[132]", "上传小视频");
             PermiCon.Add("API[133]", "取群成员概况");
+            PermiCon.Add("API[134]", "添加好友_取验证类型");
         }
     }
 }

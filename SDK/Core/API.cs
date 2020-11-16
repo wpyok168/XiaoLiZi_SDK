@@ -2778,5 +2778,18 @@ namespace SDK.Core
             sendmsg = null;
             return ret;
         }
+        /// <summary>
+        /// 添加好友_取验证类型
+        /// </summary>
+        /// <param name="uin"></param>
+        /// <returns></returns>
+        public string GetAuthenticationType(long thisQQ, long uin)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("添加好友_取验证类型").ToString());
+            GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, uin));
+            sendmsg = null;
+            return ret;
+        }
     }
 }

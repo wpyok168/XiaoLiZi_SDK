@@ -13,7 +13,7 @@ namespace SDK.Core
         /// <summary>
         /// SDK版本
         /// </summary>
-        public string sdkv = "2.8.6";
+        public string sdkv = "2.8.6.3";
         /// <summary>
         /// 应用名
         /// </summary>
@@ -122,10 +122,7 @@ namespace SDK.Core
                 outjson = "设置权限出错，请检查PermissionConstant.CS 与AppRun.SetProperty()中的权限一一对应";
             }
             return outjson ;
-        }
-
-        
-
+        } 
     }
 
     public class Needapilist
