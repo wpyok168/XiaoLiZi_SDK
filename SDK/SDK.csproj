@@ -79,6 +79,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="Core\API.cs" />
     <Compile Include="Core\AppInfo.cs" />
+    <Compile Include="Core\DisablePlugin.cs" />
     <Compile Include="Core\PermissionConstant.cs" />
     <Compile Include="Core\SilkHelp.cs" />
     <Compile Include="Core\TextFormat.cs" />

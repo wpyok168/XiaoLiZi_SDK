@@ -126,6 +126,8 @@ namespace SDK.Core
         {
             try
             {
+                //DisablePlugin.DisablePluginMethod();//卸载前先禁用插件，避免报内存未释放
+                
                 if (Common.unityContainer.IsRegistered<IAppUninstall>())
                 {
                     Common.unityContainer.Resolve<IAppUninstall>().AppUninstall();

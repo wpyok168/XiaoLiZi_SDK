@@ -227,6 +227,8 @@ namespace SDK.Core
         delegate IntPtr SendGroupXml(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string xmlcode, bool anonymous);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GroupMemberOverview(string pkey, long thisQQ, long GroupQQ);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool GroupSignin(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string desc);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2788,6 +2790,50 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("添加好友_取验证类型").ToString());
             GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, uin));
+            sendmsg = null;
+            return ret;
+        }
+
+        /// <summary>
+        /// 群聊打卡
+        /// </summary>
+        /// <param name="GroupQQ"></param>
+        /// <returns>返回json</returns>
+        public string GroupTurnOn(long thisQQ, long GroupQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群聊打卡").ToString());
+            GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 群聊签到<para>暂不支持自定义内容</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="desc">保留参数，可为空</param>
+        /// <returns>成功返回真,失败返回假</returns>
+        public bool GroupSigninEvent(long thisQQ, long GroupQQ, string desc = null)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群聊签到").ToString());
+            GroupSignin sendmsg = (GroupSignin)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupSignin));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, desc);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 置群聊备注
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="Remarks">备注</param>
+        /// <returns>成功返回真,失败返回假,无权限返回假</returns>
+        public bool GroupRemarks(long thisQQ, long GroupQQ, string Remarks)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置群聊备注").ToString());
+            GroupSignin sendmsg = (GroupSignin)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupSignin));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, Remarks);
             sendmsg = null;
             return ret;
         }

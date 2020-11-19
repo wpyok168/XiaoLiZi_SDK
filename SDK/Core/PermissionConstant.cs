@@ -144,6 +144,9 @@ namespace SDK.Core
             PermiCon.Add("API[132]", "上传小视频");
             PermiCon.Add("API[133]", "取群成员概况");
             PermiCon.Add("API[134]", "添加好友_取验证类型");
+            PermiCon.Add("API[135]", "群聊打卡");
+            PermiCon.Add("API[136]", "群聊签到");
+            PermiCon.Add("API[137]", "置群聊备注");
         }
     }
 }

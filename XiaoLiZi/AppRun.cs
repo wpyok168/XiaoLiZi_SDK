@@ -51,7 +51,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "2.8.6.3";
+            appInfo.sdkv = "2.8.6.4";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]
@@ -203,6 +203,9 @@ namespace RobotCore
             json = appInfo.SetPermission(132, "上传小视频", json);
             json = appInfo.SetPermission(133, "取群成员概况", json);
             json = appInfo.SetPermission(134, "添加好友_取验证类型", json);
+            json = appInfo.SetPermission(135, "群聊打卡", json);
+            json = appInfo.SetPermission(136, "群聊签到", json);
+            json = appInfo.SetPermission(137, "置群聊备注", json);
             return json;
         }
     }

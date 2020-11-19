@@ -56,6 +56,10 @@ namespace MsTool
                     }
                 }
             }
+            if (e.MessageContent.Equals("群签到"))
+            {
+                Common.xlzAPI.GroupSigninEvent(e.ThisQQ, e.MessageGroupQQ);
+            }
         }
 
         /// <summary>
