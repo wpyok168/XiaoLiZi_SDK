@@ -33,11 +33,11 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr Recviceimage(string pkey, string guid, long thisQQ, long groupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetFriendlist(string pkey, long thisQQ, ref FriendDataList[] friendInfos);
+        delegate int GetFriendlist(string pkey, long thisQQ, ref FriendDataList[] friendInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int GetGrouplist(string pkey, long thisQQ, ref GroupDataList[] GroupInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GroupMemberlist(string pkey, long thisQQ, long groupNumber, ref GroupMemberDataList[] GroupInfos);
+        delegate int GroupMemberlist(string pkey, long thisQQ, long groupNumber, ref GroupMemberDataList[] GroupInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetadministratorList(string pkey, long thisQQ, long gruopQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -229,6 +229,8 @@ namespace SDK.Core
         delegate IntPtr GroupMemberOverview(string pkey, long thisQQ, long GroupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GroupSignin(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string desc);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr ForwardRedEnvelope(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string redEnvelopeID, long QQ, int type);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -383,7 +385,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取好友列表").ToString());
             FriendDataList[] ptrArray = new FriendDataList[2];
             GetFriendlist sendmsg = (GetFriendlist)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetFriendlist));
-            int count = int.Parse(Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, ref ptrArray)));
+            int count = sendmsg(pluginkey, thisQQ, ref ptrArray);
             if (count > 0)
             {
                 byte[] pAddrBytes = ptrArray[0].pAddrList;
@@ -439,7 +441,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群成员列表").ToString());
             GroupMemberDataList[] ptrArray = new GroupMemberDataList[2];
             GroupMemberlist sendmsg = (GroupMemberlist)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupMemberlist));
-            int count = int.Parse(Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, gruopNumber, ref ptrArray)));
+            int count = sendmsg(pluginkey, thisQQ, gruopNumber, ref ptrArray);
             if (count > 0)
             {
                 byte[] pAddrBytes = ptrArray[0].pAddrList;
@@ -2602,6 +2604,18 @@ namespace SDK.Core
             retCookie = $"uin=o{thisQQ}; skey={skey}; pt2gguin=o{thisQQ}; p_uin=o{thisQQ}; p_skey={pskey};";
         }
         /// <summary>
+        /// 组Cookie<para>需要获取skey和获取pskey权限</para><para>有时效性，随时可能失效</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="domin"></param>
+        public string GetCookie(long thisQQ, string domin)
+        {
+            string skey = Common.xlzAPI.GetSKey(thisQQ, domin);
+            string pskey = Common.xlzAPI.GetPSKeyEvent(thisQQ, domin);
+            string retCookie = $"uin=o{thisQQ}; skey={skey}; pt2gguin=o{thisQQ}; p_uin=o{thisQQ}; p_skey={pskey};";
+            return retCookie;
+        }
+        /// <summary>
         /// 取钱包cookie<para>敏感API,框架4h刷新一次</para>
         /// </summary>
         /// <param name="thisQQ"></param>
@@ -2834,6 +2848,22 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置群聊备注").ToString());
             GroupSignin sendmsg = (GroupSignin)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupSignin));
             bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, Remarks);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 红包转发
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="redEnvelopeID"></param>
+        /// <param name="QQ">QQ号或群号：以Type类型为准,如果是1则判断为QQ号否则判断为群号</param>
+        /// <param name="type">类型：1为好友,2为群</param>
+        /// <returns></returns>
+        public string ForwardRedEnvelopeEvent(long thisQQ,string redEnvelopeID, long QQ, RedE2TypeEnum type)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包转发").ToString());
+            ForwardRedEnvelope sendmsg = (ForwardRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ForwardRedEnvelope));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, redEnvelopeID, QQ, (int)type));
             sendmsg = null;
             return ret;
         }

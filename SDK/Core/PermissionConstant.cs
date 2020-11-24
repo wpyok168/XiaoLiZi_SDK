@@ -147,6 +147,7 @@ namespace SDK.Core
             PermiCon.Add("API[135]", "群聊打卡");
             PermiCon.Add("API[136]", "群聊签到");
             PermiCon.Add("API[137]", "置群聊备注");
+            PermiCon.Add("API[138]", "红包转发");
         }
     }
 }

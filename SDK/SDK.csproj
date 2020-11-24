@@ -104,6 +104,7 @@
     <Compile Include="Enum\MusicAppTypeEnum.cs" />
     <Compile Include="Enum\PermissionEnum.cs" />
     <Compile Include="Enum\ProfessionEnum.cs" />
+    <Compile Include="Enum\RedE2TypeEnum.cs" />
     <Compile Include="Enum\ServiceInformation.cs" />
     <Compile Include="Enum\SexEnum.cs" />
     <Compile Include="Enum\ShowPicEnum.cs" />
