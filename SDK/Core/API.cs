@@ -2602,6 +2602,18 @@ namespace SDK.Core
             retCookie = $"uin=o{thisQQ}; skey={skey}; pt2gguin=o{thisQQ}; p_uin=o{thisQQ}; p_skey={pskey};";
         }
         /// <summary>
+        /// 组Cookie<para>需要获取skey和获取pskey权限</para><para>有时效性，随时可能失效</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="domin"></param>
+        public string GetCookie(long thisQQ, string domin)
+        {
+            string skey = Common.xlzAPI.GetSKey(thisQQ, domin);
+            string pskey = Common.xlzAPI.GetPSKeyEvent(thisQQ, domin);
+            string retCookie = $"uin=o{thisQQ}; skey={skey}; pt2gguin=o{thisQQ}; p_uin=o{thisQQ}; p_skey={pskey};";
+            return retCookie;
+        }
+        /// <summary>
         /// 取钱包cookie<para>敏感API,框架4h刷新一次</para>
         /// </summary>
         /// <param name="thisQQ"></param>
