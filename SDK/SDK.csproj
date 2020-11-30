@@ -90,6 +90,7 @@
     <Compile Include="Enum\EventTypeEnum.cs" />
     <Compile Include="Enum\FiletypeEnum.cs" />
     <Compile Include="Enum\FreeGiftEnum.cs" />
+    <Compile Include="Enum\FriendAuthenticationModeEnum.cs" />
     <Compile Include="Enum\FriendVerificationOperateEnum.cs" />
     <Compile Include="Enum\GroupFindMethodEnum.cs" />
     <Compile Include="Enum\GroupNoticeMethodEnum.cs" />

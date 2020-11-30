@@ -148,6 +148,11 @@ namespace SDK.Core
             PermiCon.Add("API[136]", "群聊签到");
             PermiCon.Add("API[137]", "置群聊备注");
             PermiCon.Add("API[138]", "红包转发");
+            PermiCon.Add("API[139]", "发送数据包");
+            PermiCon.Add("API[140]", "请求ssoseq");
+            PermiCon.Add("API[141]", "取sessionkey");
+            PermiCon.Add("API[142]", "获取bkn_gtk");
+            PermiCon.Add("API[143]", "置好友验证方式");
         }
     }
 }

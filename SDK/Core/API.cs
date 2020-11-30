@@ -79,6 +79,8 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GroupDrawRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string question, [MarshalAs(UnmanagedType.LPStr)]  string payment_password, int card_serial,ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GroupExclusiveRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string otherQQ, [MarshalAs(UnmanagedType.LPStr)] string blessing, bool isEvenlysplit, [MarshalAs(UnmanagedType.LPStr)] string payment_password, int card_serial, ref GetCaptchaInfoDataList[] captchaInfo);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr FriendNormalRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string question, int skinID, [MarshalAs(UnmanagedType.LPStr)]  string payment_password, int card_serial, ref GetCaptchaInfoDataList[] ciDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool FriendFileToFriend(string pkey, long thisQQ, long sourceQQ, long targetQQ, [MarshalAs(UnmanagedType.LPStr)]  string fileID, [MarshalAs(UnmanagedType.LPStr)]  string file_name, long file_size, ref int msgReq, ref long Random, ref int time);
@@ -231,6 +233,12 @@ namespace SDK.Core
         delegate bool GroupSignin(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string desc);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr ForwardRedEnvelope(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string redEnvelopeID, long QQ, int type);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool SendDataPack(string pkey, long thisQQ, int packID, int maxwaittime, ref IntPtr bytes);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate int Getssoseq(string pkey, long thisQQ);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool SetFriendAuthenticationM(string pkey, long thisQQ, FriendAuthenticationModeEnum type, [MarshalAs(UnmanagedType.LPStr)] string Q_and_A);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -979,22 +987,25 @@ namespace SDK.Core
         /// <param name="thisQQ">框架QQ</param>
         /// <param name="total_number">总数量</param>
         /// <param name="total_amount">总金额 单位分</param>
+        /// <param name="groupQQ">群号</param>
         /// <param name="otherQQ">领取人 多个领取人QQ用|分隔</param>
         /// <param name="blessing">祝福语</param>
+        /// <param name="isEvenlysplit">是否均分</param>
         /// <param name="payment_password">支付密码</param>
         /// <param name="card_serial">银行卡序列<para>大于0时使用银行卡支付</para></param>
         /// <param name="captchaInfo">银行卡支付时，若需要短信验证码，将在此传回验证码信息</param>
         /// <returns></returns>
-        public string GroupExclusiveRedEnvelope(long thisQQ, int total_number, int total_amount, long otherQQ, string blessing, string payment_password, int card_serial, ref CaptchaInformation captchaInfo)
+        public string GroupExclusiveRedEnvelopeEvent(long thisQQ, int total_number, int total_amount, long groupQQ, string otherQQ, string blessing, bool isEvenlysplit, string payment_password, int card_serial, ref CaptchaInformation captchaInfo)
         {
             GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群聊专属红包").ToString());
-            GroupDrawRedEnvelope sendmsg = (GroupDrawRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupDrawRedEnvelope));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, total_number, total_amount, otherQQ, blessing, payment_password, card_serial, ref ciDataLists));
+            GroupExclusiveRedEnvelope sendmsg = (GroupExclusiveRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupExclusiveRedEnvelope));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, total_number, total_amount, groupQQ, otherQQ, blessing, isEvenlysplit, payment_password, card_serial, ref ciDataLists));
             captchaInfo = ciDataLists[0].CaptchaInfo;
             sendmsg = null;
             return ret;
         }
+
         #endregion
         /// <summary>
         /// 好友文件转发至好友
@@ -2859,11 +2870,84 @@ namespace SDK.Core
         /// <param name="QQ">QQ号或群号：以Type类型为准,如果是1则判断为QQ号否则判断为群号</param>
         /// <param name="type">类型：1为好友,2为群</param>
         /// <returns></returns>
-        public string ForwardRedEnvelopeEvent(long thisQQ,string redEnvelopeID, long QQ, RedE2TypeEnum type)
+        public string ForwardRedEnvelopeEvent(long thisQQ, string redEnvelopeID, long QQ, RedE2TypeEnum type)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包转发").ToString());
             ForwardRedEnvelope sendmsg = (ForwardRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ForwardRedEnvelope));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, redEnvelopeID, QQ, (int)type));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 发送数据包
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="packID">包体序号<para>ssoseq,通过【请求ssoseq】API获取</para></param>
+        /// <param name="maxwaittime">最大等待时长<para>毫秒,不填或小于0时不等待返回包,大于0时等待返回包</para></param>
+        /// <param name="bytes">数据: 返回数据参考传回,拉取返回包失败参考回空字节集</param>
+        /// <returns></returns>
+        public bool SendDataPackEvent(long thisQQ, int packID,int maxwaittime,ref byte[] bytes)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送数据包").ToString());
+            SendDataPack sendmsg = (SendDataPack)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendDataPack));
+            IntPtr intPtr = IntPtr.Zero;
+            bool ret = sendmsg(pluginkey, thisQQ, packID, maxwaittime, ref intPtr);
+            Marshal.Copy(intPtr, bytes, 0, bytes.Length);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 请求ssoseq
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <returns>无权限等返回0</returns>
+        public int GetssoseqEvent(long thisQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("请求ssoseq").ToString());
+            Getssoseq sendmsg = (Getssoseq)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(Getssoseq));
+            int ret = sendmsg(pluginkey, thisQQ);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取sessionkey<para>敏感权限</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <returns>成功返回16进制秘钥,敏感权限</returns>
+        public string Getsessionkey(long thisQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取sessionkey").ToString());
+            GetClientKey sendmsg = (GetClientKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetClientKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 获取bkn_gtk
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="bkn_gtk">自定义bkn_gtk<para>如果此参数不为空值则提交自定义值,否则框架返回内部值</para></param>
+        /// <returns>返回网页用到的bkn或者gtk,也可以自定义计算的值</returns>
+        public string GetBkn_Gtk(long thisQQ, string bkn_gtk)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取bkn_gtk").ToString());
+            GetPSKey sendmsg = (GetPSKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetPSKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, bkn_gtk));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 置好友验证方式
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="type">验证类型<para>1：禁止任何人添加 2：允许任何人添加 3：需要验证信息 4：需要正确回答问题 5：需要回答问题并由我确认</para></param>
+        /// <param name="Q_and_A">验证问题和答案<para>可空,如果类型为4则填写问题和答案用‘|’分割,如果类型为5则根据情况填写问题至少一个最多三个问题,用‘|’分割</para></param>
+        /// <returns></returns>
+        public bool SetFriendAuthenticationMode(long thisQQ, FriendAuthenticationModeEnum type, string Q_and_A="")
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置好友验证方式").ToString());
+            SetFriendAuthenticationM sendmsg = (SetFriendAuthenticationM)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetFriendAuthenticationM));
+            bool ret = sendmsg(pluginkey, thisQQ, type, Q_and_A);
             sendmsg = null;
             return ret;
         }
