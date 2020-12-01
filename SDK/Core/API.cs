@@ -2837,7 +2837,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
-        /// <param name="desc">保留参数，可为空</param>
+        /// <param name="desc">签到数据<para>如:template_data=&gallery_info=%7B%22category_id%22%3A9%2C%22page%22%3A0%2C%22pic_id%22%3A124%7D&template_id=%7B%7D&client=2&lgt=0&lat=0&poi=&pic_id=&text=%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1</para></param>
         /// <returns>成功返回真,失败返回假</returns>
         public bool GroupSigninEvent(long thisQQ, long GroupQQ, string desc = null)
         {
