@@ -239,6 +239,8 @@ namespace SDK.Core
         delegate int Getssoseq(string pkey, long thisQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool SetFriendAuthenticationM(string pkey, long thisQQ, FriendAuthenticationModeEnum type, [MarshalAs(UnmanagedType.LPStr)] string Q_and_A);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr Payment(string pkey, long thisQQ,  [MarshalAs(UnmanagedType.LPStr)] string QrcodeUrl, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, ref GetCaptchaInfoDataList[] captchaInfo);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -2948,6 +2950,41 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置好友验证方式").ToString());
             SetFriendAuthenticationM sendmsg = (SetFriendAuthenticationM)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetFriendAuthenticationM));
             bool ret = sendmsg(pluginkey, thisQQ, type, Q_and_A);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 上传照片墙图片
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="picpath">图片路径</param>
+        /// <returns>上传一照片至照片墙,成功返回带有‘上传成功’字样的json,失败或无权限返回json</returns>
+        public string UploadPhotoWall(long thisQQ, string picpath)
+        {
+            Bitmap bitmap = new Bitmap(picpath);
+            byte[] picture = GetByteArrayByImage(bitmap);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传照片墙图片").ToString());
+            UploadAvatar sendmsg = (UploadAvatar)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadAvatar));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, picture, picture.Length));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 付款
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="QrcodeUrl">QQ钱包支付二维码内容(需要自己识别二维码,将识别结果填入)</param>
+        /// <param name="bankCard">银行卡序列<para>大于0时使用银行卡支付</para></param>
+        /// <param name="PaymentPWD">支付密码</param>
+        /// <param name="captchaInfo">验证码信息<para>银行卡支付时，若需要短信验证码，将在此传回验证码信息</para></param>
+        /// <returns>银行卡支付时，若需要短信验证码，将在此传回验证码信息</returns>
+        public string PaymentEvent(long thisQQ, string QrcodeUrl, int bankCard, string PaymentPWD,  ref CaptchaInformation captchaInfo)
+        {
+            GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("付款").ToString());
+            Payment sendmsg = (Payment)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(Payment));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, QrcodeUrl, bankCard, PaymentPWD, ref ciDataLists));
+            captchaInfo = ciDataLists[0].CaptchaInfo;
             sendmsg = null;
             return ret;
         }

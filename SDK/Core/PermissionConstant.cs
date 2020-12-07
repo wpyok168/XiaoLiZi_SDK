@@ -153,6 +153,8 @@ namespace SDK.Core
             PermiCon.Add("API[141]", "取sessionkey");
             PermiCon.Add("API[142]", "获取bkn_gtk");
             PermiCon.Add("API[143]", "置好友验证方式");
+            PermiCon.Add("API[144]", "上传照片墙图片");
+            PermiCon.Add("API[145]", "付款");
         }
     }
 }
