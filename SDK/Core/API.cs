@@ -175,7 +175,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool Modifyinformation(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string json);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetRedEnvelope(string pkey, long thisQQ, long GroupQQ, ref RedEnvelopesDataList[] reDataList);
+        delegate int GetRedEnvelope(string pkey, long thisQQ, long GroupQQ, ref RedEnvelopesDataList[] reDataList);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void CallPhone(string pkey, long thisQQ, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -2248,15 +2248,27 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
         /// <returns>成功返回未领红包数量，注意：使用此API获取的红包只能用手Q上"群未领红包"入口的http请求领取</returns>
-        public NotReRedEnvelopes GetRedEnvelopeEvent(long thisQQ, long GroupQQ)
+        public List<NotReRedEnvelopes> GetRedEnvelopeEvent(long thisQQ, long GroupQQ)
         {
             RedEnvelopesDataList[] reDataList = new RedEnvelopesDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群未领红包").ToString());
             GetRedEnvelope sendmsg = (GetRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRedEnvelope));
-            int ret1 = int.Parse(Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, ref reDataList)));
-            NotReRedEnvelopes ret = reDataList[0].notReRedEnvelopes;
+            int count = sendmsg(pluginkey, thisQQ, GroupQQ, ref reDataList);
+            List<NotReRedEnvelopes> list = new List<NotReRedEnvelopes>();
+            if (count > 0)
+            {
+                byte[] pAddrBytes = reDataList[0].pAddrList;
+                for (int i = 0; i < count; i++)
+                {
+                    byte[] readByte = new byte[4];
+                    Array.Copy(pAddrBytes, i * 4, readByte, 0, readByte.Length);
+                    IntPtr StuctPtr = new IntPtr(BitConverter.ToInt32(readByte, 0));
+                    NotReRedEnvelopes info = (NotReRedEnvelopes)Marshal.PtrToStructure(StuctPtr, typeof(NotReRedEnvelopes));
+                    list.Add(info);
+                }
+            }
             sendmsg = null;
-            return ret;
+            return list;
         }
         /// <summary>
         /// 打好友电话 -- 不建议频繁使用<para>可向好友发起语音通话(不能传递语音数据)</para>

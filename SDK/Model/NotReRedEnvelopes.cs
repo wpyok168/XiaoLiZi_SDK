@@ -10,8 +10,10 @@ namespace SDK.Model
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct RedEnvelopesDataList
     {
-        //public int index;
-        public NotReRedEnvelopes notReRedEnvelopes;
+        public int index;
+        public int count;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
+        public byte[] pAddrList;
     }
     [StructLayout(LayoutKind.Sequential,Pack =1)]
     public struct NotReRedEnvelopes
