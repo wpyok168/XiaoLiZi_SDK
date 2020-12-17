@@ -1141,14 +1141,12 @@ namespace SDK.Core
             var ptr = Marshal.AllocHGlobal(4);
             CardInformation CardInfo = new CardInformation();
             Marshal.StructureToPtr(CardInfo, ptr, false);
-            CardListIntptr[] ptrs = new CardListIntptr[1];
-            ptrs[0].addr = ptr;
 
             QQWalletInformation QQWalletInfo = new QQWalletInformation();
             QQWalletInfo.Balance = "";
             QQWalletInfo.RealName = "";
             QQWalletInfo.ID = "";
-            QQWalletInfo.CardList = ptrs;
+            QQWalletInfo.CardList = ptr;
 
             string ret = string.Empty;
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取QQ钱包个人信息").ToString());
@@ -1156,7 +1154,7 @@ namespace SDK.Core
             QQWallet[0].qQWalletInformation = QQWalletInfo;
             GetQQWalletPersonalInformation sendmsg = (GetQQWalletPersonalInformation)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetQQWalletPersonalInformation));
             ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, ref QQWallet));
-            PDataList adminList = (PDataList)Marshal.PtrToStructure(QQWallet[0].qQWalletInformation.CardList[0].addr, typeof(PDataList));
+            PDataList adminList = (PDataList)Marshal.PtrToStructure(QQWallet[0].qQWalletInformation.CardList, typeof(PDataList));
             List<CardInformation> list = new List<CardInformation>();
             if (adminList.Amount > 0)
             {
@@ -1175,7 +1173,7 @@ namespace SDK.Core
             retQQWalletInformation.RealName = QQWallet[0].qQWalletInformation.RealName;
             retQQWalletInformation.Balance = QQWallet[0].qQWalletInformation.Balance;
             retQQWalletInformation.CardList = list;
-            Marshal.FreeHGlobal(ptr);
+            //Marshal.FreeHGlobal(ptr);
             sendmsg = null;
             return retQQWalletInformation;
         }

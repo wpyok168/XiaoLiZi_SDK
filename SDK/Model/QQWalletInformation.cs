@@ -39,8 +39,7 @@ namespace SDK.Model
         /// <summary>
         /// 银行卡列表
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-        public CardListIntptr[] CardList;
+        public IntPtr CardList;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct CardListIntptr
