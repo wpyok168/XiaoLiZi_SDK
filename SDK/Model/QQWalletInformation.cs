@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SDK.Model
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct QQWalletInfoDataList
+    public struct QQWalletDataList
     {
         //public int index;
         public QQWalletInformation qQWalletInformation;
@@ -39,18 +39,19 @@ namespace SDK.Model
         /// <summary>
         /// 银行卡列表
         /// </summary>
-        public CardInfoDataList[] CardList;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+        public CardListIntptr[] CardList;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct CardInfoDataList
+    public struct CardListIntptr
     {
-        public int index;//数组索引
-        public int Amount;//数组元素数量
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 100)]//5000人群 5000/4+8 =1258
-        public byte[] pAddrList;//每个元素的指针
+        /// <summary>
+        /// 数组指针
+        /// </summary>
+        public IntPtr addr;
     }
 
-    [StructLayout(LayoutKind.Sequential,Pack =1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct CardInformation
     {
         // 序列
@@ -89,7 +90,14 @@ namespace SDK.Model
         [MarshalAs(UnmanagedType.LPStr)]
         public string BankType;
     }
-
+    public struct PDataList
+    {
+        public int index;//数组索引
+        public int Amount;//数组元素数量
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
+        //public byte[] pdatalist;
+        public byte[] pdatalist;
+    }
     public struct RetQQWalletInformation
     {
         // 余额

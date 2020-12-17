@@ -78,6 +78,10 @@ namespace MsTool
             //        fs.Close();
             //    }
             //}
+            if (e.MessageContent.Equals("取钱包"))
+            {
+                Common.xlzAPI.GetQQWalletPersonalInformationEvent(e.ThisQQ);
+            }
         }
         
     }

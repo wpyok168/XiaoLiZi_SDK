@@ -99,7 +99,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetNameForce(string pkey, long thisQQ, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetQQWalletPersonalInformation(string pkey, long thisQQ, ref QQWalletInfoDataList[] qQWalletInfoDataLists);
+        delegate IntPtr GetQQWalletPersonalInformation(string pkey, long thisQQ, ref QQWalletDataList[] qQWalletInfoDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetNameFromCache(string pkey, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -1132,23 +1132,36 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 取QQ钱包个人信息---方法可能存在问题
+        /// 取QQ钱包个人信息
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <returns></returns>
         public RetQQWalletInformation GetQQWalletPersonalInformationEvent(long thisQQ)
         {
+            var ptr = Marshal.AllocHGlobal(4);
+            CardInformation CardInfo = new CardInformation();
+            Marshal.StructureToPtr(CardInfo, ptr, false);
+            CardListIntptr[] ptrs = new CardListIntptr[1];
+            ptrs[0].addr = ptr;
+
+            QQWalletInformation QQWalletInfo = new QQWalletInformation();
+            QQWalletInfo.Balance = "";
+            QQWalletInfo.RealName = "";
+            QQWalletInfo.ID = "";
+            QQWalletInfo.CardList = ptrs;
+
             string ret = string.Empty;
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取QQ钱包个人信息").ToString());
-            QQWalletInfoDataList[] ptrArray = new QQWalletInfoDataList[2];
+            QQWalletDataList[] QQWallet = new QQWalletDataList[1];
+            QQWallet[0].qQWalletInformation = QQWalletInfo;
             GetQQWalletPersonalInformation sendmsg = (GetQQWalletPersonalInformation)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetQQWalletPersonalInformation));
-            ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, ref ptrArray));
-            QQWalletInformation qQWalletInformation = ptrArray[0].qQWalletInformation;
+            ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, ref QQWallet));
+            PDataList adminList = (PDataList)Marshal.PtrToStructure(QQWallet[0].qQWalletInformation.CardList[0].addr, typeof(PDataList));
             List<CardInformation> list = new List<CardInformation>();
-            if (ptrArray[0].qQWalletInformation.CardList[0].Amount > 0)
+            if (adminList.Amount > 0)
             {
-                byte[] pAddrBytes = ptrArray[0].qQWalletInformation.CardList[0].pAddrList;
-                for (int i = 0; i < ptrArray[0].qQWalletInformation.CardList[0].Amount; i++)
+                byte[] pAddrBytes = adminList.pdatalist;
+                for (int i = 0; i < adminList.Amount; i++)
                 {
                     byte[] readByte = new byte[4];
                     Array.Copy(pAddrBytes, i * 4, readByte, 0, readByte.Length);
@@ -1158,10 +1171,11 @@ namespace SDK.Core
                 }
             }
             RetQQWalletInformation retQQWalletInformation = new RetQQWalletInformation();
-            retQQWalletInformation.ID = ptrArray[0].qQWalletInformation.ID;
-            retQQWalletInformation.RealName = ptrArray[0].qQWalletInformation.RealName;
-            retQQWalletInformation.Balance = ptrArray[0].qQWalletInformation.Balance;
+            retQQWalletInformation.ID = QQWallet[0].qQWalletInformation.ID;
+            retQQWalletInformation.RealName = QQWallet[0].qQWalletInformation.RealName;
+            retQQWalletInformation.Balance = QQWallet[0].qQWalletInformation.Balance;
             retQQWalletInformation.CardList = list;
+            Marshal.FreeHGlobal(ptr);
             sendmsg = null;
             return retQQWalletInformation;
         }
