@@ -155,6 +155,9 @@ namespace SDK.Core
             PermiCon.Add("API[143]", "置好友验证方式");
             PermiCon.Add("API[144]", "上传照片墙图片");
             PermiCon.Add("API[145]", "付款");
+            PermiCon.Add("API[146]", "修改支付密码");
+            PermiCon.Add("API[147]", "账号搜索");
+            PermiCon.Add("API[148]", "添加群_取验证类型");
         }
     }
 }

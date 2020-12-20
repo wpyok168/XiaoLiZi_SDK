@@ -241,6 +241,8 @@ namespace SDK.Core
         delegate bool SetFriendAuthenticationM(string pkey, long thisQQ, FriendAuthenticationModeEnum type, [MarshalAs(UnmanagedType.LPStr)] string Q_and_A);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr Payment(string pkey, long thisQQ,  [MarshalAs(UnmanagedType.LPStr)] string QrcodeUrl, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, ref GetCaptchaInfoDataList[] captchaInfo);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr UPPaymentPWD(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string oldpwd, [MarshalAs(UnmanagedType.LPStr)] string newpwd);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -3009,6 +3011,49 @@ namespace SDK.Core
             Payment sendmsg = (Payment)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(Payment));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, QrcodeUrl, bankCard, PaymentPWD, ref ciDataLists));
             captchaInfo = ciDataLists[0].CaptchaInfo;
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 修改支付密码
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="oldpwd">6位数字原密码</param>
+        /// <param name="newpwd">6位数字新密码</param>
+        /// <returns>修改QQ钱包支付密码,成功返回json retcode=0 ,失败或无权限返回其他值</returns>
+        public string UPPaymentPWDEvent(long thisQQ, string oldpwd,string newpwd)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改支付密码").ToString());
+            UPPaymentPWD sendmsg = (UPPaymentPWD)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UPPaymentPWD));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, oldpwd, newpwd));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 账号搜索
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="KeyWords">关键词，支持QQ号、群号、昵称等，支持emoji</param>
+        /// <returns>对一个关键词进行简略搜索,通过关键词一般返回3个QQ号信息和群信息,成功返回json retcode=0 ,失败或无权限返回其他值</returns>
+        public string AccountSearch(long thisQQ, string KeyWords)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("账号搜索").ToString());
+            GetPSKey sendmsg = (GetPSKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetPSKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, KeyWords));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 添加群_取验证类型<para>获取群的加群验证信息</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <returns>成功返回json retcode：1允许任何人加群 2需要验证消息 3不允许任何人加群 4回答正确问题 5回答问题并审核 如果retcode=4或5那么返回的json中retmsg有验证文本</returns>
+        public string GetGroupAuthenticationType(long thisQQ,long GroupQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("添加群_取验证类型").ToString());
+            GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ));
             sendmsg = null;
             return ret;
         }

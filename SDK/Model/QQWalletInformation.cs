@@ -41,14 +41,6 @@ namespace SDK.Model
         /// </summary>
         public IntPtr CardList;
     }
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct CardListIntptr
-    {
-        /// <summary>
-        /// 数组指针
-        /// </summary>
-        public IntPtr addr;
-    }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct CardInformation
