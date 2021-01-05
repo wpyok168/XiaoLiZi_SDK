@@ -243,6 +243,10 @@ namespace SDK.Core
         delegate IntPtr Payment(string pkey, long thisQQ,  [MarshalAs(UnmanagedType.LPStr)] string QrcodeUrl, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr UPPaymentPWD(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string oldpwd, [MarshalAs(UnmanagedType.LPStr)] string newpwd);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetReceiveRedEnvelope(string pkey, long thisQQ, long GroupQQ, long sendQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type, [MarshalAs(UnmanagedType.LPStr)] string apikey);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetRedEnvelopeDetails(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -3054,6 +3058,48 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("添加群_取验证类型").ToString());
             GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 领取红包，未开放，根据大佬截图推测
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ">来源群号，红包未好友时，此参数可省略</param>
+        /// <param name="sendQQ">发送人QQ</param>
+        /// <param name="redenvelopetext">红包文本代码</param>
+        /// <param name="type">红包类型，1为好友；2为群，其他，群临时</param>
+        /// <param name="apikey">API密钥，未开放</param>
+        /// <returns>成功返回原始Json数据，rec_object.amount是领取分数</returns>
+        public string GetReceiveRedEnvelopeEvent(long thisQQ, long GroupQQ,long sendQQ, string redenvelopetext, int type,string apikey)
+        {
+            if (type!=1||type!=2)
+            {
+                return "参数红包类型错误";
+            }
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
+            GetReceiveRedEnvelope sendmsg = (GetReceiveRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetReceiveRedEnvelope));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, sendQQ, redenvelopetext, type, apikey));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 获取红包领取详情
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ">来源群号，红包未好友时，此参数可省略</param>
+        /// <param name="redenvelopetext">红包文本代码</param>
+        /// <param name="type">红包类型，1为好友；2为群，其他，群临时</param>
+        /// <returns></returns>
+        public string GetRedEnvelopeDetailsEvent(long thisQQ, long GroupQQ, string redenvelopetext, int type)
+        {
+            if (type != 1 || type != 2)
+            {
+                return "参数红包类型错误";
+            }
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
+            GetRedEnvelopeDetails sendmsg = (GetRedEnvelopeDetails)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRedEnvelopeDetails));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, redenvelopetext, type));
             sendmsg = null;
             return ret;
         }

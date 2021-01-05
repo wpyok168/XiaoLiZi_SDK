@@ -150,10 +150,13 @@ namespace SDK.Core
         /// <param name="linkParam"></param>
         /// <param name="hash1"></param>
         /// <param name="hash2"></param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="time">时长</param>
         /// <returns></returns>
-        public string GetLitleVideo(string linkParam, string hash1, string hash2)
+        public string GetLitleVideo(string linkParam, string hash1, string hash2, int wide=0, int high = 0, int time = 0)
         {
-            return $"[litleVideo,linkParam={linkParam},hash1={hash1},hash2={hash2}]";
+            return $"[litleVideo,linkParam={linkParam},hash1={hash1},hash2={hash2},wide={wide},high={high},time={time}]";
         }
         /// <summary>
         /// 语音_本地
@@ -169,10 +172,13 @@ namespace SDK.Core
         /// </summary>
         /// <param name="pichash">通过群图片代码获得</param>
         /// <param name="showpictype">40000普通,40001幻影,40002抖动,40003生日,40004爱你,40005征友，默认普通</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="cartoon">动图,为真时可自动播放动图</param>
         /// <returns></returns>
-        public string GetShopPic(string pichash, ShowPicEnum showpictype)
+        public string GetShopPic(string pichash, ShowPicEnum showpictype, int wide = 0, int high = 0, bool cartoon = false)
         {
-            return $"[picShow,hash={pichash},showtype={showpictype.ToString()}]";
+            return $"[picShow,hash={pichash},showtype={showpictype.ToString()},wide={wide},high={high},cartoon={cartoon}]";
         }
         /// <summary>
         /// 自定义骰子
@@ -202,6 +208,19 @@ namespace SDK.Core
         public string GetPasteMsg(string x, string y,string msgWitdh,string msgHight,string msgAngle,int msgRecTime,int msgReq,long msgRandom)
         {
             return $"[Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]";
+        }
+        public string GetShareCard(int type,long otherQQ)
+        {
+            string type1 = string.Empty;
+            if (type == 0)
+            {
+                type1 = "Group";
+            }
+            else
+            {
+                type1 = "Friend";
+            }
+            return $"[Share,ID={otherQQ},Type={type1}]]";
         }
     }
 

@@ -51,7 +51,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "2.8.8.0";
+            appInfo.sdkv = "2.8.8.1";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]
@@ -217,6 +217,8 @@ namespace RobotCore
             json = appInfo.SetPermission(146, "修改支付密码", json);
             json = appInfo.SetPermission(147, "账号搜索", json);
             json = appInfo.SetPermission(148, "添加群_取验证类型", json);
+            json = appInfo.SetPermission(149, "领取红包", json);//框架未开放，暂无法使用
+            json = appInfo.SetPermission(150, "获取红包领取详情", json);
             return json;
         }
     }

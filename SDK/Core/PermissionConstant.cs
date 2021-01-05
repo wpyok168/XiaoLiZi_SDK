@@ -158,6 +158,8 @@ namespace SDK.Core
             PermiCon.Add("API[146]", "修改支付密码");
             PermiCon.Add("API[147]", "账号搜索");
             PermiCon.Add("API[148]", "添加群_取验证类型");
+            PermiCon.Add("API[149]", "领取红包");
+            PermiCon.Add("API[150]", "获取红包领取详情");
         }
     }
 }
