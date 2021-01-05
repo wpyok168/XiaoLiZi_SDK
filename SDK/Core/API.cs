@@ -1665,10 +1665,13 @@ namespace SDK.Core
         /// <param name="friendQQ"></param>
         /// <param name="picpath">图片路径</param>
         /// <param name="is_flash">是否设置为闪照</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="cartoon">动图,为真时可自动播放动图</param>
         /// <returns></returns>
-        public string SendFriendImage(long thisQQ, long friendQQ, string picpath, bool is_flash)
+        public string SendFriendImage(long thisQQ, long friendQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
-            string piccode = Common.xlzAPI.UploadFriendImageEvent(thisQQ, friendQQ, picpath, is_flash);
+            string piccode = Common.xlzAPI.UploadFriendImageEvent(thisQQ, friendQQ, picpath, is_flash,wide, high, cartoon);
             return Common.xlzAPI.SendPrivateMessage(thisQQ, friendQQ, piccode);
         }
         /// <summary>
@@ -1678,8 +1681,11 @@ namespace SDK.Core
         /// <param name="friendQQ"></param>
         /// <param name="picpath">图片路径</param>
         /// <param name="is_flash">是否设置为闪照</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="cartoon">动图,为真时可自动播放动图</param>
         /// <returns>成功返回图片代码</returns>
-        public string UploadFriendImageEvent(long thisQQ, long friendQQ, string picpath, bool is_flash)
+        public string UploadFriendImageEvent(long thisQQ, long friendQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
             Bitmap bitmap = new Bitmap(picpath);
             byte[] picture = GetByteArrayByImage(bitmap);
@@ -1691,6 +1697,7 @@ namespace SDK.Core
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             //string ret = sendmsg(pluginkey, thisQQ, friendQQ, is_flash, intPtr, picsize);
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, friendQQ, is_flash, picture, picture.Length));
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
             sendmsg = null;
             return ret;
         }
@@ -1725,8 +1732,11 @@ namespace SDK.Core
         /// <param name="groupQQ"></param>
         /// <param name="picpath">图片路径</param>
         /// <param name="is_flash">是否设置为闪照</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="cartoon">动图,为真时可自动播放动图</param>
         /// <returns>成功返回图片代码</returns>
-        public string UploadGroupImage(long thisQQ, long groupQQ, string picpath, bool is_flash)
+        public string UploadGroupImage(long thisQQ, long groupQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
             Bitmap bitmap = new Bitmap(picpath);
             byte[] picture = GetByteArrayByImage(bitmap);
@@ -1736,6 +1746,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传群图片").ToString());
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, groupQQ, is_flash, picture, picture.Length));
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
             sendmsg = null;
             return ret;
         }
@@ -1746,10 +1757,13 @@ namespace SDK.Core
         /// <param name="groupQQ"></param>
         /// <param name="picpath">图片路径</param>
         /// <param name="is_flash">是否设置为闪照</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="cartoon">动图,为真时可自动播放动图</param>
         /// <returns>成功返回图片代码</returns>
-        public string SendGroupImage(long thisQQ, long groupQQ, string picpath, bool is_flash)
+        public string SendGroupImage(long thisQQ, long groupQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
-            string piccode = Common.xlzAPI.UploadGroupImage(thisQQ, groupQQ, picpath, is_flash);
+            string piccode = Common.xlzAPI.UploadGroupImage(thisQQ, groupQQ, picpath, is_flash, wide, high, cartoon);
             return Common.xlzAPI.SendGroupMessage(thisQQ, groupQQ, piccode);
         }
 
@@ -1800,11 +1814,12 @@ namespace SDK.Core
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="friendQQ"></param>
-        /// <param name="audio_type">语音类型 <para>0普通语音,1变声语音,2文字语音,3红包匹配语音</para></param>
-        /// <param name="audio_text">语音文字<para>文字语音填附加文字(腾讯貌似会自动替换为语音对应的文本),匹配语音填a、b、s、ss、sss，注意是小写</para></param>
+        /// <param name="audio_type">语音类型<para>0普通语音,1变声语音,2文字语音,3红包匹配语音</para></param>
+        /// <param name="audio_text">语音文字，可为空<para>文字语音填附加文字(腾讯貌似会自动替换为语音对应的文本),匹配语音填a、b、s、ss、sss，注意是小写</para></param>
         /// <param name="audio">语音数据 需要使用silk编码</param>
+        /// <param name="time">时长</param>
         /// <returns></returns>
-        public string UploadFriendAudioEvent(long thisQQ, long friendQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio)
+        public string UploadFriendAudioEvent(long thisQQ, long friendQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio,int time=0)
         {
             //byte[] audiobyte = Encoding.UTF8.GetBytes(audio);
             //IntPtr intPtr = Marshal.AllocHGlobal(audio.Length);
@@ -1814,6 +1829,7 @@ namespace SDK.Core
             UploadFriendAudio sendmsg = (UploadFriendAudio)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendAudio));
             //return sendmsg(pluginkey, thisQQ, friendQQ, (int)audio_type, audio_text, intPtr, size);
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, friendQQ, (int)audio_type, audio_text, audio, audio.Length));
+            ret = ret.Replace("]", "") + $",time={time}]";
             sendmsg = null;
             return ret;
         }
@@ -1825,8 +1841,9 @@ namespace SDK.Core
         /// <param name="audio_type">语音类型 <para>0普通语音,1变声语音,2文字语音,3红包匹配语音</para></param>
         /// <param name="audio_text">语音文字<para>文字语音填附加文字(腾讯貌似会自动替换为语音对应的文本),匹配语音填a、b、s、ss、sss，注意是小写</para></param>
         /// <param name="audio">语音数据 需要使用silk编码</param>
+        /// <param name="time">时长</param>
         /// <returns></returns>
-        public string UploadGroupAudio(long thisQQ, long groupQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio)
+        public string UploadGroupAudio(long thisQQ, long groupQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio, int time = 0)
         {
             //byte[] audiobyte = Encoding.UTF8.GetBytes(audio);
             //IntPtr intPtr = Marshal.AllocHGlobal(audio.Length);
@@ -1836,6 +1853,7 @@ namespace SDK.Core
             UploadFriendAudio sendmsg = (UploadFriendAudio)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendAudio));
             //return sendmsg(pluginkey, thisQQ, groupQQ, (int)audio_type, audio_text, intPtr, size);
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, groupQQ, (int)audio_type, audio_text, audio, audio.Length));
+            ret = ret.Replace("]", "") + $",time={time}]";
             sendmsg = null;
             return ret;
         }
@@ -2747,7 +2765,7 @@ namespace SDK.Core
         /// <param name="harsh1"></param>
         /// <param name="filename">文件名(如：xxx.mp4),必须带上文件后缀</param>
         /// <returns>成功返回json含下载链接</returns>
-        public string GetGroupSmallVideoDownloadUrl(long thisQQ,long GroupQQ,long SourceQQ,string param,string harsh1,string filename)
+        public string GetGroupSmallVideoDownloadUrl(long thisQQ, long GroupQQ, long SourceQQ, string param, string harsh1, string filename)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群小视频下载地址").ToString());
             SmallVideoDownloadUrl sendmsg = (SmallVideoDownloadUrl)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SmallVideoDownloadUrl));
@@ -2779,14 +2797,18 @@ namespace SDK.Core
         /// <param name="GroupQQ">得到的文本代码也可在私聊使用,上传到私聊时,群号可乱填</param>
         /// <param name="videopath">本地小视频路径</param>
         /// <param name="picpath">小视频封面图</param>
+        /// <param name="wide">宽度</param>
+        /// <param name="high">高度</param>
+        /// <param name="time">时长</param>
         /// <returns>成功返回文本代码</returns>
-        public string UploadVideoEvent(long thisQQ, long GroupQQ,string videopath,string picpath)
+        public string UploadVideoEvent(long thisQQ, long GroupQQ, string videopath, string picpath, int wide = 0, int high = 0, int time = 0)
         {
             Bitmap bitmap = new Bitmap(picpath);
             byte[] picture = GetByteArrayByImage(bitmap);
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传小视频").ToString());
             UploadVideo sendmsg = (UploadVideo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadVideo));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, videopath, picture, picture.Length));
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},time={time}]";
             sendmsg = null;
             return ret;
         }
