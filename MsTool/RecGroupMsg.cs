@@ -60,6 +60,10 @@ namespace MsTool
             {
                 Common.xlzAPI.GroupSigninEvent(e.ThisQQ, e.MessageGroupQQ);
             }
+            if (e.MessageContent.Equals("领红包"))
+            {
+                Common.xlzAPI.GetReceiveRedEnvelopeEvent(e.ThisQQ, e.MessageGroupQQ,e.SenderQQ, "", 2,"");
+            }
         }
 
         /// <summary>

@@ -3095,15 +3095,19 @@ namespace SDK.Core
         /// <returns>成功返回原始Json数据，rec_object.amount是领取分数</returns>
         public string GetReceiveRedEnvelopeEvent(long thisQQ, long GroupQQ,long sendQQ, string redenvelopetext, int type,string apikey)
         {
-            if (type!=1||type!=2)
+            if (type == 1|| type == 2)
+            {
+                int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
+                GetReceiveRedEnvelope sendmsg = (GetReceiveRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetReceiveRedEnvelope));
+                string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, sendQQ, redenvelopetext, type, apikey));
+                sendmsg = null;
+                return ret;
+            }
+            else
             {
                 return "参数红包类型错误";
             }
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
-            GetReceiveRedEnvelope sendmsg = (GetReceiveRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetReceiveRedEnvelope));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, sendQQ, redenvelopetext, type, apikey));
-            sendmsg = null;
-            return ret;
+            
         }
         /// <summary>
         /// 获取红包领取详情
@@ -3115,15 +3119,19 @@ namespace SDK.Core
         /// <returns></returns>
         public string GetRedEnvelopeDetailsEvent(long thisQQ, long GroupQQ, string redenvelopetext, int type)
         {
-            if (type != 1 || type != 2)
+            if (type == 1 || type == 2)
+            {
+                int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("获取红包领取详情").ToString());
+                GetRedEnvelopeDetails sendmsg = (GetRedEnvelopeDetails)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRedEnvelopeDetails));
+                string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, redenvelopetext, type));
+                sendmsg = null;
+                return ret;
+            }
+            else
             {
                 return "参数红包类型错误";
             }
-            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
-            GetRedEnvelopeDetails sendmsg = (GetRedEnvelopeDetails)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetRedEnvelopeDetails));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, redenvelopetext, type));
-            sendmsg = null;
-            return ret;
+            
         }
     }
 }
