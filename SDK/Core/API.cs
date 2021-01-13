@@ -97,7 +97,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool ShutUpGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ, int time);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetNameForce(string pkey, long thisQQ, long otherQQ);
+        delegate IntPtr GetNameForce(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetQQWalletPersonalInformation(string pkey, long thisQQ, ref QQWalletDataList[] qQWalletInfoDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -1133,7 +1133,7 @@ namespace SDK.Core
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("强制取昵称").ToString());
             GetNameForce sendmsg = (GetNameForce)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameForce));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ.ToString()));
             sendmsg = null;
             return ret;
         }
@@ -1192,7 +1192,7 @@ namespace SDK.Core
         public string GetSignature(long thisQQ, long otherQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取个性签名").ToString());
-            GetNameForce sendmsg = (GetNameForce)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameForce));
+            GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ));
             sendmsg = null;
             return ret;
@@ -1206,7 +1206,7 @@ namespace SDK.Core
         public string GetFriendStatus(long thisQQ, long otherQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取好友在线状态").ToString());
-            GetNameForce sendmsg = (GetNameForce)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameForce));
+            GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ));
             sendmsg = null;
             return ret;
