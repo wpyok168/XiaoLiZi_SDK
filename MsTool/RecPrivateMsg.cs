@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SDK;
+using SDK.Enum;
 using SDK.Events;
 using SDK.Interface;
 
@@ -16,7 +17,7 @@ namespace MsTool
 {
     public class RecPrivateMsg : IRecvicetPrivateMessage
     {
-        public void RecvicetPrivateMsg(PrivateMessageEvent e)
+        public EventMessageEnum RecvicetPrivateMsg(PrivateMessageEvent e)
         {
             //if (e.ThisQQ == e.SenderQQ)
             //{
@@ -82,6 +83,7 @@ namespace MsTool
             {
                 Common.xlzAPI.GetQQWalletPersonalInformationEvent(e.ThisQQ);
             }
+            return EventMessageEnum.Ignore;
         }
         
     }

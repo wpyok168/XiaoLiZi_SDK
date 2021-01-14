@@ -1,4 +1,5 @@
 ﻿using SDK;
+using SDK.Enum;
 using SDK.Events;
 using SDK.Interface;
 using System;
@@ -11,7 +12,7 @@ namespace MsTool
 {
     public class RobotEventcallBack : IEventcallBack
     {
-        public void EventcallBack(EventTypeBase e)
+        public EventMessageEnum EventcallBack(EventTypeBase e)
         {
             if (e.EventType == SDK.Enum.EventTypeEnum.Group_MemberVerifying)
             {
@@ -27,7 +28,7 @@ namespace MsTool
                 string sendstr = $"{e.TriggerQQName}({e.TriggerQQ})撤回了一条消息，内容如下：\r\n{e.MessageContent}";
                 Common.xlzAPI.SendPrivateMessage(e.ThisQQ, e.TriggerQQ, sendstr);
             }
-
+            return EventMessageEnum.Ignore;
         }
     }
 }

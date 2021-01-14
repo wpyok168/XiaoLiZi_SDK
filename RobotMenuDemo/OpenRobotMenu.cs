@@ -1,4 +1,5 @@
-﻿using SDK.Interface;
+﻿using SDK.Enum;
+using SDK.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace RobotMenuDemo
     public class OpenRobotMenu : IAppSetting
     {
         public Form1 form1 = null;
-        public void AppSetting()
+        public EventMessageEnum AppSetting()
         {
             if (form1 == null)
             {
@@ -22,6 +23,7 @@ namespace RobotMenuDemo
             {
                 form1.Activate();
             }
+            return EventMessageEnum.Ignore;
         }
 
         private void Form1_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
