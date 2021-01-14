@@ -17,7 +17,8 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] SilkDecoding(string audio_path)
+        [Obsolete("框架2881前音乐编码方式", true)]
+        public byte[] SilkDecoding1(string audio_path)
         {
             if (!File.Exists(audio_path))
             {
@@ -61,7 +62,8 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] SilkEncoding(string audio_path)
+        [Obsolete("框架2881前音乐编码方式", true)]
+        public byte[] SilkEncoding1(string audio_path)
         {
             if (!File.Exists(audio_path))
             {
@@ -90,13 +92,14 @@ namespace SDK.Core
             }
             return null;
         }
-        
+
         /// <summary>
         /// amr编码
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] AmrEncoding(string audio_path)
+        [Obsolete("框架2881前音乐编码方式", true)]
+        public byte[] AmrEncoding1(string audio_path)
         {
             if (!File.Exists(audio_path))
             {
@@ -148,12 +151,13 @@ namespace SDK.Core
         /// <param name="arg"></param>
         private void Runcmd(string filename, string arg)
         {
-            ProcessStartInfo p = new ProcessStartInfo();
-            p.FileName = filename;
-            p.Arguments = arg;
-            p.UseShellExecute = false;
-            p.CreateNoWindow = true;
-            Process.Start(p);
+            Process p = new Process();
+            p.StartInfo.FileName = filename;
+            p.StartInfo.Arguments = arg;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+            p.WaitForExit();
         }
         #region 框架2.8.8.1后音乐编码方式
         /// <summary>
@@ -161,7 +165,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] SilkDecoding1(string audio_path)
+        public byte[] SilkDecoding(string audio_path)
         {
             //ffmpeg.exe -i "音频文件路径" "保存路径.mp3"
             //silk_v3_decoder.exe "音频文件路径" "保存路径.pcm"
@@ -208,7 +212,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] SilkEncoding1(string audio_path)
+        public byte[] SilkEncoding(string audio_path)
         {
             //ffmpeg.exe -i "音频文件路径" -f s16le -ar 24000 -ac 1 -acodec pcm_s16le "保存路径.pcm"
             //silk_v3_encoder.exe "音频文件路径.pcm" "保存路径.silk" -tencent
@@ -244,7 +248,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        public byte[] AmrEncoding1(string audio_path)
+        public byte[] AmrEncoding(string audio_path)
         {
             if (!File.Exists(audio_path))
             {
