@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDK.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,6 @@ namespace SDK.Interface
         /// <summary>
         /// 点击插件设置
         /// </summary>
-        void AppSetting();
+        EventMessageEnum AppSetting();
     }
 }

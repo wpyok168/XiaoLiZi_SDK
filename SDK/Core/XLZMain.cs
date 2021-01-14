@@ -34,8 +34,7 @@ namespace SDK.Core
                     GroupMessageEvent data = new GroupMessageEvent();
                     data = (GroupMessageEvent)Marshal.PtrToStructure(intPtr, typeof(GroupMessageEvent));
                     //string txt = Marshal.PtrToStringAnsi(data.MessageContent);
-                    Common.unityContainer.Resolve<IGroupMessage>().ReceviceGroupMsg(data);
-                    return (int)EventMessageEnum.Ignore;
+                    return (int)Common.unityContainer.Resolve<IGroupMessage>().ReceviceGroupMsg(data);
                 }
             }
             catch (Exception ex)
@@ -54,8 +53,7 @@ namespace SDK.Core
                     PrivateMessageEvent data = new PrivateMessageEvent();
                     data = (PrivateMessageEvent)Marshal.PtrToStructure(intPtr, typeof(PrivateMessageEvent));
                     //string content = Marshal.PtrToStringAnsi(data.MessageContent);
-                    Common.unityContainer.Resolve<IRecvicetPrivateMessage>().RecvicetPrivateMsg(data);
-                    return (int)EventMessageEnum.Ignore;
+                    return (int)Common.unityContainer.Resolve<IRecvicetPrivateMessage>().RecvicetPrivateMsg(data);
                 }
             }
             catch (Exception ex)
@@ -73,8 +71,7 @@ namespace SDK.Core
                 if (Common.unityContainer.IsRegistered<IAppEnableEvent>())
                 {
                     AppEnableEvent ae = new AppEnableEvent();
-                    Common.unityContainer.Resolve<IAppEnableEvent>().AppEnableEvent(ae);
-                    return (int)EventProcessEnum.Ignore;
+                    return (int)Common.unityContainer.Resolve<IAppEnableEvent>().AppEnableEvent(ae);
                 }
             }
             catch (Exception ex)
@@ -95,8 +92,7 @@ namespace SDK.Core
                     //string eventname = Marshal.PtrToStringAnsi(data.MessageContent);
                     //Enum.EventTypeEnum eventType = data.EventType;
                     //string a = eventType.ToString();
-                    Common.unityContainer.Resolve<IEventcallBack>().EventcallBack(data);
-                    return (int)EventMessageEnum.Ignore;
+                    return (int)Common.unityContainer.Resolve<IEventcallBack>().EventcallBack(data);
                 }
             }
             catch (Exception ex)
@@ -112,8 +108,7 @@ namespace SDK.Core
             {
                 if (Common.unityContainer.IsRegistered<IAppSetting>())
                 {
-                    Common.unityContainer.Resolve<IAppSetting>().AppSetting();
-                    return (int)EventMessageEnum.Ignore;
+                    return (int)Common.unityContainer.Resolve<IAppSetting>().AppSetting();
                 }
             }
             catch (Exception ex)

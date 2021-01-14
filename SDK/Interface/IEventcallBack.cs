@@ -1,4 +1,5 @@
-﻿using SDK.Events;
+﻿using SDK.Enum;
+using SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace SDK.Interface
         /// 机器人人事件处理类
         /// </summary>
         /// <param name="e"></param>
-        void EventcallBack(EventTypeBase e);
+        EventMessageEnum EventcallBack(EventTypeBase e);
     }
 }

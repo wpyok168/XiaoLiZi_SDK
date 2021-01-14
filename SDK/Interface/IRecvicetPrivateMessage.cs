@@ -1,4 +1,5 @@
-﻿using SDK.Events;
+﻿using SDK.Enum;
+using SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace SDK.Interface
         /// 接收好友信息
         /// </summary>
         /// <param name="e"></param>
-        void RecvicetPrivateMsg(PrivateMessageEvent e);
+        EventMessageEnum RecvicetPrivateMsg(PrivateMessageEvent e);
     }
 }

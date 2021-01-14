@@ -1,4 +1,5 @@
-﻿using SDK.Events;
+﻿using SDK.Enum;
+using SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace SDK.Interface
         /// 启动事件
         /// </summary>
         /// <param name="e"></param>
-        void AppEnableEvent(AppEnableEvent e);
+        EventProcessEnum AppEnableEvent(AppEnableEvent e);
     }
 }

@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using SDK;
+using SDK.Enum;
 using SDK.Events;
 using SDK.Interface;
 using SDK.Model;
@@ -19,11 +20,11 @@ namespace MsTool
 {
     public class RecGroupMsg : IGroupMessage
     {
-        public void ReceviceGroupMsg(GroupMessageEvent e)
+        public EventMessageEnum ReceviceGroupMsg(GroupMessageEvent e)
         {
             if (e.SenderQQ == 1000032 || e.ThisQQ == e.SenderQQ)//不处理匿名信息和自己
             {
-                return;
+                return EventMessageEnum.Ignore;
             }
             // Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, "测试小栗子C# SDK", true);
             // Common.xlzAPI.RecviceImage(e.MessageContent, e.ThisQQ, e.SenderQQ);
@@ -64,6 +65,7 @@ namespace MsTool
             {
                 Common.xlzAPI.GetReceiveRedEnvelopeEvent(e.ThisQQ, e.MessageGroupQQ,e.SenderQQ, "", 2,"");
             }
+            return EventMessageEnum.Ignore;
         }
 
         /// <summary>
@@ -108,5 +110,7 @@ namespace MsTool
             string json = Regex.Match(outhtml, @"\{""(.)*(?>\})", RegexOptions.Multiline).Value;
             return json;
         }
+
+        
     }
 }
