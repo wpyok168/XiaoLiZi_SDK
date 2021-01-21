@@ -247,6 +247,8 @@ namespace SDK.Core
         delegate IntPtr GetReceiveRedEnvelope(string pkey, long thisQQ, long GroupQQ, long sendQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type, [MarshalAs(UnmanagedType.LPStr)] string apikey);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetRedEnvelopeDetails(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool DelGroupMembByBatch(string pkey, long thisQQ, long GroupQQ, IntPtr QQList, bool isRefuse);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -1697,7 +1699,7 @@ namespace SDK.Core
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             //string ret = sendmsg(pluginkey, thisQQ, friendQQ, is_flash, intPtr, picsize);
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, friendQQ, is_flash, picture, picture.Length));
-            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon.ToString().ToLower()}]";
             sendmsg = null;
             return ret;
         }
@@ -1746,7 +1748,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传群图片").ToString());
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, groupQQ, is_flash, picture, picture.Length));
-            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon.ToString().ToLower()}]";
             sendmsg = null;
             return ret;
         }
@@ -3093,6 +3095,7 @@ namespace SDK.Core
         /// <param name="type">红包类型，1为好友；2为群，其他，群临时</param>
         /// <param name="apikey">API密钥，未开放</param>
         /// <returns>成功返回原始Json数据，rec_object.amount是领取分数</returns>
+        [Obsolete("2.8.8.1框架的API，此api已关闭",false)]
         public string GetReceiveRedEnvelopeEvent(long thisQQ, long GroupQQ,long sendQQ, string redenvelopetext, int type,string apikey)
         {
             if (type == 1|| type == 2)
@@ -3132,6 +3135,76 @@ namespace SDK.Core
                 return "参数红包类型错误";
             }
             
+        }
+        /// <summary>
+        /// 获取好友分享的文件的下载地址(此方法只能用于好友文件获取下载链接,如果是群请调用<取群文件下载地址>)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="fileID">该文件的ID</param>
+        /// <param name="fileName">该文件的文件名</param>
+        /// <returns></returns>
+        public string GetFriendFileDownLoadUrl(long thisQQ, string fileID, string fileName)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取好友文件下载地址").ToString());
+            UPPaymentPWD sendmsg = (UPPaymentPWD)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UPPaymentPWD));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, fileID, fileName));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取扩列资料
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="otherQQ">对方QQ</param>
+        /// <returns></returns>
+        public string GetFriendFileDownLoadUrl(long thisQQ, long otherQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取扩列资料").ToString());
+            QQLike sendmsg = (QQLike)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(QQLike));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 删除群成员_批量<para>暂时不能用</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="QQList"></param>
+        /// <param name="isRefuse"></param>
+        /// <returns></returns>
+        public bool DelGroupMemberByBatch(long thisQQ, long GroupQQ, List<long> QQList, bool isRefuse)
+        {
+            //DelGroupMemberList delGroupM = new DelGroupMemberList() { QQList = QQList.ToArray() };
+            //IntPtr intPtr = Marshal.AllocHGlobal(8);
+            //Marshal.StructureToPtr(delGroupM, intPtr, false);
+            byte[] bys = new byte[8 * QQList.Count];
+            for (int i = 0; i < QQList.Count; i++)
+            {
+                byte[] t = BitConverter.GetBytes(QQList[i]);
+                Array.Copy(t, 0, bys, i * 8, t.Length);
+            }
+            IntPtr intPtr1 = Array2IntPtr(bys);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("删除群成员_批量").ToString());
+            DelGroupMembByBatch sendmsg = (DelGroupMembByBatch)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(DelGroupMembByBatch));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, intPtr1, isRefuse);
+            sendmsg = null;
+            return ret;
+        }
+        private IntPtr Array2IntPtr(byte[] source)
+        {
+            if (source == null)
+            {
+                return IntPtr.Zero;
+            }
+            unsafe
+            {
+                fixed(byte* point = source)
+                {
+                    IntPtr intPtr = new IntPtr(point);
+                    return intPtr;
+                }
+            }
         }
     }
 }

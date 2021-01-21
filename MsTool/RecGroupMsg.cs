@@ -64,6 +64,11 @@ namespace MsTool
             {
                 Common.xlzAPI.GetReceiveRedEnvelopeEvent(e.ThisQQ, e.MessageGroupQQ,e.SenderQQ, "", 2,"");
             }
+            string picpath = System.Environment.CurrentDirectory + "\\logo.png";
+            if (e.MessageContent.Equals("发图"))
+            {
+                Common.xlzAPI.SendGroupImage(e.ThisQQ, e.MessageGroupQQ, picpath, false);
+            }
         }
 
         /// <summary>
