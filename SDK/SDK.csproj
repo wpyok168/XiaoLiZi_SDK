@@ -122,6 +122,7 @@
     <Compile Include="Events\MessageEvent.cs" />
     <Compile Include="Events\PrivateMessageEvent.cs" />
     <Compile Include="Events\ServiceInfo.cs" />
+    <Compile Include="Events\SliderVerificationEvent.cs" />
     <Compile Include="Interface\IAppEnableEvent.cs" />
     <Compile Include="Interface\IAppSetting.cs" />
     <Compile Include="Interface\IAppUninstall.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Interface\IEventcallBack.cs" />
     <Compile Include="Interface\IGroupMessage.cs" />
     <Compile Include="Interface\IRecvicetPrivateMessage.cs" />
+    <Compile Include="Interface\ISliderRecognition.cs" />
     <Compile Include="Model\CaptchaInformation.cs" />
     <Compile Include="Model\DelGroupMemberList.cs" />
     <Compile Include="Model\FriendInfo.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Model\GroupInfo.cs" />
     <Compile Include="Model\GroupMemberBriefInfo.cs" />
     <Compile Include="Model\GroupMemberInfo.cs" />
+    <Compile Include="Model\GroupMessageInfo.cs" />
     <Compile Include="Model\NotReRedEnvelopes.cs" />
     <Compile Include="Model\OneGroupMemberInfo.cs" />
     <Compile Include="Model\OrderDetail.cs" />

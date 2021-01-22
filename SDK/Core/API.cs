@@ -249,6 +249,25 @@ namespace SDK.Core
         delegate IntPtr GetRedEnvelopeDetails(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool DelGroupMembByBatch(string pkey, long thisQQ, long GroupQQ, IntPtr QQList, bool isRefuse);
+        //以下为3.0收费版API
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate void TEABase(string pkey, [MarshalAs(UnmanagedType.LPArray)] ref byte[] content, [MarshalAs(UnmanagedType.LPArray)]  byte[] key);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr RedPacketDataBase(string pkey, [MarshalAs(UnmanagedType.LPStr)]string str, int random);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool AddGroupMethod(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string problem, [MarshalAs(UnmanagedType.LPStr)]string answer, int method);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool LuckyCharacter(string pkey, long thisQQ, long GroupQQ, bool isOpen);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool isSingleQ(string pkey);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool ModifyCacheQQPassword(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string newpassword);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate void OfflineOtherDevices(string pkey, long thisQQ, bool MobileDevices, int appid);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate int SelectUrlSafe(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string url);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, string msgsource);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -1052,6 +1071,19 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
+        /// 取QQ空间cookie(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <returns></returns>
+        public string GetQzoneCookie(long thisQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取QQ空间cookie").ToString());
+            GetClientKey sendmsg = (GetClientKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetClientKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
         /// 获取pskey
         /// </summary>
         /// <param name="thisQQ"></param>
@@ -1475,6 +1507,53 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_设置群查找方式").ToString());
             SetGroupLimitNumber sendmsg = (SetGroupLimitNumber)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetGroupLimitNumber));
             bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, (int)method);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 群权限_设置加群方式(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="problem">问题<para>加群方式为2、3时必填</para></param>
+        /// <param name="answer">答案<para>加群方式为3时必填</para></param>
+        /// <param name="method">加群方式<para>默认0,0允许任何人 1需要发送验证消息 2需要回答问题并由管理员审核 3需要正确回答问题 4不允许任何人加群</para></param>
+        /// <returns></returns>
+        public bool AddGroupMethodEvent(long thisQQ, long GroupQQ, string problem, string answer, AddGroupMethodEnum method = 0)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_设置加群方式").ToString());
+            AddGroupMethod sendmsg = (AddGroupMethod)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(AddGroupMethod));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, problem, answer, (int)method);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 群权限_群幸运字符(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="isOpen">是否开启</param>
+        /// <returns>失败或无权限或非管理员返回假</returns>
+        public bool LuckyCharacterEvent(long thisQQ, long GroupQQ, bool isOpen)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_群幸运字符").ToString());
+            LuckyCharacter sendmsg = (LuckyCharacter)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(LuckyCharacter));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, isOpen);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 群权限_一起写(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="isOpen">是否开启</param>
+        /// <returns>失败或无权限或非管理员返回假</returns>
+        public bool WriteTogether(long thisQQ, long GroupQQ, bool isOpen)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_一起写").ToString());
+            LuckyCharacter sendmsg = (LuckyCharacter)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(LuckyCharacter));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, isOpen);
             sendmsg = null;
             return ret;
         }
@@ -2435,6 +2514,22 @@ namespace SDK.Core
             sendmsg = null;
             return ret;
         }
+        /// <summary>
+        /// 取消精华<para>需要管理员权限(VIP)</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="MsgReq"></param>
+        /// <param name="MsgRandom"></param>
+        /// <returns>取消某条精华群消息,成功返回真,失败或无权限返回假</returns>
+        public bool CancelEssence(long thisQQ, long GroupQQ, int MsgReq, long MsgRandom)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取消精华").ToString());
+            SetEssence sendmsg = (SetEssence)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetEssence));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, MsgReq, MsgRandom);
+            sendmsg = null;
+            return ret;
+        }
 
         /// <summary>
         /// 邀请好友加群<para>邀请一个好友或从群聊中邀请一个QQ加入指定群聊，需要群聊开启了邀请</para>
@@ -2522,10 +2617,11 @@ namespace SDK.Core
             sendmsg = null;
         }
         /// <summary>
-        /// 下线PCQQ
+        /// 下线PCQQ<para>3.0框架之前如需使用需要修改权限119</para><see cref="PermissionConstant"/>
         /// </summary>
         /// <param name="PCQQ"></param>
         /// <returns>成功返回真,失败或无权限返回假</returns>
+        [Obsolete("3.0框架之前SDK 下线PCQQ",false)]
         public bool OfflinePCQQEvent(long PCQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("下线PCQQ").ToString());
@@ -2533,6 +2629,19 @@ namespace SDK.Core
             bool ret = sendmsg(pluginkey, PCQQ);
             sendmsg = null;
             return ret;
+        }
+        /// <summary>
+        /// 下线其他设备(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="MobileDevices"></param>
+        /// <param name="appid"></param>
+        public void OfflineOtherDevicesEvent(long thisQQ, bool MobileDevices, int appid)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("下线其他设备").ToString());
+            OfflineOtherDevices sendmsg = (OfflineOtherDevices)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(OfflineOtherDevices));
+            sendmsg(pluginkey, thisQQ, MobileDevices, appid);
+            sendmsg = null;
         }
         /// <summary>
         /// 取框架版本
@@ -3186,6 +3295,127 @@ namespace SDK.Core
             bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, intPtr, isRefuse);
             sendmsg = null;
             return ret;
+        }
+
+        //以下为3.0收费版API 或注释为(VIP)的函数为3.0收费版API 
+        /// <summary>
+        /// TEA解密(VIP)
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="key">秘钥</param>
+        public void TEADecrypt(ref byte[] content, byte[] key)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("TEA解密").ToString());
+            TEABase sendmsg = (TEABase)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(TEABase));
+            sendmsg(pluginkey, ref content, key);
+            sendmsg = null;
+        }
+        /// <summary>
+        /// TEA加密(VIP)
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="key">秘钥</param>
+        public void TEAEncryption(ref byte[] content, byte[] key)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("TEA加密").ToString());
+            TEABase sendmsg = (TEABase)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(TEABase));
+            sendmsg(pluginkey, ref content, key);
+            sendmsg = null;
+        }
+        /// <summary>
+        /// 红包数据加密(VIP)
+        /// </summary>
+        /// <param name="str">红包数据</param>
+        /// <param name="random">加密key序号<para>0-15</para></param>
+        /// <returns></returns>
+        public string RedPacketDataEncryption(string str,int random)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包数据加密").ToString());
+            RedPacketDataBase sendmsg = (RedPacketDataBase)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(RedPacketDataBase));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, str, random));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 红包数据解密(VIP)
+        /// </summary>
+        /// <param name="str">红包数据</param>
+        /// <param name="random">解密key序号<para>0-15</para></param>
+        /// <returns></returns>
+        public string RedPacketDataDecrypt(string str, int random)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包数据解密").ToString());
+            RedPacketDataBase sendmsg = (RedPacketDataBase)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(RedPacketDataBase));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, str, random));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 红包msgno计算(VIP)
+        /// </summary>
+        /// <param name="TargetQQ">目标QQ</param>
+        /// <returns></returns>
+        public string RedPacketDataDecrypt(long TargetQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包msgno计算").ToString());
+            GetNameFromCache sendmsg = (GetNameFromCache)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameFromCache));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, TargetQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 框架是否为单Q(VIP)
+        /// </summary>
+        /// <returns></returns>
+        public bool IsRheRrameSingleQ()
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("框架是否为单Q").ToString());
+            isSingleQ sendmsg = (isSingleQ)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(isSingleQ));
+            bool ret = sendmsg(pluginkey);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 修改指定QQ缓存密码(VIP)<para>敏感权限,无权限返回假,修改成功后,指定QQ将被下线,需要调用API【登录指定QQ】来重新登录</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="newpassword">新密码</param>
+        /// <returns></returns>
+        public bool ModifyCacheQQPasswordEvent(long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string newpassword)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改指定QQ缓存密码").ToString());
+            ModifyCacheQQPassword sendmsg = (ModifyCacheQQPassword)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ModifyCacheQQPassword));
+            bool ret = sendmsg(pluginkey, thisQQ, newpassword);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 查询网址安全性(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="url"></param>
+        /// <returns>403无权限,404框架QQ不存在,405框架QQ未登录,0正常访问,-1查询失败,1包含不安全内容,2非官方页面,3未知状态</returns>
+        public int SelectUrlSafeEvent(long thisQQ, [MarshalAs(UnmanagedType.LPTStr)] string url)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("查询网址安全性").ToString());
+            SelectUrlSafe sendmsg = (SelectUrlSafe)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SelectUrlSafe));
+            int ret = sendmsg(pluginkey, thisQQ, url);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 消息合并转发至好<para>可将聊天记录合并转发给好友,支持各种消息类型,支持循环嵌套</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="targetQQ">对方QQ</param>
+        /// <param name="groupmsg">聊天记录<para>私聊消息数据可通过代码转换为群消息数据,复制下关键的数据内容即可</para></param>
+        /// <param name="Random">撤回消息用</param>
+        /// <param name="req">撤回消息用</param>
+        /// <param name="msgsource">消息记录来源<para>默认:群聊,可改成私聊,如:张三和李四、 张三</para></param>
+        /// <returns>成功返回的time可用于撤回消息</returns>
+        public string ForwardMsg2Friend(long thisQQ,long targetQQ, List<GroupMessageInfo> groupmsg,long Random,int req, string msgsource)
+        {
+
         }
     }
 }

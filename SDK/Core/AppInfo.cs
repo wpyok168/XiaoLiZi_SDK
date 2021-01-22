@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDK.Core
 {
@@ -13,7 +8,7 @@ namespace SDK.Core
         /// <summary>
         /// SDK版本
         /// </summary>
-        public string sdkv = "2.9.3.0";
+        public string sdkv = "3.3.5.0";
         /// <summary>
         /// 应用名
         /// </summary>
@@ -67,6 +62,14 @@ namespace SDK.Core
         /// </summary>
         public long banproaddres { get; set; }
         //public List<Needapilist> needapilist { get; set; }
+        /// <summary>
+        /// 置短信验证码处理函数
+        /// </summary>
+        public long getvefcodeaddres { get; set; }
+        /// <summary>
+        /// 置滑块处理函
+        /// </summary>
+        public long getticketaddres { get; set; }
 
         public string Info(AppInfo appInfo)
         {
@@ -82,7 +85,7 @@ namespace SDK.Core
             {
                 JObject jObject = JsonConvert.DeserializeObject<JObject>(json);
                 string name = PermissionConstant.PermiCon[$"API[{permissionNum}]"];
-                string check = "QQ点赞|获取clientkey|获取pskey|获取skey|解散群|删除好友|退群|置屏蔽好友|修改个性签名|修改昵称|上传头像|框架重启|取QQ钱包个人信息|更改群聊消息内容|更改私聊消息内容";
+                string check = "修改指定QQ缓存密码|获取bkn_gtk|sessionkey|cookie|QQ点赞|获取clientkey|获取pskey|获取skey|解散群|删除好友|退群|置屏蔽好友|修改个性签名|修改昵称|上传头像|框架重启|取QQ钱包个人信息|更改群聊消息内容|更改私聊消息内容|下线指定QQ|登录指定QQ";
                 JObject jObject0 = new JObject();
                 JObject jObject1 = new JObject();
                 if (check.Contains(name))

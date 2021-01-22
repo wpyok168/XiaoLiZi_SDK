@@ -209,6 +209,12 @@ namespace SDK.Core
         {
             return $"[Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]";
         }
+        /// <summary>
+        /// 分享名片
+        /// </summary>
+        /// <param name="type">0为群分享,其他则为好友分享</param>
+        /// <param name="otherQQ">Type为0则表示QQ号,Type为其他则表示群号</param>
+        /// <returns></returns>
         public string GetShareCard(int type,long otherQQ)
         {
             string type1 = string.Empty;
@@ -220,7 +226,7 @@ namespace SDK.Core
             {
                 type1 = "Friend";
             }
-            return $"[Share,ID={otherQQ},Type={type1}]]";
+            return $"[Share,ID={otherQQ},Type={type1}]";
         }
     }
 

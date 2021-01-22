@@ -17,6 +17,8 @@ namespace SDK.Core
         public delegate int AppSetting();
         public delegate void AppUninstall();
         public delegate void AppDisabled();
+        public delegate string GetSMSVerificationCode(long sourceQQ,IntPtr phone);
+        public delegate string SliderRecognition(long sourceQQ, IntPtr phone);
         public static RecvicePrivateMsg staticRecvicePrivateMsg = new RecvicePrivateMsg(RecvicetPrivateMessage);
         public static RecviceGroupMesg staticRecviceGroupMesg = new RecviceGroupMesg(RecvicetGroupMessage);
         public static RotbotAppEnable staticRotbotAppEnable = new RotbotAppEnable(AppEnable);
@@ -153,6 +155,39 @@ namespace SDK.Core
                 Common.BugLog("禁用：" + ex.ToString());
             }
 
+        }
+
+        public static string SliderVerification(long sourceQQ,string url)
+        {
+            try
+            {
+                if (Common.unityContainer.IsRegistered<ISliderRecognition>())
+                {
+                    SliderVerificationEvent e = new SliderVerificationEvent() { sourceQQ = sourceQQ , url= url };
+                    return Common.unityContainer.Resolve<ISliderRecognition>().SliderRecognition(e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("滑块验证：" + ex.ToString());
+            }
+            return string.Empty;
+        }
+        public static string SMSVerification(long sourceQQ, string phone)
+        {
+            try
+            {
+                if (Common.unityContainer.IsRegistered<ISMSVerification>())
+                {
+                    SMSVerificationEvent e = new SMSVerificationEvent() { sourceQQ = sourceQQ, phone = phone };
+                    return Common.unityContainer.Resolve<ISMSVerification>().SliderRecognition(e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.BugLog("短信验证：" + ex.ToString());
+            }
+            return string.Empty;
         }
     }
 }

@@ -82,7 +82,19 @@ namespace MsTool
             {
                 Common.xlzAPI.GetQQWalletPersonalInformationEvent(e.ThisQQ);
             }
-        }
-        
+            if (e.MessageContent.Equals("删成员"))
+            {
+                Common.xlzAPI.DelGroupMemberByBatch(e.ThisQQ, 480325208, new List<long>() { 2403875843, 2261002716 }, false);
+            }
+            if (e.MessageContent.Equals("简略"))
+            {
+                Common.xlzAPI.GetGroupMemberBriefInfoEvent(e.ThisQQ, 480325208);
+            }
+            picpath = System.Environment.CurrentDirectory + "\\logo.png";
+            if (e.MessageContent.Equals("发图"))
+            {
+                Common.xlzAPI.SendFriendImage(e.ThisQQ, e.SenderQQ, picpath, false);
+            }
+        }  
     }
 }

@@ -51,7 +51,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "2.8.8.1";
+            appInfo.sdkv = "3.1.6.0";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]
@@ -187,7 +187,7 @@ namespace RobotCore
             json = appInfo.SetPermission(116, "邀请好友加群", json);
             json = appInfo.SetPermission(117, "置群内消息通知", json);
             json = appInfo.SetPermission(118, "修改群名称", json);
-            json = appInfo.SetPermission(119, "下线PCQQ", json);
+            json = appInfo.SetPermission(119, "下线其他设备", json);
             json = appInfo.SetPermission(120, "登录网页取ck", json);
             json = appInfo.SetPermission(121, "发送群公告", json);
             json = appInfo.SetPermission(122, "取群成员信息", json);
@@ -217,11 +217,63 @@ namespace RobotCore
             json = appInfo.SetPermission(146, "修改支付密码", json);
             json = appInfo.SetPermission(147, "账号搜索", json);
             json = appInfo.SetPermission(148, "添加群_取验证类型", json);
-            //json = appInfo.SetPermission(149, "领取红包", json);//2881框架API未开放，暂无法使用
+            json = appInfo.SetPermission(149, "领取红包", json);
             json = appInfo.SetPermission(150, "获取红包领取详情", json);
             json = appInfo.SetPermission(151, "取好友文件下载地址", json);
             json = appInfo.SetPermission(152, "删除群成员_批量", json);
             json = appInfo.SetPermission(153, "取扩列资料", json);
+            json = appInfo.SetPermission(157, "取资料展示设置", json);
+            json = appInfo.SetPermission(158, "设置资料展示", json);
+            json = appInfo.SetPermission(159, "获取当前登录设备信息", json);
+            json = appInfo.SetPermission(160, "提取图片文字", json);
+            json = appInfo.SetPermission(161, "取消精华", json);
+            json = appInfo.SetPermission(162, "群权限_设置加群方式", json);
+            json = appInfo.SetPermission(163, "群权限_群幸运字符", json);
+            json = appInfo.SetPermission(164, "群权限_一起写", json);
+            json = appInfo.SetPermission(165, "取QQ空间cookie", json);
+            json = appInfo.SetPermission(166, "修改指定QQ缓存密码", json);
+            json = appInfo.SetPermission(167, "处理群验证事件_风险号", json);
+            json = appInfo.SetPermission(168, "查询网址安全性", json);
+            json = appInfo.SetPermission(169, "消息合并转发至好友", json);
+            json = appInfo.SetPermission(170, "消息合并转发至群", json);
+            json = appInfo.SetPermission(171, "禁言群匿名", json);
+            json = appInfo.SetPermission(172, "领取私聊普通红包", json);
+            json = appInfo.SetPermission(173, "领取群聊专属红包", json);
+            json = appInfo.SetPermission(174, "发送讨论组消息", json);
+            json = appInfo.SetPermission(175, "发送讨论组json消息", json);
+            json = appInfo.SetPermission(176, "发送讨论组xml消息", json);
+            json = appInfo.SetPermission(177, "发送讨论组临时消息", json);
+            json = appInfo.SetPermission(178, "撤回消息_讨论组", json);
+            json = appInfo.SetPermission(179, "回复QQ咨询会话", json);
+            json = appInfo.SetPermission(180, "发送订阅号私聊消息", json);
+            json = appInfo.SetPermission(181, "取讨论组名称_从缓存", json);
+            json = appInfo.SetPermission(182, "修改讨论组名称", json);
+            json = appInfo.SetPermission(183, "取讨论组成员列表", json);
+            json = appInfo.SetPermission(184, "强制取自身匿名Id", json);
+            json = appInfo.SetPermission(185, "取订阅号列表", json);
+            json = appInfo.SetPermission(186, "取讨论组列表", json);
+            json = appInfo.SetPermission(187, "邀请好友加群_批量", json);
+            json = appInfo.SetPermission(188, "邀请好友加入讨论组_批量", json);
+            json = appInfo.SetPermission(189, "讨论组口令红包", json);
+            json = appInfo.SetPermission(190, "讨论组拼手气红包", json);
+            json = appInfo.SetPermission(191, "讨论组普通红包", json);
+            json = appInfo.SetPermission(192, "讨论组画图红包", json);
+            json = appInfo.SetPermission(193, "讨论组语音红包", json);
+            json = appInfo.SetPermission(194, "讨论组接龙红包", json);
+            json = appInfo.SetPermission(195, "讨论组专属红包", json);
+            json = appInfo.SetPermission(196, "领取讨论组专属红包", json);
+            json = appInfo.SetPermission(197, "取讨论组未领红包", json);
+            json = appInfo.SetPermission(198, "取讨论组文件下载地址", json);
+            json = appInfo.SetPermission(199, "发送QQ咨询会话", json);
+            json = appInfo.SetPermission(200, "创建群聊", json);
+            json = appInfo.SetPermission(201, "取群应用列表", json);
+            json = appInfo.SetPermission(202, "退出讨论组", json);
+            json = appInfo.SetPermission(203, "群验证消息接收设置", json);
+            json = appInfo.SetPermission(204, "转让群", json);
+            json = appInfo.SetPermission(205, "修改好友备注", json);
+            json = appInfo.SetPermission(206, "删除讨论组成员", json);
+            json = appInfo.SetPermission(207, "讨论组文件转发至群", json);
+            json = appInfo.SetPermission(208, "讨论组文件转发至好友", json);
             return json;
         }
     }
