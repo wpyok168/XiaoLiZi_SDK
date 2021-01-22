@@ -35,6 +35,11 @@ namespace SDK.Model
         public IntPtr AdminiList;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct AdminListDataList1
+    {
+        public AdminListDataList Admin;
+    }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct AdminListDataList
     {
         public int index;//数组索引

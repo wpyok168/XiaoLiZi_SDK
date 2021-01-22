@@ -17,7 +17,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        [Obsolete("框架2881前音乐编码方式", true)]
+        [Obsolete("框架2881前音乐编码方式", false)]
         public byte[] SilkDecoding1(string audio_path)
         {
             if (!File.Exists(audio_path))
@@ -62,7 +62,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        [Obsolete("框架2881前音乐编码方式", true)]
+        [Obsolete("框架2881前音乐编码方式", false)]
         public byte[] SilkEncoding1(string audio_path)
         {
             if (!File.Exists(audio_path))
@@ -98,7 +98,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="audio_path"></param>
         /// <returns></returns>
-        [Obsolete("框架2881前音乐编码方式", true)]
+        [Obsolete("框架2881前音乐编码方式", false)]
         public byte[] AmrEncoding1(string audio_path)
         {
             if (!File.Exists(audio_path))

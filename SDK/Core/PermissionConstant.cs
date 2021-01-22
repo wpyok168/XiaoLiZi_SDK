@@ -160,6 +160,9 @@ namespace SDK.Core
             PermiCon.Add("API[148]", "添加群_取验证类型");
             PermiCon.Add("API[149]", "领取红包");
             PermiCon.Add("API[150]", "获取红包领取详情");
+            PermiCon.Add("API[151]", "取好友文件下载地址");
+            PermiCon.Add("API[152]", "删除群成员_批量");
+            PermiCon.Add("API[153]", "取扩列资料");
         }
     }
 }

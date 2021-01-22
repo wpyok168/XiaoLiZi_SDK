@@ -17,5 +17,5 @@ xiaoLiZi项目AppRun类中可以配置插件说明SetAppInfo和权限SetProperty
   
   gitee项目地址：https://gitee.com/wpyok500/XiaoLiZi_SDK
 
-
+如需阻塞消息，请从分支TEST下载
 

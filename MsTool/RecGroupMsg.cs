@@ -65,7 +65,6 @@ namespace MsTool
             {
                 Common.xlzAPI.GetReceiveRedEnvelopeEvent(e.ThisQQ, e.MessageGroupQQ,e.SenderQQ, "", 2,"");
             }
-            return EventMessageEnum.Ignore;
         }
 
         /// <summary>

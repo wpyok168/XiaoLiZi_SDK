@@ -83,7 +83,6 @@ namespace MsTool
             {
                 Common.xlzAPI.GetQQWalletPersonalInformationEvent(e.ThisQQ);
             }
-            return EventMessageEnum.Ignore;
         }
         
     }

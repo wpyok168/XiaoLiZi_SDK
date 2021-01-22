@@ -25,11 +25,11 @@ namespace SDK.Core
         public static string pluginkey { get; set; }
         public static string jsonstr { get; set; }
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SendPivateMsg(string pkey, long ThisQQ, long SenderQQ, [MarshalAs(UnmanagedType.LPStr)]  string MessageContent, ref long MessageRandom, ref uint MessageReq);
+        delegate IntPtr SendPivateMsg(string pkey, long ThisQQ, long SenderQQ, [MarshalAs(UnmanagedType.LPStr)] string MessageContent, ref long MessageRandom, ref uint MessageReq);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr OutputLog(string pkey, [MarshalAs(UnmanagedType.LPStr)]  string message, int text_color, int background_color);
+        delegate IntPtr OutputLog(string pkey, [MarshalAs(UnmanagedType.LPStr)] string message, int text_color, int background_color);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SendGroupMsg(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string msgcontent, bool anonymous);
+        delegate IntPtr SendGroupMsg(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string msgcontent, bool anonymous);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr Recviceimage(string pkey, string guid, long thisQQ, long groupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -45,13 +45,13 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void FriendverificationEvent(string pkey, long thisQQ, long triggerQQ, long message_seq, FriendVerificationOperateEnum operate_type);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SaveFileToWeiYun(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string file_id);
+        delegate IntPtr SaveFileToWeiYun(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string file_id);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate void ReadForwardedChatHistory(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string resID, ref IntPtr intPtr);
+        delegate void ReadForwardedChatHistory(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string resID, ref IntPtr intPtr);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GetFriendInfo(string pkey, long thisQQ, long otherQQ, ref GetFriendDataList[] friendInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate void GroupVerification(string pkey, long thisQQ, long source_groupQQ, long triggerQQ, long message_seq, GroupVerificationOperateEnum operate_type, EventTypeEnum event_type, [MarshalAs(UnmanagedType.LPStr)]  string refuse_reason);
+        delegate void GroupVerification(string pkey, long thisQQ, long source_groupQQ, long triggerQQ, long message_seq, GroupVerificationOperateEnum operate_type, EventTypeEnum event_type, [MarshalAs(UnmanagedType.LPStr)] string refuse_reason);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GetGroupInfo(string pkey, long thisQQ, long otherGroupQQ, ref GetGroupData[] getGroupDatas);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -61,37 +61,37 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool Undo_Private(string pkey, long thisQQ, long otherQQ, long message_random, int message_req, int time);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr CreateGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string folder);
+        delegate IntPtr CreateGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SendFriendJSONMessage(string pkey, long thisQQ, long friendQQ, [MarshalAs(UnmanagedType.LPStr)]  string json_content);
+        delegate IntPtr SendFriendJSONMessage(string pkey, long thisQQ, long friendQQ, [MarshalAs(UnmanagedType.LPStr)] string json_content);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SendFreeGift(string pkey, long thisQQ, long groupQQ, long otherQQ, int gift);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SendGroupJSONMessage(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string json_content, bool anonymous);
+        delegate IntPtr SendGroupJSONMessage(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string json_content, bool anonymous);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SendGroupTemporaryMessage(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]  string content, ref long random, ref int req);
+        delegate IntPtr SendGroupTemporaryMessage(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string content, ref long random, ref int req);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool ShareMusic(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]  string music_name, [MarshalAs(UnmanagedType.LPStr)]  string artist_name, [MarshalAs(UnmanagedType.LPStr)]  string redirect_link, [MarshalAs(UnmanagedType.LPStr)]  string cover_link, [MarshalAs(UnmanagedType.LPStr)]  string file_path, int app_type, int share_type);
+        delegate bool ShareMusic(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string music_name, [MarshalAs(UnmanagedType.LPStr)] string artist_name, [MarshalAs(UnmanagedType.LPStr)] string redirect_link, [MarshalAs(UnmanagedType.LPStr)] string cover_link, [MarshalAs(UnmanagedType.LPStr)] string file_path, int app_type, int share_type);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool ModifyGroupMessageContent(string pkey, [MarshalAs(UnmanagedType.SysInt)] int data_pointer, [MarshalAs(UnmanagedType.LPStr)] string new_message_content);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool ModifyPrivateMessageContent(string pkey, [MarshalAs(UnmanagedType.SysInt)] int data_pointer, [MarshalAs(UnmanagedType.LPStr)] string new_message_content);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GroupDrawRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string question, [MarshalAs(UnmanagedType.LPStr)]  string payment_password, int card_serial,ref GetCaptchaInfoDataList[] captchaInfo);
+        delegate IntPtr GroupDrawRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string question, [MarshalAs(UnmanagedType.LPStr)] string payment_password, int card_serial, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GroupExclusiveRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string otherQQ, [MarshalAs(UnmanagedType.LPStr)] string blessing, bool isEvenlysplit, [MarshalAs(UnmanagedType.LPStr)] string payment_password, int card_serial, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr FriendNormalRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string question, int skinID, [MarshalAs(UnmanagedType.LPStr)]  string payment_password, int card_serial, ref GetCaptchaInfoDataList[] ciDataLists);
+        delegate IntPtr FriendNormalRedEnvelope(string pkey, long thisQQ, int total_number, int total_amount, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string question, int skinID, [MarshalAs(UnmanagedType.LPStr)] string payment_password, int card_serial, ref GetCaptchaInfoDataList[] ciDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool FriendFileToFriend(string pkey, long thisQQ, long sourceQQ, long targetQQ, [MarshalAs(UnmanagedType.LPStr)]  string fileID, [MarshalAs(UnmanagedType.LPStr)]  string file_name, long file_size, ref int msgReq, ref long Random, ref int time);
+        delegate bool FriendFileToFriend(string pkey, long thisQQ, long sourceQQ, long targetQQ, [MarshalAs(UnmanagedType.LPStr)] string fileID, [MarshalAs(UnmanagedType.LPStr)] string file_name, long file_size, ref int msgReq, ref long Random, ref int time);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetPluginDataDirectory(string pkey);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetClientKey(string pkey, long thisQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetPSKey(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string domain);
+        delegate IntPtr GetPSKey(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string domain);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetOrderDetail(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string orderID, ref OrderDetaildDataList[] data);
+        delegate IntPtr GetOrderDetail(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string orderID, ref OrderDetaildDataList[] data);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool DissolveGroup(string pkey, long thisQQ, long gruopNumber);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -105,27 +105,27 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetGroupNickname(string pkey, long thisQQ, long groupQQ, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetGroupFileList(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string folder, ref GroupFileInfoDataList[] groupFileInfoDataLists);
+        delegate IntPtr GetGroupFileList(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string folder, ref GroupFileInfoDataList[] groupFileInfoDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool ShutUpAll(string pkey, long thisQQ, long groupQQ, bool is_shut_up_all);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GroupPermission_SetInviteMethod(string pkey, long thisQQ, long groupQQ, int method);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool ForwardGroupFileToFriend(string pkey, long thisQQ, long source_groupQQ, long target_groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string fileID, [MarshalAs(UnmanagedType.LPStr)]  string filename, long filesize, ref int msgReq, ref long Random, ref int time);
+        delegate bool ForwardGroupFileToFriend(string pkey, long thisQQ, long source_groupQQ, long target_groupQQ, [MarshalAs(UnmanagedType.LPStr)] string fileID, [MarshalAs(UnmanagedType.LPStr)] string filename, long filesize, ref int msgReq, ref long Random, ref int time);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool ForwardGroupFileToGroup(string pkey, long thisQQ, long source_groupQQ, long target_groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string fileID);
+        delegate bool ForwardGroupFileToGroup(string pkey, long thisQQ, long source_groupQQ, long target_groupQQ, [MarshalAs(UnmanagedType.LPStr)] string fileID);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool RemoveGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ, bool is_verification_refused);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr DeleteGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string file_id, [MarshalAs(UnmanagedType.LPStr)]  string folder);
+        delegate IntPtr DeleteGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string file_id, [MarshalAs(UnmanagedType.LPStr)] string folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr DeleteGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string folder);
+        delegate IntPtr DeleteGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr RenameGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string old_folder, [MarshalAs(UnmanagedType.LPStr)]  string new_folder);
+        delegate IntPtr RenameGroupFolder(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string old_folder, [MarshalAs(UnmanagedType.LPStr)] string new_folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr UploadGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string path, [MarshalAs(UnmanagedType.LPStr)]  string folder);
+        delegate IntPtr UploadGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string path, [MarshalAs(UnmanagedType.LPStr)] string folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr MoveGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string file_id, [MarshalAs(UnmanagedType.LPStr)]  string old_folder, [MarshalAs(UnmanagedType.LPStr)]  string new_folder);
+        delegate IntPtr MoveGroupFile(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string file_id, [MarshalAs(UnmanagedType.LPStr)] string old_folder, [MarshalAs(UnmanagedType.LPStr)] string new_folder);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr UploadFriendImage(string pkey, long thisQQ, long friendQQ, bool is_flash, [MarshalAs(UnmanagedType.LPArray)] byte[] pic, int picsize);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -133,29 +133,29 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr UploadAvatar(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPArray)] byte[] pic, int picsize);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr UploadFriendAudio(string pkey, long thisQQ, long friendQQ, int audio_type, [MarshalAs(UnmanagedType.LPStr)]  string audio_text, [MarshalAs(UnmanagedType.LPArray)] byte[] audio, int audiosize);
+        delegate IntPtr UploadFriendAudio(string pkey, long thisQQ, long friendQQ, int audio_type, [MarshalAs(UnmanagedType.LPStr)] string audio_text, [MarshalAs(UnmanagedType.LPArray)] byte[] audio, int audiosize);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool ReportCurrent(string pkey, long thisQQ, long groupQQ, double Longitude, double Latitude);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SetGroupNickname(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]  string nickname);
+        delegate IntPtr SetGroupNickname(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string nickname);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool SetLocationShare(string pkey, long thisQQ, long groupQQ, double Longitude, double Latitude, bool is_enabled);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool SetStatus(string pkey, long thisQQ, int main, int sun, int battery);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool Setexclusivetitle(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]  string name);
+        delegate bool Setexclusivetitle(string pkey, long thisQQ, long groupQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string name);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate long IsShuttedUp(string pkey, long thisQQ, long groupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr AddFriend(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]  string verification, [MarshalAs(UnmanagedType.LPStr)]  string comment);
+        delegate IntPtr AddFriend(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string verification, [MarshalAs(UnmanagedType.LPStr)] string comment);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr AddGroup(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)]  string verification);
+        delegate IntPtr AddGroup(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string verification);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool QuitGroup(string pkey, long thisQQ, long groupQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool SetSignature(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string signature, [MarshalAs(UnmanagedType.LPStr)]  string location);
+        delegate bool SetSignature(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string signature, [MarshalAs(UnmanagedType.LPStr)] string location);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool SetName(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string name);
+        delegate bool SetName(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string name);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SetBlockFriend(string pkey, long thisQQ, long otherQQ, bool is_blocked);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -163,7 +163,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SetSpecialFriend(string pkey, long thisQQ, long otherQQ, bool is_special);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr SubmitPaymentCaptcha(string pkey, long thisQQ, IntPtr captcha_information, [MarshalAs(UnmanagedType.LPStr)] string captcha, [MarshalAs(UnmanagedType.LPStr)]  string payment_password);
+        delegate IntPtr SubmitPaymentCaptcha(string pkey, long thisQQ, IntPtr captcha_information, [MarshalAs(UnmanagedType.LPStr)] string captcha, [MarshalAs(UnmanagedType.LPStr)] string payment_password);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool LoginSpecifyQQ(string pkey, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -173,7 +173,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr QQLike(string pkey, long thisQQ, long otherQQ);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool Modifyinformation(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)]  string json);
+        delegate bool Modifyinformation(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string json);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int GetRedEnvelope(string pkey, long thisQQ, long GroupQQ, ref RedEnvelopesDataList[] reDataList);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -185,9 +185,9 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GroupTop(string pkey, long thisQQ, long GroupQQ, bool istop);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool SetEssence(string pkey, long thisQQ, long groupQQ, int message_req, long message_random );
+        delegate bool SetEssence(string pkey, long thisQQ, long groupQQ, int message_req, long message_random);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool SetGroupNickRules(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPWStr)]string rules);
+        delegate bool SetGroupNickRules(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPWStr)] string rules);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool SetGroupLimitNumber(string pkey, long thisQQ, long GroupQQ, int LimitNumber);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -196,7 +196,7 @@ namespace SDK.Core
         delegate bool GroupNoticeMethod(string pkey, long thisQQ, long GroupQQ, long otherQQ, int metohd);
         delegate IntPtr GetGroupMemberBriefInfo(string pkey, long thisQQ, long GroupQQ, ref GMBriefDataList[] gMBriefDataLists);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool UpdataGroupName(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string NewGroupName);
+        delegate bool UpdataGroupName(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string NewGroupName);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void ReloadItSelf(string pkey, [MarshalAs(UnmanagedType.LPStr)] string dllpath);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -208,13 +208,13 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SetAnnouncement(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string title, [MarshalAs(UnmanagedType.LPStr)] string msgcotent, [MarshalAs(UnmanagedType.LPStr)] string video, bool isShow, bool isConfrim, bool isTop, bool isSendNewMember, bool setGroupNickName, [MarshalAs(UnmanagedType.LPArray)] byte[] picpath, int picsize);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr GetOneGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ,ref OneGroupMemberDataList[] oneGroupMemberDatas);
+        delegate IntPtr GetOneGroupMember(string pkey, long thisQQ, long groupQQ, long otherQQ, ref OneGroupMemberDataList[] oneGroupMemberDatas);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SendMail(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string mailaddr, [MarshalAs(UnmanagedType.LPStr)] string mailtitle, [MarshalAs(UnmanagedType.LPStr)] string msgContent);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr Transfer(string pkey, long thisQQ, int Amount, long otherQQ, [MarshalAs(UnmanagedType.LPStr)]string leaveMsg, int type, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD, int bankCard, ref GetCaptchaInfoDataList[] captchaInfo);
+        delegate IntPtr Transfer(string pkey, long thisQQ, int Amount, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] string leaveMsg, int type, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, int bankCard, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr BalanceWithdrawal(string pkey, long thisQQ, int Amount, int bankCard, [MarshalAs(UnmanagedType.LPStr)]string PaymentPWD);
+        delegate IntPtr BalanceWithdrawal(string pkey, long thisQQ, int Amount, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetRecPayment(string pkey, long thisQQ, int Amount, [MarshalAs(UnmanagedType.LPStr)] string desc);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -240,13 +240,15 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool SetFriendAuthenticationM(string pkey, long thisQQ, FriendAuthenticationModeEnum type, [MarshalAs(UnmanagedType.LPStr)] string Q_and_A);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr Payment(string pkey, long thisQQ,  [MarshalAs(UnmanagedType.LPStr)] string QrcodeUrl, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, ref GetCaptchaInfoDataList[] captchaInfo);
+        delegate IntPtr Payment(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string QrcodeUrl, int bankCard, [MarshalAs(UnmanagedType.LPStr)] string PaymentPWD, ref GetCaptchaInfoDataList[] captchaInfo);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr UPPaymentPWD(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string oldpwd, [MarshalAs(UnmanagedType.LPStr)] string newpwd);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetReceiveRedEnvelope(string pkey, long thisQQ, long GroupQQ, long sendQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type, [MarshalAs(UnmanagedType.LPStr)] string apikey);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr GetRedEnvelopeDetails(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)] string redenvelopetext, int type);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool DelGroupMembByBatch(string pkey, long thisQQ, long GroupQQ, IntPtr QQList, bool isRefuse);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -894,7 +896,7 @@ namespace SDK.Core
             GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群聊口令红包").ToString());
             GroupDrawRedEnvelope sendmsg = (GroupDrawRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupDrawRedEnvelope));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, total_number, total_amount, groupQQ, password, payment_password, card_serial,ref ciDataLists));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, total_number, total_amount, groupQQ, password, payment_password, card_serial, ref ciDataLists));
             captchaInfo = ciDataLists[0].CaptchaInfo;
             sendmsg = null;
             return ret;
@@ -1671,7 +1673,7 @@ namespace SDK.Core
         /// <returns></returns>
         public string SendFriendImage(long thisQQ, long friendQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
-            string piccode = Common.xlzAPI.UploadFriendImageEvent(thisQQ, friendQQ, picpath, is_flash,wide, high, cartoon);
+            string piccode = Common.xlzAPI.UploadFriendImageEvent(thisQQ, friendQQ, picpath, is_flash, wide, high, cartoon);
             return Common.xlzAPI.SendPrivateMessage(thisQQ, friendQQ, piccode);
         }
         /// <summary>
@@ -1697,7 +1699,7 @@ namespace SDK.Core
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             //string ret = sendmsg(pluginkey, thisQQ, friendQQ, is_flash, intPtr, picsize);
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, friendQQ, is_flash, picture, picture.Length));
-            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon.ToString().ToLower()}]";
             sendmsg = null;
             return ret;
         }
@@ -1746,7 +1748,7 @@ namespace SDK.Core
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传群图片").ToString());
             UploadFriendImage sendmsg = (UploadFriendImage)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadFriendImage));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, groupQQ, is_flash, picture, picture.Length));
-            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon}]";
+            ret = ret.Replace("]", "") + $",wide={wide},high={high},cartoon={cartoon.ToString().ToLower()}]";
             sendmsg = null;
             return ret;
         }
@@ -1819,7 +1821,7 @@ namespace SDK.Core
         /// <param name="audio">语音数据 需要使用silk编码</param>
         /// <param name="time">时长</param>
         /// <returns></returns>
-        public string UploadFriendAudioEvent(long thisQQ, long friendQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio,int time=0)
+        public string UploadFriendAudioEvent(long thisQQ, long friendQQ, AudioTypeEnum audio_type, string audio_text, byte[] audio, int time = 0)
         {
             //byte[] audiobyte = Encoding.UTF8.GetBytes(audio);
             //IntPtr intPtr = Marshal.AllocHGlobal(audio.Length);
@@ -2173,7 +2175,7 @@ namespace SDK.Core
         /// <param name="ohterQQ"></param>
         /// <param name="iMEStatus">1:正在输入,2:关闭显示,3:正在说话</param>
         /// <returns></returns>
-        public bool SendIMEStatusEvent(long thisQQ,long ohterQQ, IMEStatusEnum iMEStatus)
+        public bool SendIMEStatusEvent(long thisQQ, long ohterQQ, IMEStatusEnum iMEStatus)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送输入状态").ToString());
             SendIMEStatus sendmsg = (SendIMEStatus)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendIMEStatus));
@@ -2254,7 +2256,7 @@ namespace SDK.Core
         /// <param name="email">邮箱</param>
         /// <param name="personalStatement">个人说明</param>
         /// <returns></returns>
-        public bool ModifyinformationEvent(long thisQQ,string name,SexEnum sex, string birthday, ProfessionEnum Profession,string CompanyName,string city,string hometown,string email,string personalStatement)
+        public bool ModifyinformationEvent(long thisQQ, string name, SexEnum sex, string birthday, ProfessionEnum Profession, string CompanyName, string city, string hometown, string email, string personalStatement)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -2269,7 +2271,7 @@ namespace SDK.Core
             personalInfo.所在地 = city;
             personalInfo.家乡 = hometown;
             personalInfo.邮箱 = email;
-            personalInfo.个人说明= personalStatement;
+            personalInfo.个人说明 = personalStatement;
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(personalInfo);
 
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改资料").ToString());
@@ -2311,7 +2313,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="otherQQ"></param>
-        public void CallPhoneEvent(long thisQQ,long otherQQ)
+        public void CallPhoneEvent(long thisQQ, long otherQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("打好友电话").ToString());
             CallPhone sendmsg = (CallPhone)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(CallPhone));
@@ -2336,7 +2338,7 @@ namespace SDK.Core
         /// <param name="fileid">文件id</param>
         /// <param name="filename">文件名<para>可自定义，必须带文件后缀</para></param>
         /// <returns>文件下载地址在返回的json里面，具有时效性，请及时下载</returns>
-        public string GroupFileDownloadLinkEvent(long thisQQ,long GroupQQ,string fileid,string filename)
+        public string GroupFileDownloadLinkEvent(long thisQQ, long GroupQQ, string fileid, string filename)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群文件下载地址").ToString());
             GroupFileDownloadLink sendmsg = (GroupFileDownloadLink)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupFileDownloadLink));
@@ -2365,7 +2367,7 @@ namespace SDK.Core
         /// <param name="otherQQ"></param
         /// <param name="GroupQQ"></param>
         /// <returns></returns>
-        public bool DoubleclickGroupFacePic(long thisQQ, long otherQQ,long GroupQQ)
+        public bool DoubleclickGroupFacePic(long thisQQ, long otherQQ, long GroupQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("头像双击_群").ToString());
             DoubleclickGroupFace sendmsg = (DoubleclickGroupFace)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(DoubleclickGroupFace));
@@ -2380,11 +2382,11 @@ namespace SDK.Core
         /// <param name="GroupQQ"></param>
         /// <param name="istop">是否置顶,默认假</param>
         /// <returns>成功返回真，失败或无权限返回假</returns>
-        public bool GroupTopEvent(long thisQQ, long GroupQQ,bool istop = false)
+        public bool GroupTopEvent(long thisQQ, long GroupQQ, bool istop = false)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群聊置顶").ToString());
             GroupTop sendmsg = (GroupTop)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupTop));
-            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ,istop);
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, istop);
             sendmsg = null;
             return ret;
         }
@@ -2425,7 +2427,7 @@ namespace SDK.Core
         /// <param name="MsgReq"></param>
         /// <param name="MsgRandom"></param>
         /// <returns>置指定群消息为精华内容,成功返回真,失败或无权限返回假</returns>
-        public bool SetEssenceEvent(long thisQQ, long GroupQQ, int MsgReq,long MsgRandom)
+        public bool SetEssenceEvent(long thisQQ, long GroupQQ, int MsgReq, long MsgRandom)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("设为精华").ToString());
             SetEssence sendmsg = (SetEssence)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetEssence));
@@ -2433,7 +2435,7 @@ namespace SDK.Core
             sendmsg = null;
             return ret;
         }
-        
+
         /// <summary>
         /// 邀请好友加群<para>邀请一个好友或从群聊中邀请一个QQ加入指定群聊，需要群聊开启了邀请</para>
         /// </summary>
@@ -2442,7 +2444,7 @@ namespace SDK.Core
         /// <param name="otherQQ">被邀请的QQ,如果参数三不为0则通过参数三的群号邀请,否则视为邀请好友</param>
         /// <param name="otherGroupQQ">必须在群里,如果不为0则从群中邀请该目标</param>
         /// <returns>成功返回真,失败或无权限返回假</returns>
-        public bool InvitefriendJoinGroup(long thisQQ, long GroupQQ,long otherQQ,long otherGroupQQ)
+        public bool InvitefriendJoinGroup(long thisQQ, long GroupQQ, long otherQQ, long otherGroupQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("邀请好友加群").ToString());
             FriendjoinGroup sendmsg = (FriendjoinGroup)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(FriendjoinGroup));
@@ -2500,7 +2502,7 @@ namespace SDK.Core
         /// <param name="GroupQQ"></param>
         /// <param name="NewGroupName"></param>
         /// <returns>成功返回真,失败或无权限返回假</returns>
-        public bool UpdataGroupNameEvent(long thisQQ,long GroupQQ, string NewGroupName)
+        public bool UpdataGroupNameEvent(long thisQQ, long GroupQQ, string NewGroupName)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改群名称").ToString());
             UpdataGroupName sendmsg = (UpdataGroupName)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UpdataGroupName));
@@ -2552,12 +2554,12 @@ namespace SDK.Core
         /// <param name="appid">如QQ空间是：549000929，群：715030901</param>
         /// <param name="daid">如QQ空间是：5；群：73</param>
         /// <returns></returns>
-        public string GetWebCookiesEvent(long thisQQ,string JumpUrl,string appid,string daid)
+        public string GetWebCookiesEvent(long thisQQ, string JumpUrl, string appid, string daid)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("登录网页取ck").ToString());
             GetWebCookies sendmsg = (GetWebCookies)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetWebCookies));
             string retCookies = string.Empty;
-            bool ret =sendmsg(pluginkey, thisQQ, JumpUrl, appid, daid, ref retCookies);
+            bool ret = sendmsg(pluginkey, thisQQ, JumpUrl, appid, daid, ref retCookies);
             sendmsg = null;
             return retCookies;
         }
@@ -2576,7 +2578,7 @@ namespace SDK.Core
         /// <param name="isSendNewMember">发送给新成员</param>
         /// <param name="setGroupNickName">引导修改群昵称</param>
         /// <returns>ec=0表示成功</returns>
-        public string SetAnnouncementEvent(long thisQQ, long GroupQQ, string title, string msgcotent, string picpath,string video, bool isShow = false, bool isConfrim=false, bool isTop=false, bool isSendNewMember=false, bool setGroupNickName = false)
+        public string SetAnnouncementEvent(long thisQQ, long GroupQQ, string title, string msgcotent, string picpath, string video, bool isShow = false, bool isConfrim = false, bool isTop = false, bool isSendNewMember = false, bool setGroupNickName = false)
         {
             byte[] picture = null;
             if (!string.IsNullOrEmpty(picpath))
@@ -2597,12 +2599,12 @@ namespace SDK.Core
         /// <param name="groupQQ">群号</param>
         /// <param name="otherQQ">群成员QQ</param>
         /// <returns></returns>
-        public OneGroupMemberInfo GetOneGroupMemberInfo(long thisQQ,long GroupQQ, long otherQQ)
+        public OneGroupMemberInfo GetOneGroupMemberInfo(long thisQQ, long GroupQQ, long otherQQ)
         {
             OneGroupMemberDataList[] pdataLists = new OneGroupMemberDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取群成员信息").ToString());
             GetOneGroupMember sendmsg = (GetOneGroupMember)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetOneGroupMember));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, otherQQ,ref pdataLists));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, otherQQ, ref pdataLists));
             sendmsg = null;
             return pdataLists[0].oneGroupMemberInfo;
         }
@@ -2614,7 +2616,7 @@ namespace SDK.Core
         /// <param name="mailtitle">邮件标题</param>
         /// <param name="msgContent">邮件内容<para>支持html</para></param>
         /// <returns></returns>
-        public string SendMailEvent(long thisQQ,string mailaddr,string mailtitle,string msgContent)
+        public string SendMailEvent(long thisQQ, string mailaddr, string mailtitle, string msgContent)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送邮件").ToString());
             SendMail sendmsg = (SendMail)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendMail));
@@ -2658,7 +2660,7 @@ namespace SDK.Core
         /// <param name="retCookie"></param>
         /// <param name="skey"></param>
         /// <param name="pskey"></param>
-        public void GetCookie(long thisQQ, string domin,ref string retCookie,ref string skey,ref string pskey)
+        public void GetCookie(long thisQQ, string domin, ref string retCookie, ref string skey, ref string pskey)
         {
             skey = Common.xlzAPI.GetSKey(thisQQ, domin);
             pskey = Common.xlzAPI.GetPSKeyEvent(thisQQ, domin);
@@ -2714,12 +2716,12 @@ namespace SDK.Core
         /// <param name="bankCard">银行卡序列<para>大于0时使用银行卡支付</para></param>
         /// <param name="captchaInfo">验证码信息<para>银行卡支付时，若需要短信验证码，将在此传回验证码信息</para></param>
         /// <returns></returns>
-        public string TransferEvent(long thisQQ,int Amount,long otherQQ,string leaveMsg, TransferTypeEnum type,string PaymentPWD,int bankCard,ref CaptchaInformation captchaInfo)
+        public string TransferEvent(long thisQQ, int Amount, long otherQQ, string leaveMsg, TransferTypeEnum type, string PaymentPWD, int bankCard, ref CaptchaInformation captchaInfo)
         {
             GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("转账").ToString());
             Transfer sendmsg = (Transfer)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(Transfer));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, otherQQ,leaveMsg, (int)type, PaymentPWD, bankCard, ref ciDataLists));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, Amount, otherQQ, leaveMsg, (int)type, PaymentPWD, bankCard, ref ciDataLists));
             captchaInfo = ciDataLists[0].CaptchaInfo;
             sendmsg = null;
             return ret;
@@ -2732,7 +2734,7 @@ namespace SDK.Core
         /// <param name="PaymentPWD">支付密码</param>
         /// <param name="bankCard">银行卡序列<para>指定提现到的银行卡</para></param>
         /// <returns></returns>
-        public string BalanceWithdrawalEvent(long thisQQ,int Amount, string PaymentPWD, int bankCard)
+        public string BalanceWithdrawalEvent(long thisQQ, int Amount, string PaymentPWD, int bankCard)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("余额提现").ToString());
             BalanceWithdrawal sendmsg = (BalanceWithdrawal)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(BalanceWithdrawal));
@@ -2786,7 +2788,7 @@ namespace SDK.Core
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取私聊小视频下载地址").ToString());
             FriendSmallVideoDownloadUrl sendmsg = (FriendSmallVideoDownloadUrl)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(FriendSmallVideoDownloadUrl));
-            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ,SourceQQ, param, harsh1, filename));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, SourceQQ, param, harsh1, filename));
             sendmsg = null;
             return ret;
         }
@@ -2821,7 +2823,7 @@ namespace SDK.Core
         /// <param name="Random">撤回消息用</param>
         /// <param name="Req">撤回消息用</param>
         /// <returns>成功返回的time用于撤回消息</returns>
-        public string SendFriendXmlEvent(long thisQQ, long otherQQ, string xmlcode, ref long Random,ref int Req)
+        public string SendFriendXmlEvent(long thisQQ, long otherQQ, string xmlcode, ref long Random, ref int Req)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送好友xml消息").ToString());
             SendFriendXml sendmsg = (SendFriendXml)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendFriendXml));
@@ -2940,7 +2942,7 @@ namespace SDK.Core
         /// <param name="maxwaittime">最大等待时长<para>毫秒,不填或小于0时不等待返回包,大于0时等待返回包</para></param>
         /// <param name="bytes">数据: 返回数据参考传回,拉取返回包失败参考回空字节集</param>
         /// <returns></returns>
-        public bool SendDataPackEvent(long thisQQ, int packID,int maxwaittime,ref byte[] bytes)
+        public bool SendDataPackEvent(long thisQQ, int packID, int maxwaittime, ref byte[] bytes)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送数据包").ToString());
             SendDataPack sendmsg = (SendDataPack)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SendDataPack));
@@ -2997,7 +2999,7 @@ namespace SDK.Core
         /// <param name="type">验证类型<para>1：禁止任何人添加 2：允许任何人添加 3：需要验证信息 4：需要正确回答问题 5：需要回答问题并由我确认</para></param>
         /// <param name="Q_and_A">验证问题和答案<para>可空,如果类型为4则填写问题和答案用‘|’分割,如果类型为5则根据情况填写问题至少一个最多三个问题,用‘|’分割</para></param>
         /// <returns></returns>
-        public bool SetFriendAuthenticationMode(long thisQQ, FriendAuthenticationModeEnum type, string Q_and_A="")
+        public bool SetFriendAuthenticationMode(long thisQQ, FriendAuthenticationModeEnum type, string Q_and_A = "")
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置好友验证方式").ToString());
             SetFriendAuthenticationM sendmsg = (SetFriendAuthenticationM)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetFriendAuthenticationM));
@@ -3030,7 +3032,7 @@ namespace SDK.Core
         /// <param name="PaymentPWD">支付密码</param>
         /// <param name="captchaInfo">验证码信息<para>银行卡支付时，若需要短信验证码，将在此传回验证码信息</para></param>
         /// <returns>银行卡支付时，若需要短信验证码，将在此传回验证码信息</returns>
-        public string PaymentEvent(long thisQQ, string QrcodeUrl, int bankCard, string PaymentPWD,  ref CaptchaInformation captchaInfo)
+        public string PaymentEvent(long thisQQ, string QrcodeUrl, int bankCard, string PaymentPWD, ref CaptchaInformation captchaInfo)
         {
             GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("付款").ToString());
@@ -3047,7 +3049,7 @@ namespace SDK.Core
         /// <param name="oldpwd">6位数字原密码</param>
         /// <param name="newpwd">6位数字新密码</param>
         /// <returns>修改QQ钱包支付密码,成功返回json retcode=0 ,失败或无权限返回其他值</returns>
-        public string UPPaymentPWDEvent(long thisQQ, string oldpwd,string newpwd)
+        public string UPPaymentPWDEvent(long thisQQ, string oldpwd, string newpwd)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("修改支付密码").ToString());
             UPPaymentPWD sendmsg = (UPPaymentPWD)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UPPaymentPWD));
@@ -3075,7 +3077,7 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
         /// <returns>成功返回json retcode：1允许任何人加群 2需要验证消息 3不允许任何人加群 4回答正确问题 5回答问题并审核 如果retcode=4或5那么返回的json中retmsg有验证文本</returns>
-        public string GetGroupAuthenticationType(long thisQQ,long GroupQQ)
+        public string GetGroupAuthenticationType(long thisQQ, long GroupQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("添加群_取验证类型").ToString());
             GetadministratorList sendmsg = (GetadministratorList)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetadministratorList));
@@ -3093,9 +3095,10 @@ namespace SDK.Core
         /// <param name="type">红包类型，1为好友；2为群，其他，群临时</param>
         /// <param name="apikey">API密钥，未开放</param>
         /// <returns>成功返回原始Json数据，rec_object.amount是领取分数</returns>
-        public string GetReceiveRedEnvelopeEvent(long thisQQ, long GroupQQ,long sendQQ, string redenvelopetext, int type,string apikey)
+        [Obsolete("2.8.8.1框架的API，此api已关闭", false)]
+        public string GetReceiveRedEnvelopeEvent(long thisQQ, long GroupQQ, long sendQQ, string redenvelopetext, int type, string apikey)
         {
-            if (type == 1|| type == 2)
+            if (type == 1 || type == 2)
             {
                 int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("领取红包").ToString());
                 GetReceiveRedEnvelope sendmsg = (GetReceiveRedEnvelope)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetReceiveRedEnvelope));
@@ -3107,7 +3110,7 @@ namespace SDK.Core
             {
                 return "参数红包类型错误";
             }
-            
+
         }
         /// <summary>
         /// 获取红包领取详情
@@ -3131,7 +3134,58 @@ namespace SDK.Core
             {
                 return "参数红包类型错误";
             }
-            
+
+        }
+        /// <summary>
+        /// 获取好友分享的文件的下载地址(此方法只能用于好友文件获取下载链接,如果是群请调用<取群文件下载地址>)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="fileID">该文件的ID</param>
+        /// <param name="fileName">该文件的文件名</param>
+        /// <returns></returns>
+        public string GetFriendFileDownLoadUrl(long thisQQ, string fileID, string fileName)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取好友文件下载地址").ToString());
+            UPPaymentPWD sendmsg = (UPPaymentPWD)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UPPaymentPWD));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, fileID, fileName));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取扩列资料
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="otherQQ">对方QQ</param>
+        /// <returns></returns>
+        public string GetFriendFileDownLoadUrl(long thisQQ, long otherQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取扩列资料").ToString());
+            QQLike sendmsg = (QQLike)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(QQLike));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, otherQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 删除群成员_批量
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="QQList"></param>
+        /// <param name="isRefuse"></param>
+        /// <returns></returns>
+        public bool DelGroupMemberByBatch(long thisQQ, long GroupQQ, List<long> QQList, bool isRefuse)
+        {
+            DelGroupMemberList delGroupM = new DelGroupMemberList() { index = 1, Amount = QQList.Count, QQList = QQList.ToArray()};
+            IntPtr arrayintPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(DelGroupMemberList)));
+            Array.Resize(ref delGroupM.QQList, 1024);
+            Marshal.StructureToPtr(delGroupM, arrayintPtr, false);
+            IntPtr intPtr = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(arrayintPtr, intPtr, false);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("删除群成员_批量").ToString());
+            DelGroupMembByBatch sendmsg = (DelGroupMembByBatch)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(DelGroupMembByBatch));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, intPtr, isRefuse);
+            sendmsg = null;
+            return ret;
         }
     }
 }
