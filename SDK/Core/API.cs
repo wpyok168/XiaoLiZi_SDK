@@ -3166,7 +3166,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 删除群成员_批量<para>暂时不能用</para>
+        /// 删除群成员_批量
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
