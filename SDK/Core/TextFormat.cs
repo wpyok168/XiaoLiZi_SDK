@@ -226,6 +226,11 @@ namespace SDK.Core
         }
         #endregion
         #region 解析方法
+        /// <summary>
+        /// 转义特殊字符( <c>"["、"]"</c> )
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static string TextCodeEncode(string source)
         {
             if (source == null) return string.Empty;
@@ -234,13 +239,19 @@ namespace SDK.Core
             builder = builder.Replace("]", "\\u005d");
             return builder.ToString();
         }
+        /// <summary>
+        /// 去除特殊字符转义
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static string TextCodeDecode(string source)
         {
             if (source == null) return string.Empty;
-            StringBuilder builder = new StringBuilder(source);
-            builder = builder.Replace("\\u005b", "[");
-            builder = builder.Replace("\\u005d", "]");
-            return builder.ToString();
+            //StringBuilder builder = new StringBuilder(source);
+            //builder = builder.Replace("\\u005b", "[");
+            //builder = builder.Replace("\\u005d", "]");
+            //return builder.ToString();
+            return Regex.Unescape(source);
         }
 
         /*
@@ -262,10 +273,12 @@ namespace SDK.Core
 [Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]
 [Share,ID={otherQQ},Type={type1}]
          */
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public enum XiaoLzFunction
         {
             /// <summary>
             /// 表示小栗子文本转义的[@xxxx]类型
+            /// "Target": "123456789"
             /// </summary>
             At,
             /// <summary>
@@ -283,13 +296,44 @@ namespace SDK.Core
             /// <summary>
             /// 小表情
             /// </summary>
-            smallFace, Shake, limiShow, flashPicFile,
-            flashWord, Honest, picFile, Graffiti,
-            litleVideo, AudioFile, picShow, Sticker,
+            smallFace,
+            /// <summary>
+            /// 图片 
+            /// "Items": {
+            ///    "hash": "8A9D5DA85D5976DFD10258ED1165C060",
+            ///    "wide": "479",
+            ///    "high": "299",
+            ///    "cartoon": "false"
+            ///}
+            /// </summary>
+            pic,
+            /// <summary>
+            /// 回复
+            /// "Items": {
+            ///    "Content": "\\u005B\\u6D4B\\u8BD5\\u670D\\u52A1\\u5668\\u003A\\u0044\\u0069\\u0065\\u005D\\u73A9\\u5BB6\\u0067\\u0078\\u0068\\u0032\\u0030\\u0030\\u0034\\u88AB\\u50F5\\u5C38\\u6740\\u6B7B\\u4E86",
+            ///    "SendQQID": "3623498320",
+            ///    "Req": "25041",
+            ///    "Random": "72057595651407026",
+            ///    "SendTime": "1613469151"
+            ///}
+            /// </summary>
+            Reply,
             /// <summary>
             /// 分享（链接）
             /// </summary>
             Share,
+            /// <summary>
+            /// 文件
+            /// "Items": {
+            ///    "fileId": "/7169bb9c-7056-11eb-8e52-5452007b214b",
+            ///    "fileName": "MouseInc.exe",
+            ///    "fileSize": "219136"
+            ///}
+            /// </summary>
+            file,
+            Shake, limiShow, flashPicFile,
+            flashWord, Honest, picFile, Graffiti,
+            litleVideo, AudioFile, picShow, Sticker,
             /// <summary>
             /// 其他类型（未列举出的）
             /// </summary>
@@ -305,14 +349,14 @@ namespace SDK.Core
             private readonly string _originalString;
             private readonly XiaoLzFunction _type;
             private readonly string _functionTypeRaw;
-            private readonly string _target = null;
+            private readonly long _target;
             private Dictionary<string, string> _items;
             #endregion
             #region --属性--
             /// <summary>
             /// 当前动作的目标qq号（如 <see cref="XiaoLzFunction.At"/> 时该值有效）
             /// </summary>
-            public string Target { get => _target; }
+            public long Target { get => _target; }
             /// <summary>
             /// 表示解析前的原文
             /// </summary>
@@ -348,9 +392,9 @@ namespace SDK.Core
                 {
                     if (_functionTypeRaw.StartsWith("@"))
                     {
-                        _target = _functionTypeRaw.Substring(1);
-                        if (long.TryParse(_target, out _)) { this._type = XiaoLzFunction.At; }
-                        else if (_target.ToLower() == "all") { this._type = XiaoLzFunction.AtAll; }
+                        string t = _functionTypeRaw.Substring(1);
+                        if (long.TryParse(t, out _target)) { this._type = XiaoLzFunction.At; }
+                        else if (t.ToLower() == "all") { this._type = XiaoLzFunction.AtAll; }
                         else { this._type = XiaoLzFunction.Other; }
                     }
                     else
@@ -396,8 +440,42 @@ namespace SDK.Core
                 // 此处延时加载, 以提升运行速度
                 return new Regex[]
                 {
-                new Regex(@"\[([A-Za-z]*|@(?:all|\d+))(?:(,[^\[\]]+))?\]", RegexOptions.Compiled),    // 匹配小栗子文本转义码
-                new Regex(@",([A-Za-z]+)=([^,\[\]]+)", RegexOptions.Compiled)               // 匹配键值对
+                    new Regex(@"\[#最外层的左括号
+([A-Za-z]*|@(?:all|\d+))
+((?:,
+  [^\[\]]*            #它后面非括号的内容
+  (?:
+      (?:
+        (?'Open'\[)  #左括号，压入""Open""
+        [^\[\]]*      #左括号后面的内容
+      )+
+      (?:
+        (?'-Open'\]) #右括号，弹出一个""Open""
+        [^\[\]]*      #右括号后面的内容
+      )+
+  )*
+  (?(Open)(?!))     #最外层的右括号前检查
+                    #若还有未弹出的""Open""
+                    #则匹配失败
+)+)?
+\]                #最外层的右括号", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace| RegexOptions.Compiled),    // 匹配小栗子文本转义码
+                        new Regex(@",([A-Za-z]+)=(
+  [^\[\],]*           #它后面非括号的内容
+  (?:
+      (?:
+        (?'Open'\[)  #左括号，压入""Open""
+        [^\[\],]*     #左括号后面的内容
+      )+
+      (?:
+        (?'-Open'\]) #右括号，弹出一个""Open""
+        [^\[\],]*     #右括号后面的内容
+      )+
+  )*
+  (?(Open)(?!))     #最外层的右括号前检查
+                    #若还有未弹出的""Open""
+                    #则匹配失败
+)
+", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace|RegexOptions.Compiled)               // 匹配键值对
                 };
             }
             #endregion
