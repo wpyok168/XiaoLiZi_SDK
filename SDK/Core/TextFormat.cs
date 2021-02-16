@@ -295,6 +295,7 @@ namespace SDK.Core
             bigFace,
             /// <summary>
             /// 小表情
+            /// 如[bq32]
             /// </summary>
             smallFace,
             /// <summary>
@@ -354,7 +355,7 @@ namespace SDK.Core
             #endregion
             #region --属性--
             /// <summary>
-            /// 当前动作的目标qq号（如 <see cref="XiaoLzFunction.At"/> 时该值有效）
+            /// AT的目标qq号或小表情的ID（如 <see cref="XiaoLzFunction.At"/> 和 <see cref="XiaoLzFunction.smallFace"/> 时该值有效）
             /// </summary>
             public long Target { get => _target; }
             /// <summary>
@@ -395,6 +396,12 @@ namespace SDK.Core
                         string t = _functionTypeRaw.Substring(1);
                         if (long.TryParse(t, out _target)) { this._type = XiaoLzFunction.At; }
                         else if (t.ToLower() == "all") { this._type = XiaoLzFunction.AtAll; }
+                        else { this._type = XiaoLzFunction.Other; }
+                    }
+                    else if (_functionTypeRaw.StartsWith("bq"))
+                    {
+                        string t = _functionTypeRaw.Substring(2);
+                        if (long.TryParse(t, out _target)) { this._type = XiaoLzFunction.smallFace; }
                         else { this._type = XiaoLzFunction.Other; }
                     }
                     else
@@ -441,7 +448,7 @@ namespace SDK.Core
                 return new Regex[]
                 {
                     new Regex(@"\[#最外层的左括号
-([A-Za-z]*|@(?:all|\d+))
+([A-Za-z]*|@(?:all|\d+)|bq\d+)
 ((?:,
   [^\[\]]*            #它后面非括号的内容
   (?:
