@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SDK.Core
 {
     public class TextFormat
     {
+        #region 创建方法
         /// <summary>
         /// 艾特某人
         /// </summary>
@@ -222,8 +224,9 @@ namespace SDK.Core
             }
             return $"[Share,ID={otherQQ},Type={type1}]]";
         }
-
-        public string TextCodeEncode(string source)
+        #endregion
+        #region 解析方法
+        public static string TextCodeEncode(string source)
         {
             if (source == null) return string.Empty;
             StringBuilder builder = new StringBuilder(source);
@@ -231,7 +234,7 @@ namespace SDK.Core
             builder = builder.Replace("]", "\\u005d");
             return builder.ToString();
         }
-        public string TextCodeDecode(string source)
+        public static string TextCodeDecode(string source)
         {
             if (source == null) return string.Empty;
             StringBuilder builder = new StringBuilder(source);
@@ -240,10 +243,165 @@ namespace SDK.Core
             return builder.ToString();
         }
 
+        /*
+[@4342334]
+[@all]
+[Face,Id={id},name={name}]
+[bigFace,Id={id},name={name},hash={hash},flag={flag}]
+[smallFace,name={name},Id={id}]
+[Shake,name={name} ,Type={type},Id={id}]
+[limiShow,Id={id},name={name},type={type},object={QQ}]
+[flashPicFile,path={path}]
+[flashWord,Desc={desc},Resid={resid},Prompt={prompt}]
+[Honest,ToUin={QQ},ToNick={name},Desc={desc},Time={time},Random={Random},Bgtype={backgroundtype}]
+[picFile,path={path}]
+[Graffiti,ModelId={id},hash={hash},url={address}]
+[litleVideo,linkParam={linkParam},hash1={hash1},hash2={hash2},wide={wide},high={high},time={time}]
+[AudioFile,path={path}]
+[picShow,hash={pichash},showtype={showpictype.ToString()},wide={wide},high={high},cartoon={cartoon}]
+[Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]
+[Share,ID={otherQQ},Type={type1}]
+         */
+        public enum XiaoLzFunction
+        {
+            /// <summary>
+            /// 表示小栗子文本转义的[@xxxx]类型
+            /// </summary>
+            At,
+            /// <summary>
+            /// 表示小栗子文本转义的[@all]类型
+            /// </summary>
+            AtAll,
+            /// <summary>
+            /// 表情
+            /// </summary>
+            Face,
+            /// <summary>
+            /// 大表情
+            /// </summary>
+            bigFace,
+            /// <summary>
+            /// 小表情
+            /// </summary>
+            smallFace, Shake, limiShow, flashPicFile,
+            flashWord, Honest, picFile, Graffiti,
+            litleVideo, AudioFile, picShow, Sticker,
+            /// <summary>
+            /// 分享（链接）
+            /// </summary>
+            Share,
+            /// <summary>
+            /// 其他类型（未列举出的）
+            /// </summary>
+            Other
+        }
+        /// <summary>
+        /// 表示 小栗子文本转义码 的类
+        /// </summary>
+        public class XiaoLzTextCode
+        {
+            #region --字段--
+            private static readonly Lazy<Regex[]> _regices = new Lazy<Regex[]>(InitializeRegex);
+            private readonly string _originalString;
+            private readonly XiaoLzFunction _type;
+            private readonly string _functionTypeRaw;
+            private readonly string _target = null;
+            private Dictionary<string, string> _items;
+            #endregion
+            #region --属性--
+            /// <summary>
+            /// 当前动作的目标qq号（如 <see cref="XiaoLzFunction.At"/> 时该值有效）
+            /// </summary>
+            public string Target { get => _target; }
+            /// <summary>
+            /// 表示解析前的原文
+            /// </summary>
+            public string Original { get => _originalString; }
+            /// <summary>
+            /// 获取一个值, 指示当前实例的功能
+            /// </summary>
+            public XiaoLzFunction Function { get { return _type; } }
+            /// <summary>
+            /// 获取当前实例所包含的所有项目
+            /// </summary>
+            public Dictionary<string, string> Items { get { return _items; } }
+            /// <summary>
+            /// 解析时存储的原类型(原 <see cref="string"/> )
+            /// </summary>
+            public string FunctionTypeRaw { get => _functionTypeRaw; }
+            #endregion
+            #region --构造函数--
+            /// <summary>
+            /// 使用 小栗子文本转义码 字符串初始化 <see cref="XiaoLzTextCode"/> 类的新实例
+            /// </summary>
+            /// <param name="str">小栗子文本转义码字符串 或 包含小栗子文本转义码的字符串</param>
+            private XiaoLzTextCode(string str)
+            {
+                this._originalString = str;
+                #region --解析 XiaoLzTextCode--
+                Match match = _regices.Value[0].Match(str);
+                if (!match.Success) { throw new FormatException("无法解析所传入的字符串, 字符串非小栗子文本转义码格式!"); }
+                #endregion
+                #region --解析XiaoLzTextCode类型--
+                _functionTypeRaw = match.Groups[1].Value;// 原匹配字符串存于FunctionTypeRaw
+                if (!System.Enum.TryParse<XiaoLzFunction>(_functionTypeRaw, true, out _type))
+                {
+                    if (_functionTypeRaw.StartsWith("@"))
+                    {
+                        _target = _functionTypeRaw.Substring(1);
+                        if (long.TryParse(_target, out _)) { this._type = XiaoLzFunction.At; }
+                        else if (_target.ToLower() == "all") { this._type = XiaoLzFunction.AtAll; }
+                        else { this._type = XiaoLzFunction.Other; }
+                    }
+                    else
+                    {
+                        this._type = XiaoLzFunction.Other;    // 解析不出来的时候, 直接给一个默认
+                    }
+                }
+                #endregion
+                #region --解析键值对--
+                MatchCollection collection = _regices.Value[1].Matches(match.Groups[2].Value);
+                this._items = new Dictionary<string, string>(collection.Count);
+                foreach (Match item in collection)
+                {
+                    this._items.Add(item.Groups[1].Value, TextCodeDecode(item.Groups[2].Value));
+                }
+                #endregion
+            }
+            #endregion
+            #region --公开方法--
+            /// <summary>
+            /// 从字符串中解析出所有的 小栗子文本转义码, 转换为 <see cref="XiaoLzTextCode"/> 集合
+            /// </summary>
+            /// <param name="source">原始字符串</param>
+            /// <returns>返回等效的 <see cref="List{XiaoLzTextCode}"/></returns>
+            public static List<XiaoLzTextCode> Parse(string source)
+            {
+                MatchCollection collection = _regices.Value[0].Matches(source);
+                List<XiaoLzTextCode> codes = new List<XiaoLzTextCode>(collection.Count);
+                foreach (Match item in collection)
+                {
+                    codes.Add(new XiaoLzTextCode(item.Groups[0].Value));
+                }
+                return codes;
+            }
+            #endregion
+            #region --私有方法--
+            /// <summary>
+            /// 延时初始化正则表达式
+            /// </summary>
+            /// <returns></returns>
+            private static Regex[] InitializeRegex()
+            {
+                // 此处延时加载, 以提升运行速度
+                return new Regex[]
+                {
+                new Regex(@"\[([A-Za-z]*|@(?:all|\d+))(?:(,[^\[\]]+))?\]", RegexOptions.Compiled),    // 匹配小栗子文本转义码
+                new Regex(@",([A-Za-z]+)=([^,\[\]]+)", RegexOptions.Compiled)               // 匹配键值对
+                };
+            }
+            #endregion
+        }
+        #endregion
     }
-    //public enum TextCode
-    //{
-    //    at
-    //    AtAll
-    //}
 }
