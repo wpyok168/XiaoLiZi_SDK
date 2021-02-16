@@ -295,9 +295,13 @@ namespace SDK.Core
             bigFace,
             /// <summary>
             /// 小表情
-            /// 如[bq32]
             /// </summary>
             smallFace,
+            /// <summary>
+            /// 小黄豆表情
+            /// 如[bq32]
+            /// </summary>
+            bq,
             /// <summary>
             /// 图片 
             /// "Items": {
@@ -355,7 +359,7 @@ namespace SDK.Core
             #endregion
             #region --属性--
             /// <summary>
-            /// AT的目标qq号或小表情的ID（如 <see cref="XiaoLzFunction.At"/> 和 <see cref="XiaoLzFunction.smallFace"/> 时该值有效）
+            /// AT的目标qq号或小表情的ID（如 <see cref="XiaoLzFunction.At"/> 和 <see cref="XiaoLzFunction.bq"/> 时该值有效）
             /// </summary>
             public long Target { get => _target; }
             /// <summary>
@@ -401,7 +405,7 @@ namespace SDK.Core
                     else if (_functionTypeRaw.StartsWith("bq"))
                     {
                         string t = _functionTypeRaw.Substring(2);
-                        if (long.TryParse(t, out _target)) { this._type = XiaoLzFunction.smallFace; }
+                        if (long.TryParse(t, out _target)) { this._type = XiaoLzFunction.bq; }
                         else { this._type = XiaoLzFunction.Other; }
                     }
                     else
