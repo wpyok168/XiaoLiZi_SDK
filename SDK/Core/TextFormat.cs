@@ -32,7 +32,7 @@ namespace SDK.Core
         /// <param name="id"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string GetFace(int id,string name)
+        public string GetFace(int id, string name)
         {
             return $"[Face,Id={id},name={name}]";
         }
@@ -44,7 +44,7 @@ namespace SDK.Core
         /// <param name="hash"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public string GetFace(int id, string name,string hash,string flag)
+        public string GetFace(int id, string name, string hash, string flag)
         {
             return $"[bigFace,Id={id},name={name},hash={hash},flag={flag}]";
         }
@@ -77,7 +77,7 @@ namespace SDK.Core
         /// <param name="type"></param>
         /// <param name="QQ"></param>
         /// <returns></returns>
-        public string GetLimiShow(string name, int id, int type,long QQ)
+        public string GetLimiShow(string name, int id, int type, long QQ)
         {
             return $"[limiShow,Id={id},name={name},type={type},object={QQ}]";
         }
@@ -111,7 +111,7 @@ namespace SDK.Core
         /// <param name="Random">发送Random--可自定义</param>
         /// <param name="backgroundtype">背景类型--可自定义，不同背景对应的值日志查看</param>
         /// <returns></returns>
-        public string GetHonest(long QQ, string name, string desc, string time, string Random,string backgroundtype)
+        public string GetHonest(long QQ, string name, string desc, string time, string Random, string backgroundtype)
         {
             return $"[Honest,ToUin={QQ},ToNick={name},Desc={desc},Time={time},Random={Random},Bgtype={backgroundtype}]";
         }
@@ -154,7 +154,7 @@ namespace SDK.Core
         /// <param name="high">高度</param>
         /// <param name="time">时长</param>
         /// <returns></returns>
-        public string GetLitleVideo(string linkParam, string hash1, string hash2, int wide=0, int high = 0, int time = 0)
+        public string GetLitleVideo(string linkParam, string hash1, string hash2, int wide = 0, int high = 0, int time = 0)
         {
             return $"[litleVideo,linkParam={linkParam},hash1={hash1},hash2={hash2},wide={wide},high={high},time={time}]";
         }
@@ -205,11 +205,11 @@ namespace SDK.Core
         /// <param name="msgReq">消息req</param>
         /// <param name="msgRandom">消息random</param>
         /// <returns></returns>
-        public string GetPasteMsg(string x, string y,string msgWitdh,string msgHight,string msgAngle,int msgRecTime,int msgReq,long msgRandom)
+        public string GetPasteMsg(string x, string y, string msgWitdh, string msgHight, string msgAngle, int msgRecTime, int msgReq, long msgRandom)
         {
             return $"[Sticker,X={x},Y={y},Width={msgWitdh},Height={msgHight},Rotate={msgAngle},Req={msgReq.ToString()},Random={msgRandom.ToString()},SendTime={msgRecTime.ToString()}]";
         }
-        public string GetShareCard(int type,long otherQQ)
+        public string GetShareCard(int type, long otherQQ)
         {
             string type1 = string.Empty;
             if (type == 0)
@@ -222,6 +222,28 @@ namespace SDK.Core
             }
             return $"[Share,ID={otherQQ},Type={type1}]]";
         }
-    }
 
+        public string TextCodeEncode(string source)
+        {
+            if (source == null) return string.Empty;
+            StringBuilder builder = new StringBuilder(source);
+            builder = builder.Replace("[", "\\u005b");
+            builder = builder.Replace("]", "\\u005d");
+            return builder.ToString();
+        }
+        public string TextCodeDecode(string source)
+        {
+            if (source == null) return string.Empty;
+            StringBuilder builder = new StringBuilder(source);
+            builder = builder.Replace("\\u005b", "[");
+            builder = builder.Replace("\\u005d", "]");
+            return builder.ToString();
+        }
+
+    }
+    //public enum TextCode
+    //{
+    //    at
+    //    AtAll
+    //}
 }
