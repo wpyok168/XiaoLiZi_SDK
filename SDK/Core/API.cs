@@ -267,7 +267,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int SelectUrlSafe(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string url);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, string msgsource);
+        delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, [MarshalAs(UnmanagedType.LPTStr)] string msgsource);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -3395,7 +3395,7 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="url"></param>
         /// <returns>403无权限,404框架QQ不存在,405框架QQ未登录,0正常访问,-1查询失败,1包含不安全内容,2非官方页面,3未知状态</returns>
-        public int SelectUrlSafeEvent(long thisQQ, [MarshalAs(UnmanagedType.LPTStr)] string url)
+        public int SelectUrlSafeEvent(long thisQQ, string url)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("查询网址安全性").ToString());
             SelectUrlSafe sendmsg = (SelectUrlSafe)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SelectUrlSafe));
