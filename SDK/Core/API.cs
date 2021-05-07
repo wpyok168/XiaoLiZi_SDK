@@ -3413,9 +3413,9 @@ namespace SDK.Core
         /// <param name="req">撤回消息用</param>
         /// <param name="msgsource">消息记录来源<para>默认:群聊,可改成私聊,如:张三和李四、 张三</para></param>
         /// <returns>成功返回的time可用于撤回消息</returns>
-        public string ForwardMsg2Friend(long thisQQ,long targetQQ, List<GroupMessageInfo> groupmsg,long Random,int req, string msgsource)
-        {
+        //public string ForwardMsg2Friend(long thisQQ,long targetQQ, List<GroupMessageInfo> groupmsg,long Random,int req, string msgsource)
+        //{
 
-        }
+        //}
     }
 }
