@@ -101,43 +101,83 @@ namespace SDK.Events
         /// 发送者气泡ID
         /// </summary>
         public int BubbleID;
-        // 框架QQ匿名Id，用于区分别人和自己(当天从未使用过匿名则为0)
+
+        #region 3.0版前参数
+        ////========================
+        //// 框架QQ匿名Id，用于区分别人和自己(当天从未使用过匿名则为0)
+        ///// <summary>
+        ///// 框架QQ匿名Id
+        ///// </summary>
+        //public int ThisQQAnonymousID;
+        //// 保留参数，请勿使用
+        ///// <summary>
+        ///// 保留参数，请勿使用
+        ///// </summary>
+        //public int reserved_;
+        //// 文件Id
+        ///// <summary>
+        ///// 文件Id
+        ///// </summary>
+        //[MarshalAs(UnmanagedType.LPStr)]
+        //public string FileID;
+        //// 文件Md5
+        ///// <summary>
+        ///// 文件Md5
+        ///// </summary>
+        //[MarshalAs(UnmanagedType.LPStr)]
+        //public string FileMD5;
+        //// 文件名
+        ///// <summary>
+        ///// 文件名
+        ///// </summary>
+        //[MarshalAs(UnmanagedType.LPStr)]
+        //public string FileName;
+        //// 文件大小
+        ///// <summary>
+        ///// 文件大小
+        ///// </summary>
+        //public long FileSize;
+        //// 消息AppID
+        ///// <summary>
+        ///// 消息AppID
+        ///// </summary>
+        //public int MessageAppID;
+
+        ////========================
+        #endregion
+
         /// <summary>
-        /// 框架QQ匿名Id
+        /// 群聊等级
         /// </summary>
-        public int ThisQQAnonymousID;
-        // 保留参数，请勿使用
+        public int GroupChatLevel;
         /// <summary>
-        /// 保留参数，请勿使用
+        /// 挂件Id
         /// </summary>
-        public int reserved_;
-        // 文件Id
+        public int PendantID;
         /// <summary>
-        /// 文件Id
+        /// 匿名昵称：消息是匿名消息时,此为对方的匿名昵称,否则为空
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
-        public string FileID;
-        // 文件Md5
+        public string AnonymousNickname;
         /// <summary>
-        /// 文件Md5
+        /// 匿名标识：可用于禁言等<para>此字段需要开发者自行调用API处理返回byte[]<see cref=""/></para>
+        /// </summary>
+        //[MarshalAs(UnmanagedType.ByValArray,SizeConst =1024*100)]
+        public IntPtr AnonymousFalg;
+        /// <summary>
+        /// 保留参数
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
-        public string FileMD5;
-        // 文件名
+        public string ReservedParameters;
+
         /// <summary>
-        /// 文件名
+        /// 框架QQ匿名Id：用于判断框架开启匿名时,收到的消息是否为自身的消息
         /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string FileName;
-        // 文件大小
+        public long AnonymousId;
         /// <summary>
-        /// 文件大小
+        /// 字体Id
         /// </summary>
-        public long FileSize;
-        // 消息AppID
-        /// <summary>
-        /// 消息AppID
-        /// </summary>
-        public int MessageAppID;
+        public int FontId;
     }
+    
 }

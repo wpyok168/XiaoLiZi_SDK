@@ -39,6 +39,8 @@ namespace RobotCore
                 appInfo.setproaddres = Marshal.GetFunctionPointerForDelegate(staticAppSetting).ToInt64();//点击插件设置
                 appInfo.unitproaddres = Marshal.GetFunctionPointerForDelegate(staticAppUninstall).ToInt64();//插件卸载
                 appInfo.banproaddres = Marshal.GetFunctionPointerForDelegate(staticAppDisabled).ToInt64();//插件禁用 
+                //appInfo.SMSVerification = Marshal.GetFunctionPointerForDelegate(staticSMSVerification).ToInt64();//短信验证
+                //appInfo.SliderR = Marshal.GetFunctionPointerForDelegate(staticSliderR).ToInt64();//滑块验证
             }
             catch (Exception ex)
             {
@@ -51,7 +53,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "3.1.6.0";
+            appInfo.sdkv = "3.2.3.0";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]

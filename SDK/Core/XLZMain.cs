@@ -17,8 +17,8 @@ namespace SDK.Core
         public delegate int AppSetting();
         public delegate void AppUninstall();
         public delegate void AppDisabled();
-        public delegate string GetSMSVerificationCode(long sourceQQ,IntPtr phone);
-        public delegate string SliderRecognition(long sourceQQ, IntPtr phone);
+        public delegate void GetSMSVerificationCode(long sourceQQ, IntPtr phone);
+        public delegate void SliderRecognition(long sourceQQ, IntPtr url);
         public static RecvicePrivateMsg staticRecvicePrivateMsg = new RecvicePrivateMsg(RecvicetPrivateMessage);
         public static RecviceGroupMesg staticRecviceGroupMesg = new RecviceGroupMesg(RecvicetGroupMessage);
         public static RotbotAppEnable staticRotbotAppEnable = new RotbotAppEnable(AppEnable);
@@ -26,6 +26,8 @@ namespace SDK.Core
         public static AppSetting staticAppSetting = new AppSetting(AppSettingEvent);
         public static AppUninstall staticAppUninstall = new AppUninstall(AppUninstallEvent);
         public static AppDisabled staticAppDisabled = new AppDisabled(AppDisabledEvent);
+        public static GetSMSVerificationCode staticSMSVerification = new GetSMSVerificationCode(SMSVerification);
+        public static SliderRecognition staticSliderR = new SliderRecognition(SliderVerification);
 
         public static int RecvicetGroupMessage(IntPtr intPtr)
         {
@@ -157,37 +159,35 @@ namespace SDK.Core
 
         }
 
-        public static string SliderVerification(long sourceQQ,string url)
+        public static void SliderVerification(long sourceQQ, IntPtr url)
         {
             try
             {
                 if (Common.unityContainer.IsRegistered<ISliderRecognition>())
                 {
-                    SliderVerificationEvent e = new SliderVerificationEvent() { sourceQQ = sourceQQ , url= url };
-                    return Common.unityContainer.Resolve<ISliderRecognition>().SliderRecognition(e);
+                    SliderVerificationEvent e = new SliderVerificationEvent() { sourceQQ = sourceQQ , url= Marshal.PtrToStringAnsi(url) };
+                    Common.unityContainer.Resolve<ISliderRecognition>().SliderRecognition(e);
                 }
             }
             catch (Exception ex)
             {
                 Common.BugLog("滑块验证：" + ex.ToString());
             }
-            return string.Empty;
         }
-        public static string SMSVerification(long sourceQQ, string phone)
+        public static void SMSVerification(long sourceQQ, IntPtr phone)
         {
             try
             {
                 if (Common.unityContainer.IsRegistered<ISMSVerification>())
                 {
-                    SMSVerificationEvent e = new SMSVerificationEvent() { sourceQQ = sourceQQ, phone = phone };
-                    return Common.unityContainer.Resolve<ISMSVerification>().SliderRecognition(e);
+                    SMSVerificationEvent e = new SMSVerificationEvent() { sourceQQ = sourceQQ, phone = Marshal.PtrToStringAnsi(phone) };
+                    Common.unityContainer.Resolve<ISMSVerification>().SliderRecognition(e);
                 }
             }
             catch (Exception ex)
             {
                 Common.BugLog("短信验证：" + ex.ToString());
-            }
-            return string.Empty;
+            } 
         }
     }
 }

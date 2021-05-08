@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SDK.Model
 {
     /// <summary>
-    /// 合并信息转发
+    /// 合并信息转发<para>群消息</para>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public class GroupMessageInfo
@@ -104,7 +104,6 @@ namespace SDK.Model
         /// 发送者气泡ID
         /// </summary>
         public int BubbleID;
-        // 框架QQ匿名Id，用于区分别人和自己(当天从未使用过匿名则为0)
         /// <summary>
         /// 群聊等级
         /// </summary>
@@ -113,16 +112,15 @@ namespace SDK.Model
         /// 挂件Id
         /// </summary>
         public int PendantID;
-
         /// <summary>
         /// 匿名昵称：消息是匿名消息时,此为对方的匿名昵称,否则为空
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public string AnonymousNickname;
         /// <summary>
-        /// 匿名标识：可用于禁言等
+        /// 匿名标识：可用于禁言等<para>此字段需要开发者自行调用API处理返回byte[]<see cref=""/></para>
         /// </summary>
-        [MarshalAs(UnmanagedType.LPArray)]
+        //[MarshalAs(UnmanagedType.ByValArray,SizeConst =1024*100)]
         public byte[] AnonymousFalg;
         /// <summary>
         /// 保留参数

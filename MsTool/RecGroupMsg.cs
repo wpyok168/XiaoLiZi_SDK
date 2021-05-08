@@ -31,6 +31,8 @@ namespace MsTool
             //{
             //    Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, e.MessageContent);
             //}
+            byte[] by = Common.xlzAPI.AnonymousFalg2byte(e.AnonymousFalg);
+            Common.xlzAPI.BanAnonymous(e.ThisQQ, e.MessageGroupQQ, e.AnonymousNickname, e.AnonymousFalg, 30);
             if (e.MessageContent.Equals("谁是龙王"))
             {
                 string lKing = GetDragonKing(e.ThisQQ, e.MessageGroupQQ);
@@ -59,6 +61,14 @@ namespace MsTool
             if (e.MessageContent.Equals("群签到"))
             {
                 Common.xlzAPI.GroupSigninEvent(e.ThisQQ, e.MessageGroupQQ);
+            }
+            if (e.MessageContent.Equals("群打卡"))
+            {
+                Common.xlzAPI.GroupTurnOn(e.ThisQQ, e.MessageGroupQQ);
+            }
+            if (e.MessageContent.Equals("群送礼"))
+            {
+                Common.xlzAPI.SendFreeGiftEvent(e.ThisQQ, e.MessageGroupQQ,2674931578,SDK.Enum.FreeGiftEnum.Gift_285);
             }
             if (e.MessageContent.Equals("领红包"))
             {

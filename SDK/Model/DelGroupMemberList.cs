@@ -15,4 +15,12 @@ namespace SDK.Model
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
         public long[] QQList;
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct AnonymousFalg
+    {
+        public int index;//数组索引
+        public int Amount;//数组元素数量
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024*100)]
+        public byte[] aFlag;
+    }
 }

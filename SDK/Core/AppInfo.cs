@@ -70,6 +70,14 @@ namespace SDK.Core
         /// 置滑块处理函
         /// </summary>
         public long getticketaddres { get; set; }
+        /// <summary>
+        /// 短信验证
+        /// </summary>
+        public long SMSVerification { get; set; }
+        /// <summary>
+        /// 滑块验证
+        /// </summary>
+        public long SliderR { get; set; }
 
         public string Info(AppInfo appInfo)
         {

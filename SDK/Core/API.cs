@@ -268,6 +268,12 @@ namespace SDK.Core
         delegate int SelectUrlSafe(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string url);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, [MarshalAs(UnmanagedType.LPTStr)] string msgsource);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate void GroupVerificationbyRisk(string pkey, long thisQQ, long GroupQQ, long sourceQQ, long msgSeq, int method, int eventtype, [MarshalAs(UnmanagedType.LPStr)]string description);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool BanGroupAnonymous(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string AnonymousNickname, IntPtr AnonymousFalg, int MuteTime);
+
+
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -339,6 +345,18 @@ namespace SDK.Core
             ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, groupQQ, msgcontent, anonymous));
             sendmsg = null;
             return ret;
+        }
+        /// <summary>
+        /// 用于群消息中的AnonymousFalg匿名标识转化为byte[]<para>非框架API</para>
+        /// </summary>
+        /// <param name="ptr">群消息中的AnonymousFalg匿名标识</param>
+        /// <returns></returns>
+        public byte[] AnonymousFalg2byte(IntPtr ptr)
+        {
+            AnonymousFalg af = (AnonymousFalg)Marshal.PtrToStructure(ptr, typeof(AnonymousFalg));
+            byte[] by = new byte[af.Amount * 4];
+            Array.Copy(af.aFlag, by, by.Length);
+            return by;
         }
         /// <summary>
         /// 取插件数据目录<para>没有权限限制，建议将设置文件之类的都写这里面，结果结尾带\</para>
@@ -3404,7 +3422,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 消息合并转发至好<para>可将聊天记录合并转发给好友,支持各种消息类型,支持循环嵌套</para>
+        /// 消息合并转发至好(VIP)<para>可将聊天记录合并转发给好友,支持各种消息类型,支持循环嵌套</para>
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="targetQQ">对方QQ</param>
@@ -3413,9 +3431,57 @@ namespace SDK.Core
         /// <param name="req">撤回消息用</param>
         /// <param name="msgsource">消息记录来源<para>默认:群聊,可改成私聊,如:张三和李四、 张三</para></param>
         /// <returns>成功返回的time可用于撤回消息</returns>
-        //public string ForwardMsg2Friend(long thisQQ,long targetQQ, List<GroupMessageInfo> groupmsg,long Random,int req, string msgsource)
+        //public string ForwardMsg2Friend(long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, string msgsource)
         //{
 
         //}
+
+        /// <summary>
+        /// 消息合并转发至群(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="groupmsg">聊天记录<para>私聊消息数据可通过代码转换为群消息数据,复制下关键的数据内容即可</para></param>
+        /// <param name="SendAnonymously">是否匿名发送聊天记录</param>
+        /// <param name="msgsource">消息记录来源: 默认:群聊,可改成私聊,如:张三和李四、 张三</param>
+        /// <returns></returns>
+        //public string ForwardMsg2Group(long thisQQ, long GroupQQ, List<GroupMessageInfo> groupmsg, bool SendAnonymously, string msgsource)
+        //{
+
+        //}
+        /// <summary>
+        /// 处理群验证事件_风险号(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="sourceQQ">触发QQ</param>
+        /// <param name="msgSeq">消息Seq</param>
+        /// <param name="method">操作类型<para>11同意 12拒绝  14忽略</para></param>
+        /// <param name="eventtype">群事件类型<para>#群事件_某人申请加群,此处为群事件值，请勿提交好友事件值</para></param>
+        /// <param name="description">当拒绝时,可在此设置拒绝理由</param>
+        public void GroupVerificationbyRiskEvent(long thisQQ, long GroupQQ, long sourceQQ,long msgSeq, GroupVerificationOperateEnum method, EventTypeEnum eventtype, string description)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("处理群验证事件_风险号").ToString());
+            GroupVerificationbyRisk sendmsg = (GroupVerificationbyRisk)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GroupVerificationbyRisk));
+            sendmsg(pluginkey, thisQQ, GroupQQ, sourceQQ, msgSeq, (int)method, (int)eventtype, description);
+            sendmsg = null;
+        }
+        /// <summary>
+        /// 禁言群匿名(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="AnonymousNickname">匿名昵称<para>可通过群聊消息数据获得</para></param>
+        /// <param name="AnonymousFalg">匿名标识<para>可通过群聊消息数据获得,同一个匿名每条消息发送时的标识都不同</para></param>
+        /// <param name="MuteTime">禁言时长,单位s</param>
+        /// <returns>失败或无权限返回假</returns>
+        public bool BanAnonymous(long thisQQ, long GroupQQ, string AnonymousNickname, IntPtr AnonymousFalg, int MuteTime)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("禁言群匿名").ToString());
+            BanGroupAnonymous sendmsg = (BanGroupAnonymous)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(BanGroupAnonymous));
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, AnonymousNickname, AnonymousFalg, MuteTime);
+            sendmsg = null;
+            return ret;
+        }
     }
 }
