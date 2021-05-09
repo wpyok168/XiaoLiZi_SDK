@@ -31,7 +31,7 @@ namespace MsTool
             //{
             //    Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, e.MessageContent);
             //}
-            byte[] by = Common.xlzAPI.AnonymousFalg2byte(e.AnonymousFalg);
+            //byte[] by = Common.xlzAPI.AnonymousFalg2byte(e.AnonymousFalg);
             Common.xlzAPI.BanAnonymous(e.ThisQQ, e.MessageGroupQQ, e.AnonymousNickname, e.AnonymousFalg, 30);
             if (e.MessageContent.Equals("谁是龙王"))
             {

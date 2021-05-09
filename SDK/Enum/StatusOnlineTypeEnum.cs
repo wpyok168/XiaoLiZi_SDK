@@ -11,7 +11,10 @@ namespace SDK.Enum
     {
         //当main=11时，可进一步设置 0普通在线 1000我的电量 1011信号弱 1024在线学习 1025在家旅游 1027TiMi中 1016睡觉中 1017游戏中 1018学习中 1019吃饭中 
         //1021煲剧中 1053汪汪汪 1032熬夜中 1050打球中 1051恋爱中 1052我没事 1028我在听歌 40001在地球 41042移动中
+        //1033在小区 41034在学校 41035在公园 41036在海边 41037在机场 41038在商场 41039在咖啡厅 41041在餐厅
+        //1022度假中 1020健身中 1056嗨到起飞 1058元气满满 1057美滋滋 1059悠哉哉 1060无聊中 1061想静静 1062我太难了 1063一言难尽 1064吃鸡中 1069遇见春天
         // 普通在线
+        
         /// <summary>
         /// 普通在线
         /// </summary>
@@ -107,7 +110,87 @@ namespace SDK.Enum
         /// <summary>
         /// 移动中
         /// </summary>
-        Moving = 4102
+        Moving = 4102,
+        /// <summary>
+        /// 1033在小区
+        /// </summary>
+        IntheCommunity = 1033,
+        /// <summary>
+        /// 41034在学校
+        /// </summary>
+        inSchool = 41034,
+        /// <summary>
+        /// 41035在公园
+        /// </summary>
+        inthePark = 41035,
+        /// <summary>
+        /// 41036在海边
+        /// </summary>
+        attheSeaside = 41036,
+        /// <summary>
+        /// 41037在机场
+        /// </summary>
+        attheAirport = 41037,
+        /// <summary>
+        /// 41038在商场
+        /// </summary>
+        AttheMall = 41038,
+        /// <summary>
+        /// 41039在咖啡厅
+        /// </summary>
+        intheCoffeeShop = 41039,
+        /// <summary>
+        /// 41041在餐厅
+        /// </summary>
+        intheRestaurant = 41041,
+        /// <summary>
+        /// 1022度假中
+        /// </summary>
+        onVacation = 1022,
+        /// <summary>
+        /// 1020健身中
+        /// </summary>
+        onFitness = 1020,
+        /// <summary>
+        /// 1056嗨到起飞
+        /// </summary>
+        toTakeOff = 1056,
+        /// <summary>
+        /// 1058元气满满
+        /// </summary>
+        fullOfVitality = 1058,
+        /// <summary>
+        /// 1057美滋滋
+        /// </summary>
+        beautiful = 1057,
+        /// <summary>
+        /// 1059悠哉哉
+        /// </summary>
+        leisurely = 1059,
+        /// <summary>
+        /// 1060无聊中
+        /// </summary>
+        boring = 1060,
+        /// <summary>
+        /// 1061想静静
+        /// </summary>
+        wantToTeQuiet = 1061,
+        /// <summary>
+        /// 1062我太难了
+        /// </summary>
+        IamTooHard = 1062,
+        /// <summary>
+        /// 1063一言难尽
+        /// </summary>
+        hardToSay = 1063,
+        /// <summary>
+        /// 1064吃鸡中
+        /// </summary>
+        eatChicken = 1064,
+        /// <summary>
+        /// 1069遇见春天
+        /// </summary>
+        meetSpring = 1069,       
     }
 
 }

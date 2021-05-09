@@ -272,8 +272,10 @@ namespace SDK.Core
         delegate void GroupVerificationbyRisk(string pkey, long thisQQ, long GroupQQ, long sourceQQ, long msgSeq, int method, int eventtype, [MarshalAs(UnmanagedType.LPStr)]string description);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool BanGroupAnonymous(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string AnonymousNickname, IntPtr AnonymousFalg, int MuteTime);
-
-
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetCardTextCode(string pkey, [MarshalAs(UnmanagedType.LPStr)] string cardstr);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate int DownloadFile(string pkey, string filedlurl, string savepath, int callbackFunction, string filename, int downloadbegin);
         /// <summary>
         /// 输出日志
         /// </summary>
@@ -3408,6 +3410,19 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
+        /// 取卡片消息代码<para>无权限限制</para>
+        /// </summary>
+        /// <param name="cardstr">卡片消息文本代码<para>如: [customNode,key=xx,val=xx]</para></param>
+        /// <returns>返回卡片消息代码</returns>
+        public string GetCardTextCodeEvent(string cardstr)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取卡片消息代码").ToString());
+            GetCardTextCode sendmsg = (GetCardTextCode)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetCardTextCode));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, cardstr));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
         /// 查询网址安全性(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
@@ -3477,9 +3492,28 @@ namespace SDK.Core
         /// <returns>失败或无权限返回假</returns>
         public bool BanAnonymous(long thisQQ, long GroupQQ, string AnonymousNickname, IntPtr AnonymousFalg, int MuteTime)
         {
+            IntPtr ptr = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(AnonymousFalg, ptr, false);
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("禁言群匿名").ToString());
             BanGroupAnonymous sendmsg = (BanGroupAnonymous)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(BanGroupAnonymous));
-            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, AnonymousNickname, AnonymousFalg, MuteTime);
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, AnonymousNickname, ptr, MuteTime);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 置文件下载
+        /// </summary>
+        /// <param name="filedlurl">网络文件url<para>.版本 2 !!!!!!该API必须另开线程进行调用,否则会卡死框架!!!!!!!!0下载完成,-1Internet创建失败,-2下载地址无效,-3保存路径无效,-4查询网络文件尺寸失败,-5框架关闭，下载被迫终止,-6下载网络文件片段出错</para></param>
+        /// <param name="savepath">必须是完整的路径，以文件名的形式结尾，不是目录路径！</param>
+        /// <param name="callbackFunction">下载回调函数指针<para>无返回值 (文件总长度 长整数型,文件已下载长度 长整数型,文件名 文本型) 错误的回调函数将导致崩溃</para></param>
+        /// <param name="filename">文件名<para>文件的名字，将传给回调函数</para></param>
+        /// <param name="downloadbegin">下载起点：文件下载起点，默认0，可通过此参数实现断点续传</param>
+        /// <returns></returns>
+        public int DownloadFileE(string filedlurl,string savepath, int callbackFunction=0, string filename="", int downloadbegin=0)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("置文件下载").ToString());
+            DownloadFile sendmsg = (DownloadFile)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(DownloadFile));
+            int ret = sendmsg(pluginkey, filedlurl, savepath, callbackFunction, filename, downloadbegin);
             sendmsg = null;
             return ret;
         }

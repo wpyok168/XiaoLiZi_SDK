@@ -83,7 +83,29 @@ namespace SDK.Enum
         /// 好友事件_系统提示
         /// </summary>
         Friend_SystmHint = 114,
-        
+        /// <summary>
+        /// 好友事件_随心贴点赞
+        /// </summary>
+        Friend_link = 115,
+        /// <summary>
+        /// 好友事件_匿名提问_被提问
+        /// </summary>
+        Friend_AnonymousQuestioned = 116,
+        /// <summary>
+        /// 好友事件_匿名提问_被点赞
+        /// </summary>
+        Friend_Anonymouslink = 117,
+        /// <summary>
+        /// 好友事件_匿名提问_被回复
+        /// </summary>
+        Friend_AnonymousResponded = 118,
+        /// <summary>
+        /// 好友事件_输入状态
+        /// </summary>
+        Friend_inputStatus = 119,
+
+
+
         // 群事件_我被邀请加入群
         /// <summary>
         /// 群事件_我被邀请加入群
@@ -233,11 +255,6 @@ namespace SDK.Enum
         /// 群事件_我被踢出
         /// </summary>
         Group_MemberKickOut = 30,
-        // 框架事件_登录成功
-        /// <summary>
-        /// 框架事件_登录成功
-        /// </summary>
-        This_SignInSuccess = 31,
         /// <summary>
         /// 群事件_群名变更
         /// </summary>
@@ -250,5 +267,79 @@ namespace SDK.Enum
         /// 群事件_群头像事件
         /// </summary>
         Group_Face = 34,
+        /// <summary>
+        /// 群事件_入场特效
+        /// </summary>
+        Group_AdmissionSpecialEffects = 35,
+        /// <summary>
+        /// 群事件_修改群名片
+        /// </summary>
+        Group_ModifyBusinessCard = 36,
+        /// <summary>
+        /// 群事件_群被转让
+        /// </summary>
+        Group_Transfer = 37,
+
+
+
+        // 框架事件_登录成功
+        /// <summary>
+        /// 框架事件_登录成功
+        /// </summary>
+        This_SignInSuccess = 31,
+        /// <summary>
+        /// 框架事件_登录失败
+        /// </summary>
+        This_LoginFailed = 38,
+        /// <summary>
+        /// 框架事件_即将重启更新自身
+        /// </summary>
+        This_Reboot = 39,
+
+        
+
+
+        /// <summary>
+        /// 登录事件_电脑上线
+        /// </summary>
+        login_pcOnline = 200,
+        /// <summary>
+        /// 登录事件_电脑下线
+        /// </summary>
+        login_pcOffline = 201,
+        /// <summary>
+        /// 登录事件_移动设备上线
+        /// </summary>
+        login_mobileOnline = 202,
+        /// <summary>
+        /// 登录事件_移动设备下线
+        /// </summary>
+        login_mobileOffline = 203,
+        /// <summary>
+        /// PCQQ登录验证请求
+        /// </summary>
+        login_PCVerification = 204,
+
+        /// <summary>
+        /// 讨论组事件_讨论组名变更
+        /// </summary>
+        Discussion_NameChange = 300,
+        /// <summary>
+        /// 讨论组事件_某人撤回事件
+        /// </summary>
+        Discussion_Withdraw = 301,
+        /// <summary>
+        /// 讨论组事件_某人被邀请入群
+        /// </summary>
+        Discussion_beInvited = 302,
+        /// <summary>
+        /// 讨论组事件_某人退出了群
+        /// </summary>
+        Discussion_Out = 303,
+        /// <summary>
+        /// 讨论组事件_某人被踢出群
+        /// </summary>
+        Discussion_KickedOut = 304,
+
     }
 }
