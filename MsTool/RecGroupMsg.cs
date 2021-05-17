@@ -74,6 +74,10 @@ namespace MsTool
             {
                 Common.xlzAPI.GetReceiveRedEnvelopeEvent(e.ThisQQ, e.MessageGroupQQ,e.SenderQQ, "", 2,"");
             }
+            if (e.MessageContent.Equals("取群应用列表"))
+            {
+                Common.xlzAPI.GetGroupApps_(e.ThisQQ, e.MessageGroupQQ);
+            }
         }
 
         /// <summary>

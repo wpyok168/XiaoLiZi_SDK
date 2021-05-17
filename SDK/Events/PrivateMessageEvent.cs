@@ -104,8 +104,8 @@ namespace SDK.Events
         /// <summary>
         /// 会话token
         /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string SessionToken;
+        //[MarshalAs(UnmanagedType.LPStr)]
+        public IntPtr SessionToken;
         //来源事件QQ
         /// <summary>
         /// 来源事件QQ
