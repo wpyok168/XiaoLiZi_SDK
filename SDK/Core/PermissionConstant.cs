@@ -215,6 +215,14 @@ namespace SDK.Core
             PermiCon.Add("API[206]", "删除讨论组成员");
             PermiCon.Add("API[207]", "讨论组文件转发至群");
             PermiCon.Add("API[208]", "讨论组文件转发至好友");
+            PermiCon.Add("API[209]", "拉起群收款");
+            PermiCon.Add("API[210]", "结束群收款");
+            PermiCon.Add("API[211]", "查询群收款状态");
+            PermiCon.Add("API[212]", "支付群收款");
+            PermiCon.Add("API[213]", "消息合并转发至讨论组");
+            PermiCon.Add("API[214]", "群收款_催单");
+            PermiCon.Add("API[215]", "取好友Diy名片数据");
+            PermiCon.Add("API[216]", "设置Diy名片");
         }
     }
 }

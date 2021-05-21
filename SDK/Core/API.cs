@@ -255,7 +255,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr RedPacketDataBase(string pkey, [MarshalAs(UnmanagedType.LPStr)]string str, int random);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate bool AddGroupMethod(string pkey, long thisQQ, long GroupQQ, [MarshalAs(UnmanagedType.LPStr)]string problem, [MarshalAs(UnmanagedType.LPStr)]string answer, int method);
+        delegate bool AddGroupMethod(string pkey, long thisQQ, long GroupQQ, int method, [MarshalAs(UnmanagedType.LPStr)]string problem, [MarshalAs(UnmanagedType.LPStr)]string answer);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool LuckyCharacter(string pkey, long thisQQ, long GroupQQ, bool isOpen);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -267,7 +267,7 @@ namespace SDK.Core
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int SelectUrlSafe(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPTStr)]string url);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, [MarshalAs(UnmanagedType.LPTStr)] string msgsource);
+        delegate IntPtr ForwardMsg2Friend(string pkey, long thisQQ, long targetQQ, IntPtr groupmsg, ref long Random, ref int req, [MarshalAs(UnmanagedType.LPTStr)] string msgsource);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void GroupVerificationbyRisk(string pkey, long thisQQ, long GroupQQ, long sourceQQ, long msgSeq, int method, int eventtype, [MarshalAs(UnmanagedType.LPStr)]string description);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -308,6 +308,24 @@ namespace SDK.Core
         delegate IntPtr SendConsultationSession(string pkey, long thisQQ, long otherQQ, string MessageContent, ref long MessageRandom, ref uint MessageReq);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int GetGroupApps(string pkey, long thisQQ, long GroupQQ,ref EarrayList[] earrayLists);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr ForwardMsg2Group(string pkey, long thisQQ, long GroupQQ, IntPtr groupmsg, bool SendAnonymously, string msgsource);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr ForwardMsg2Discourse(string pkey, long thisQQ, long DiscourseID, IntPtr groupmsg, string msgsource);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetQQAvatar(string pkey, long otherQQ, bool HDOriginal);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr GetBigEmojiPicture(string pkey, string bigEmojiTXT, int piclong, int picwidth);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr LaunchGroupCollection(string pkey, long thisQQ, long GroupQQ, IntPtr pendingPayerinfo, string message, ref string OrderNumber);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate bool GetFriendCardData(string pkey, long thisQQ, long otherQQ, [MarshalAs(UnmanagedType.LPStr)] ref string cardData);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate int GetFrameMainHandle(string pkey);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr SelectGroupCollectionStatus(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string OrderNumber, ref GroupCollectionInfoPD[] gMBriefDataLists);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        delegate IntPtr PayGroupCollections(string pkey, long thisQQ, long targetQQ, [MarshalAs(UnmanagedType.LPStr)] string OrderNumber, int amount, [MarshalAs(UnmanagedType.LPStr)] string pwd, int card_serial, ref GetCaptchaInfoDataList[] captchaInfo);
 
         /// <summary>
         /// 输出日志
@@ -777,7 +795,7 @@ namespace SDK.Core
         /// <param name="cover_link">封面地址 音乐的封面图片地址</param>
         /// <param name="file_path">文件地址 音乐源文件地址，如https://xxx.com/xxx.mp3</param>
         /// <param name="app_type">应用类型 0QQ音乐 1虾米音乐 2酷我音乐 3酷狗音乐 4网易云音乐  默认0</param>
-        /// <param name="share_type">分享类型 0私聊 1群聊  默认0</param>
+        /// <param name="share_type">分享类型 0私聊 1群聊 2讨论组 默认0</param>
         /// <returns></returns>
         public bool ShareMusicEvent(long thisQQ, long otherQQ, string music_name, string artist_name, string redirect_link, string cover_link, string file_path, MusicAppTypeEnum app_type = MusicAppTypeEnum.QQMusic, MusicShare_Type share_type = MusicShare_Type.GroupMsg)
         {
@@ -1576,7 +1594,7 @@ namespace SDK.Core
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("群权限_设置加群方式").ToString());
             AddGroupMethod sendmsg = (AddGroupMethod)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(AddGroupMethod));
-            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, problem, answer, (int)method);
+            bool ret = sendmsg(pluginkey, thisQQ, GroupQQ, (int)method, problem, answer);
             sendmsg = null;
             return ret;
         }
@@ -2778,6 +2796,7 @@ namespace SDK.Core
         /// <param name="mailtitle">邮件标题</param>
         /// <param name="msgContent">邮件内容<para>支持html</para></param>
         /// <returns></returns>
+        [Obsolete("框架339取消此API",false)]
         public string SendMailEvent(long thisQQ, string mailaddr, string mailtitle, string msgContent)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送邮件").ToString());
@@ -2858,6 +2877,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <returns></returns>
+        [Obsolete("框架339取消此API", false)]
         public string GetMailCookie(long thisQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取手Q邮箱cookie").ToString());
@@ -3319,7 +3339,7 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="otherQQ">对方QQ</param>
         /// <returns></returns>
-        public string GetFriendFileDownLoadUrl(long thisQQ, long otherQQ)
+        public string GetExpandInfo(long thisQQ, long otherQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取扩列资料").ToString());
             QQLike sendmsg = (QQLike)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(QQLike));
@@ -3408,7 +3428,7 @@ namespace SDK.Core
         /// </summary>
         /// <param name="TargetQQ">目标QQ</param>
         /// <returns></returns>
-        public string RedPacketDataDecrypt(long TargetQQ)
+        public string RedPacketComputeByMsgno(long TargetQQ)
         {
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("红包msgno计算").ToString());
             GetNameFromCache sendmsg = (GetNameFromCache)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameFromCache));
@@ -3470,7 +3490,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 消息合并转发至好(VIP)<para>可将聊天记录合并转发给好友,支持各种消息类型,支持循环嵌套</para>
+        /// 消息合并转发至好友(VIP)<para>可将聊天记录合并转发给好友,支持各种消息类型,支持循环嵌套</para>
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="targetQQ">对方QQ</param>
@@ -3479,10 +3499,22 @@ namespace SDK.Core
         /// <param name="req">撤回消息用</param>
         /// <param name="msgsource">消息记录来源<para>默认:群聊,可改成私聊,如:张三和李四、 张三</para></param>
         /// <returns>成功返回的time可用于撤回消息</returns>
-        //public string ForwardMsg2Friend(long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, long Random, int req, string msgsource)
-        //{
-
-        //}
+        public string ForwardMsg2Friend_(long thisQQ, long targetQQ, List<GroupMessageInfo> groupmsg, string msgsource, long Random = 0L, int req = 0)
+        {
+            GetPtr<GroupMessageInfo> getPtr = new GetPtr<GroupMessageInfo>();
+            IntPtr[] ptrs = getPtr.GetIntPtrs(groupmsg);
+            EArrayByObject eArray = new EArrayByObject() { index = 1, Amount = groupmsg.Count, obj = ptrs};
+            Array.Resize(ref eArray.obj, 1024);
+            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(eArray));
+            Marshal.StructureToPtr(eArray, intPtr, false);
+            IntPtr intPtr1 = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(intPtr, intPtr1, false);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("消息合并转发至好友").ToString());
+            ForwardMsg2Friend sendmsg = (ForwardMsg2Friend)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ForwardMsg2Friend));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, targetQQ, intPtr1, ref Random, ref req, msgsource));
+            sendmsg = null;
+            return ret;
+        }
 
         /// <summary>
         /// 消息合并转发至群(VIP)
@@ -3493,10 +3525,46 @@ namespace SDK.Core
         /// <param name="SendAnonymously">是否匿名发送聊天记录</param>
         /// <param name="msgsource">消息记录来源: 默认:群聊,可改成私聊,如:张三和李四、 张三</param>
         /// <returns></returns>
-        //public string ForwardMsg2Group(long thisQQ, long GroupQQ, List<GroupMessageInfo> groupmsg, bool SendAnonymously, string msgsource)
-        //{
-
-        //}
+        public string ForwardMsg2Group_(long thisQQ, long GroupQQ, List<GroupMessageInfo> groupmsg, bool SendAnonymously=false, string msgsource="")
+        {
+            GetPtr<GroupMessageInfo> getPtr = new GetPtr<GroupMessageInfo>();
+            IntPtr[] ptrs = getPtr.GetIntPtrs(groupmsg);
+            EArrayByObject eArray = new EArrayByObject() { index = 1, Amount = groupmsg.Count, obj = ptrs };
+            Array.Resize(ref eArray.obj, 1024);
+            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(eArray));
+            Marshal.StructureToPtr(eArray, intPtr, false);
+            IntPtr intPtr1 = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(intPtr, intPtr1, false);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("消息合并转发至群").ToString());
+            ForwardMsg2Group sendmsg = (ForwardMsg2Group)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ForwardMsg2Group));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, intPtr1, SendAnonymously, msgsource));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 消息合并转发至讨论组(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="DiscourseID">讨论组ID</param>
+        /// <param name="groupmsg">聊天记录<para>私聊消息数据可通过代码转换为群消息数据,复制下关键的数据内容即可</para></param>
+        /// <param name="msgsource">消息记录来源: 默认:群聊,可改成私聊,如:张三和李四、 张三</param>
+        /// <returns></returns>
+        public string ForwardMsg2Discourse_(long thisQQ, long DiscourseID, List<GroupMessageInfo> groupmsg, string msgsource = "")
+        {
+            GetPtr<GroupMessageInfo> getPtr = new GetPtr<GroupMessageInfo>();
+            IntPtr[] ptrs = getPtr.GetIntPtrs(groupmsg);
+            EArrayByObject eArray = new EArrayByObject() { index = 1, Amount = groupmsg.Count, obj = ptrs };
+            Array.Resize(ref eArray.obj, 1024);
+            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(eArray));
+            Marshal.StructureToPtr(eArray, intPtr, false);
+            IntPtr intPtr1 = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(intPtr, intPtr1, false);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("消息合并转发至讨论组").ToString());
+            ForwardMsg2Discourse sendmsg = (ForwardMsg2Discourse)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ForwardMsg2Discourse));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, DiscourseID, intPtr1, msgsource));
+            sendmsg = null;
+            return ret;
+        }
         /// <summary>
         /// 处理群验证事件_风险号(VIP)
         /// </summary>
@@ -3520,7 +3588,7 @@ namespace SDK.Core
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
         /// <param name="AnonymousNickname">匿名昵称<para>可通过群聊消息数据获得</para></param>
-        /// <param name="AnonymousFalg">匿名标识<para>可通过群聊消息数据获得,同一个匿名每条消息发送时的标识都不同</para></param>
+        /// <param name="AnonymousFalg">匿名标识<para>可通过群聊消息数据获得,同一个匿名每条消息发送时的标识都不同,解除禁言时,此为对方最后一次发言时的标识</para></param>
         /// <param name="MuteTime">禁言时长,单位s</param>
         /// <returns>失败或无权限返回假</returns>
         public bool BanAnonymous(long thisQQ, long GroupQQ, string AnonymousNickname, IntPtr AnonymousFalg, int MuteTime)
@@ -3731,7 +3799,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 压缩包_7za解压<para>无权限限制,耗时操作,请另开线程调用,支持:7z,XZ,BZIP2,GZIP,TAR,ZIP,ARJ,CAB,CHM,CPIO,DEB,DMG,FAT,HFS,ISO,LZH,LZMA,MBR,MSI,NSIS,NTFS,RAR,RPM,UDF,VHD,WIM,XAR,Z</para>
+        /// 压缩包_7za解压(VIP)<para>无权限限制,耗时操作,请另开线程调用,支持:7z,XZ,BZIP2,GZIP,TAR,ZIP,ARJ,CAB,CHM,CPIO,DEB,DMG,FAT,HFS,ISO,LZH,LZMA,MBR,MSI,NSIS,NTFS,RAR,RPM,UDF,VHD,WIM,XAR,Z</para>
         /// </summary>
         /// <param name="zipPath">压缩包路径</param>
         /// <param name="savePath">解压保存路径</param>
@@ -3745,7 +3813,7 @@ namespace SDK.Core
             sendmsg = null;
         }
         /// <summary>
-        /// 压缩包_7za压缩
+        /// 压缩包_7za压缩(VIP)
         /// </summary>
         /// <param name="savePath"></param>
         /// <param name="filePath"></param>
@@ -3760,7 +3828,7 @@ namespace SDK.Core
             sendmsg = null;
         }
         /// <summary>
-        /// 加载网页<para>调用框架内置浏览器加载显示指定网页,无权限限制</para>
+        /// 加载网页(VIP)<para>调用框架内置浏览器加载显示指定网页,无权限限制</para>
         /// </summary>
         /// <param name="url">支持本地文件路径(中文请url编码)</param>
         /// <returns></returns>
@@ -3773,7 +3841,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 取框架到期时间
+        /// 取框架到期时间(VIP)
         /// </summary>
         /// <returns>无权限限制,返回示例：2025/1/1 00:00:00,年月日无补零,时分秒有补零</returns>
         public string FrameExpirationTime()
@@ -3785,7 +3853,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 邀请好友加群_批量
+        /// 邀请好友加群_批量(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ">目标群号</param>
@@ -3807,7 +3875,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 邀请好友加入讨论组_批量
+        /// 邀请好友加入讨论组_批量(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="DiscussionID">目标讨论组Id</param>
@@ -3829,7 +3897,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 修改好友备注
+        /// 修改好友备注(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="FriendQQ"></param>
@@ -3844,7 +3912,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 删除讨论组成员
+        /// 删除讨论组成员(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="DiscussID">讨论组Id</param>
@@ -3859,7 +3927,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 讨论组文件转发至群
+        /// 讨论组文件转发至群(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="DiscussID">来源讨论组Id</param>
@@ -3877,7 +3945,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 转发群文件至好友
+        /// 转发群文件至好友(VIP)
         /// </summary>
         /// <param name="thisQQ">框架QQ</param>
         /// <param name="DiscussID">来源讨论组Id</param>
@@ -3898,7 +3966,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 转让群
+        /// 转让群(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
@@ -3913,7 +3981,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 群验证消息接收设置
+        /// 群验证消息接收设置(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="groupQQ"></param>
@@ -3929,7 +3997,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 退出讨论组
+        /// 退出讨论组(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="DiscussID">讨论组Id</param>
@@ -3943,7 +4011,7 @@ namespace SDK.Core
             return ret;
         }
         /// <summary>
-        /// 取群应用列表
+        /// 取群应用列表(VIP)
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="GroupQQ"></param>
@@ -3971,14 +4039,14 @@ namespace SDK.Core
             return list;
         }
         /// <summary>
-        /// 创建群聊
+        /// 创建群聊(VIP)
         /// </summary>
         /// <param name="pkey"></param>
         /// <param name="thisQQ"></param>
         /// <param name="QQList">多个邀请QQ</param>
         /// <param name="GroupQQ">若邀请QQ来源是群成员，则在此说明群号，否则留空，表明来源是好友</param>
         /// <returns>成功参考传回新群群号</returns>
-        public long CreateGroup_(string pkey, long thisQQ, List<long> QQList, long GroupQQ)
+        public long CreateGroup_(long thisQQ, List<long> QQList, long GroupQQ)
         {
             long NewGroupQQ = 0;
             DelGroupMemberList delGroupM = new DelGroupMemberList() { index = 1, Amount = QQList.Count, QQList = QQList.ToArray() };
@@ -4011,7 +4079,196 @@ namespace SDK.Core
             sendmsg = null;
             return ret;
         }
+        /// <summary>
+        /// 取QQ头像(VIP)<para>无权限限制</para>
+        /// </summary>
+        /// <param name="otherQQ"></param>
+        /// <param name="HDOriginal">高清原图<para>注意:部分QQ,比如透明头像的QQ,是没有高清头像的,取出来是鹅,只能取低像素头像</para></param>
+        /// <returns>获取QQ头像,无权限限制,默认返回低像素链接,注意:部分QQ,比如透明头像的QQ,是没有高清头像的,取出来是鹅,只能取低像素头像</returns>
+        public string GetQQAvatar_(long otherQQ, bool HDOriginal)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取QQ头像").ToString());
+            GetQQAvatar sendmsg = (GetQQAvatar)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetQQAvatar));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, otherQQ, HDOriginal));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取群头像(VIP)<para>无权限限制</para>
+        /// </summary>
+        /// <param name="GroupQQ">目标群号：讨论组、多人群没有群头像,取出来是腾讯默认群头像图片</param>
+        /// <returns></returns>
+        public string GetGroupQQAvatar_(long GroupQQ)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取QQ头像").ToString());
+            GetNameFromCache sendmsg = (GetNameFromCache)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetNameFromCache));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, GroupQQ));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取大表情图片下载地址(VIP)<para>无权限限制</para>
+        /// </summary>
+        /// <param name="bigEmojiTXT">大表情文本代码</param>
+        /// <param name="piclong">长<para>默认300(部分付费表情包可能是260,但基本上都是300,遇到取出的链接无效时,请尝试更改此值)</para></param>
+        /// <param name="picwidth">宽<para>默认300(部分付费表情包可能是260,但基本上都是300,遇到取出的链接无效时,请尝试更改此值)</para></param>
+        /// <returns></returns>
+        public string GetBigEmojiPicture_(string bigEmojiTXT, int piclong = 0, int picwidth = 0)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取大表情图片下载地址").ToString());
+            GetBigEmojiPicture sendmsg = (GetBigEmojiPicture)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetBigEmojiPicture));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, bigEmojiTXT, piclong, picwidth));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 拉起群收款(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="GroupQQ"></param>
+        /// <param name="pendingPayerinfo">自定义付款成员和付款金额</param>
+        /// <param name="message">可以写明收款理由</param>
+        /// <param name="OrderNumber">发起请求时请为空，当成功时,参考传回收款订单号</param>
+        /// <returns>成功时,参考传回收款订单号(不支持讨论组,讨论组相关功能[AA收款]已被腾讯下架)</returns>
+        public string LaunchGroupCollection_(long thisQQ, long GroupQQ, List<PendingPayerinfo> pendingPayerinfo, string message, ref string OrderNumber)
+        {
+            GetPtr<PendingPayerinfo> getPtr = new GetPtr<PendingPayerinfo>();
+            IntPtr[] ptrs = getPtr.GetIntPtrs(pendingPayerinfo);
+            EArrayByObject eArray = new EArrayByObject() { index = 1, Amount = pendingPayerinfo.Count, obj = ptrs };
+            Array.Resize(ref eArray.obj, 1024);
+            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(eArray));
+            Marshal.StructureToPtr(eArray, intPtr, false);
+            IntPtr intPtr1 = Marshal.AllocHGlobal(4);
+            Marshal.StructureToPtr(intPtr, intPtr1, false);
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("拉起群收款").ToString());
+            LaunchGroupCollection sendmsg = (LaunchGroupCollection)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(LaunchGroupCollection));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, intPtr1, message, ref OrderNumber));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 结束群收款(VIP)<para>只能结束自己拉起的</para>
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="OrderNumber">待结束的订单号</param>
+        /// <returns></returns>
+        public string EndGroupCollection(long thisQQ, string OrderNumber)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("结束群收款").ToString());
+            GetPSKey sendmsg = (GetPSKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetPSKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, OrderNumber));
+            sendmsg = null;
+            return ret;
+        }
 
-       
+        /// <summary>
+        /// 取好友Diy名片数据(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="otherQQ"></param>
+        /// <returns></returns>
+        public string GetFriendCardData_(long thisQQ, long otherQQ)
+        {
+            string cardData = string.Empty;
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取好友Diy名片数据").ToString());
+            GetFriendCardData sendmsg = (GetFriendCardData)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetFriendCardData));
+            bool ret = sendmsg(pluginkey, thisQQ, otherQQ,ref cardData);
+            sendmsg = null;
+            return cardData;
+        }
+        /// <summary>
+        /// 设置Diy名片(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="cardData">Diy名片数据<para>特定格式,自己抓http包,不能直接用【取好友Diy名片数据】的返回结果</para></param>
+        /// <returns></returns>
+        public string GetFriendCardData_(long thisQQ, string cardData)
+        {
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("设置Diy名片").ToString());
+            GetPSKey sendmsg = (GetPSKey)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetPSKey));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, cardData));
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 取框架主窗口句柄(VIP)
+        /// </summary>
+        /// <returns></returns>
+        public int GetFrameMainHandle_()
+        {
+            string cardData = string.Empty;
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("取框架主窗口句柄").ToString());
+            GetFrameMainHandle sendmsg = (GetFrameMainHandle)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(GetFrameMainHandle));
+            int ret = sendmsg(pluginkey);
+            sendmsg = null;
+            return ret;
+        }
+        /// <summary>
+        /// 查询群收款状态(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="OrderNumber">待查询的收款订单号</param>
+        /// <returns></returns>
+        public GroupCollectionInfom SelectGroupCollectionStatus_(long thisQQ, string OrderNumber)
+        {
+            var ptr = Marshal.AllocHGlobal(4);
+            PayerInfo payerInfo = new PayerInfo();
+            Marshal.StructureToPtr(payerInfo, ptr, false);
+
+            GroupCollectionInfo gc = new GroupCollectionInfo();
+            gc.payerInfo = ptr;
+
+            string ret = string.Empty;
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("查询群收款状态").ToString());
+            GroupCollectionInfoPD[] gcpd = new GroupCollectionInfoPD[1];
+            gcpd[0].groupCollectionInfo = gc;
+            SelectGroupCollectionStatus sendmsg = (SelectGroupCollectionStatus)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SelectGroupCollectionStatus));
+            ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, OrderNumber, ref gcpd));
+            EarrayList adminList = (EarrayList)Marshal.PtrToStructure(gcpd[0].groupCollectionInfo.payerInfo, typeof(EarrayList));
+            List<PayerInfo> list = new List<PayerInfo>();
+            if (adminList.Amount > 0)
+            {
+                byte[] pAddrBytes = adminList.pAddrList;
+                for (int i = 0; i < adminList.Amount; i++)
+                {
+                    byte[] readByte = new byte[4];
+                    Array.Copy(pAddrBytes, i * 4, readByte, 0, readByte.Length);
+                    IntPtr StuctPtr = new IntPtr(BitConverter.ToInt32(readByte, 0));
+                    PayerInfo info = (PayerInfo)Marshal.PtrToStructure(StuctPtr, typeof(PayerInfo));
+                    list.Add(info);
+                }
+            }
+            GroupCollectionInfom gci = new GroupCollectionInfom();
+            gci.Amount = gcpd[0].groupCollectionInfo.Amount;
+            gci.GroupQQ = gcpd[0].groupCollectionInfo.GroupQQ;
+            gci.message = gcpd[0].groupCollectionInfo.message;
+            gci.orderstate = gcpd[0].groupCollectionInfo.Amount;
+            gci.paidAmount = gcpd[0].groupCollectionInfo.paidAmount;
+            gci.targetQQ = gcpd[0].groupCollectionInfo.targetQQ;
+            gci.payerInfo = list;
+            sendmsg = null;
+            return gci;
+        }
+        /// <summary>
+        /// 支付群收款(VIP)
+        /// </summary>
+        /// <param name="thisQQ"></param>
+        /// <param name="targetQQ">收款发起人</param>
+        /// <param name="OrderNumber">群收款订单号</param>
+        /// <param name="amount">支付金额：单位分,必须填入正确的值</param>
+        /// <param name="pwd">支付密码</param>
+        /// <param name="card_serial">银行卡序列</param>
+        /// <param name="captchaInfo">验证码信息<para>银行卡支付时，若需要短信验证码，将在此传回验证码信息，使用API【提交支付验证码】进行验证处理</para></param>
+        /// <returns></returns>
+        public string PayGroupCollections_(long thisQQ, long targetQQ, string OrderNumber, int amount, string payment_password, int card_serial, ref CaptchaInformation captchaInfo)
+        {
+            GetCaptchaInfoDataList[] ciDataLists = new GetCaptchaInfoDataList[2];
+            int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("支付群收款").ToString());
+            PayGroupCollections sendmsg = (PayGroupCollections)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(PayGroupCollections));
+            string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, targetQQ, OrderNumber, amount, payment_password, card_serial, ref ciDataLists));
+            captchaInfo = ciDataLists[0].CaptchaInfo;
+            sendmsg = null;
+            return ret;
+        }
     }
 }

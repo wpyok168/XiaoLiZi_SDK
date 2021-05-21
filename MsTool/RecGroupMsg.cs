@@ -78,6 +78,13 @@ namespace MsTool
             {
                 Common.xlzAPI.GetGroupApps_(e.ThisQQ, e.MessageGroupQQ);
             }
+            if (e.MessageContent.Equals("查收款"))
+            {
+                PendingPayerinfo p = new PendingPayerinfo() { QQ = 1403875823, Amount = 2 };
+                List<PendingPayerinfo> pp = new List<PendingPayerinfo>() { p};
+                string ordernum = "5021052104147250481442793577";
+                Common.xlzAPI.SelectGroupCollectionStatus_(e.ThisQQ, ordernum);
+            }
         }
 
         /// <summary>

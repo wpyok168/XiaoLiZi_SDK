@@ -279,6 +279,14 @@ namespace SDK.Enum
         /// 群事件_群被转让
         /// </summary>
         Group_Transfer = 37,
+        /// <summary>
+        /// 群事件_匿名被禁言
+        /// </summary>
+        Group_AnonymityIsForbidden = 40,
+        /// <summary>
+        /// 群事件_匿名被解除禁言
+        /// </summary>
+        Group_AnonymityWsLifted = 41,
 
 
 

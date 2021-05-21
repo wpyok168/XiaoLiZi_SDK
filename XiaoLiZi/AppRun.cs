@@ -53,7 +53,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "3.3.5.0";
+            appInfo.sdkv = "3.4.2.0";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]
@@ -193,10 +193,8 @@ namespace RobotCore
             json = appInfo.SetPermission(120, "登录网页取ck", json);
             json = appInfo.SetPermission(121, "发送群公告", json);
             json = appInfo.SetPermission(122, "取群成员信息", json);
-            json = appInfo.SetPermission(123, "发送邮件", json);
             json = appInfo.SetPermission(124, "取钱包cookie", json);
             json = appInfo.SetPermission(125, "取群网页cookie", json);
-            json = appInfo.SetPermission(126, "取手Q邮箱cookie", json);
             json = appInfo.SetPermission(127, "转账", json);
             json = appInfo.SetPermission(128, "余额提现", json);
             json = appInfo.SetPermission(129, "取收款链接", json);
@@ -276,6 +274,14 @@ namespace RobotCore
             json = appInfo.SetPermission(206, "删除讨论组成员", json);
             json = appInfo.SetPermission(207, "讨论组文件转发至群", json);
             json = appInfo.SetPermission(208, "讨论组文件转发至好友", json);
+            json = appInfo.SetPermission(209, "拉起群收款", json);
+            json = appInfo.SetPermission(210, "结束群收款", json);
+            json = appInfo.SetPermission(211, "查询群收款状态", json);
+            json = appInfo.SetPermission(212, "支付群收款", json);
+            json = appInfo.SetPermission(213, "消息合并转发至讨论组", json);
+            json = appInfo.SetPermission(214, "群收款_催单", json);
+            json = appInfo.SetPermission(215, "取好友Diy名片数据", json);
+            json = appInfo.SetPermission(216, "设置Diy名片", json);
             return json;
         }
     }

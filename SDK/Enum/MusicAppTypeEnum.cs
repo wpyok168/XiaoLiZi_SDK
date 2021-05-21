@@ -40,6 +40,11 @@ namespace SDK.Enum
         /// <summary>
         /// 群聊
         /// </summary>
-        GroupMsg = 1
+        GroupMsg = 1,
+        /// <summary>
+        /// 讨论组
+        /// </summary>
+        DiscussionGroup=2
+            
     }
 }

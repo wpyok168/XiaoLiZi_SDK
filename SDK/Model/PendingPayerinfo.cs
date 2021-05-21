@@ -8,23 +8,18 @@ using System.Threading.Tasks;
 namespace SDK.Model
 {
     /// <summary>
-    /// 讨论组信息
+    /// 待付款者信息
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct Discussion
+    public struct PendingPayerinfo
     {
         /// <summary>
-        /// 讨论组Id
+        /// 定义待被收款者的QQ
         /// </summary>
-        public int id;
+        public long QQ;
         /// <summary>
-        /// 成员总数
+        /// 待付款金额<para>定义待被收款者的收取金额,单位为分</para>
         /// </summary>
-        public int count;
-        /// <summary>
-        /// 加入时间戳
-        /// </summary>
-        public long addTimestamp;
+        public int Amount;
     }
-    
 }

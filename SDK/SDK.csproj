@@ -84,6 +84,7 @@
     <Compile Include="Core\API.cs" />
     <Compile Include="Core\AppInfo.cs" />
     <Compile Include="Core\DisablePlugin.cs" />
+    <Compile Include="Core\GetPtr.cs" />
     <Compile Include="Core\PermissionConstant.cs" />
     <Compile Include="Core\SilkHelp.cs" />
     <Compile Include="Core\TextFormat.cs" />
@@ -135,9 +136,11 @@
     <Compile Include="Model\DelGroupMemberList.cs" />
     <Compile Include="Model\Discussion.cs" />
     <Compile Include="Model\DiscussionMember.cs" />
+    <Compile Include="Model\EArrayByObject.cs" />
     <Compile Include="Model\FriendInfo.cs" />
     <Compile Include="Model\GroupApps.cs" />
     <Compile Include="Model\GroupCardInfo.cs" />
+    <Compile Include="Model\GroupCollectionInfo.cs" />
     <Compile Include="Model\GroupFileInformation.cs" />
     <Compile Include="Model\GroupInfo.cs" />
     <Compile Include="Model\GroupMemberBriefInfo.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Model\NotReRedEnvelopes.cs" />
     <Compile Include="Model\OneGroupMemberInfo.cs" />
     <Compile Include="Model\OrderDetail.cs" />
+    <Compile Include="Model\PendingPayerinfo.cs" />
     <Compile Include="Model\PersonalInfo.cs" />
     <Compile Include="Model\QQWalletInformation.cs" />
     <Compile Include="Model\SubscriptionNumInfo.cs" />
