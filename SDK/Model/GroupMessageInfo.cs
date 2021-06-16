@@ -137,4 +137,16 @@ namespace SDK.Model
         /// </summary>
         public int FontId;
     }
+    
+        /// <summary>
+    /// 获取转发消息记录详情 lerio.cn
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct GroupMessageInfoDatList
+    {
+        public int index;//数组索引
+        public int Amount;//数组元素数量
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024 * 10)]
+        public byte[] pAddrList;//每个元素的指针
+    }
 }
