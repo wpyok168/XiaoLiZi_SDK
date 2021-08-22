@@ -96,7 +96,7 @@ namespace SDK.Events
         public MessageSubTypeEnum MessageSubTemporaryType;
         //红包类型
         /// <summary>
-        /// 红包类型
+        /// 红包类型<para> 2已转入余额 4点击收款 10红包</para>
         /// </summary>
         public uint RedEnvelopeType;
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
@@ -139,10 +139,10 @@ namespace SDK.Events
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public string FileName;
-        //文件大小
+        //消息群Id
         /// <summary>
-        /// 文件大小
+        /// 消息群Id<para>当为群临时会话时可取</para>
         /// </summary>
-        public long FileSize;
+        public long MsgGroupId; //文件大小FileSize 调整为 消息群Id
     }
 }

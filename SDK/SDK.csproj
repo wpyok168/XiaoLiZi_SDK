@@ -153,6 +153,9 @@
     <Compile Include="Model\PersonalInfo.cs" />
     <Compile Include="Model\QQWalletInformation.cs" />
     <Compile Include="Model\SubscriptionNumInfo.cs" />
+    <Compile Include="Model\TextCodeParameterList.cs" />
+    <Compile Include="Model\TextCodeResult.cs" />
+    <Compile Include="Model\XLZTextCodecnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

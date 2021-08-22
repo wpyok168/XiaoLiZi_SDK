@@ -254,6 +254,7 @@ namespace SDK.Enum
         /// <summary>
         /// 群事件_我被踢出
         /// </summary>
+        [Obsolete("3.5.2取消，可通过【群事件_某人被踢出群】来判断自己是否被踢出", false)]
         Group_MemberKickOut = 30,
         /// <summary>
         /// 群事件_群名变更
@@ -287,7 +288,10 @@ namespace SDK.Enum
         /// 群事件_匿名被解除禁言
         /// </summary>
         Group_AnonymityWsLifted = 41,
-
+        /// <summary>
+        /// 群事件_某人的加群申请被拒绝
+        /// </summary>
+        Group_JoinByRejected = 42,
 
 
         // 框架事件_登录成功
