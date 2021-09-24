@@ -183,15 +183,11 @@ namespace SDK.Core
         /// <summary>
         /// 自定义骰子
         /// </summary>
-        /// <param name="num">默认为6</param>
+        /// <param name="num">1-6,不在1-6的范围时,默认无结果(无限摇骰子)</param>
         /// <returns></returns>
-        public string GetRandomDice(int num = 6)
+        public string GetRandomDice(int num = 0)
         {
-            if (num < 1 || num > 6)
-            {
-                num = 6;
-            }
-            return "[bigFace,Id=11464,name=[随机骰子]" + num + ",hash=4823D3ADB15DF08014CE5D6796B76EE1,flag=409e2a69b16918f9]";
+            return "[bigFace,Id=11464,name=[随机骰子]" + ((num < 1 || num > 6) ? "" : num.ToString()) + ",hash=4823D3ADB15DF08014CE5D6796B76EE1,flag=409e2a69b16918f9]";
         }
         /// <summary>
         /// 粘贴消息<para>粘贴内容直接追加在本命令后面,粘贴内容只支持图片、表情</para>
@@ -227,6 +223,28 @@ namespace SDK.Core
                 type1 = "Friend";
             }
             return $"[Share,ID={otherQQ},Type={type1}]";
+        }
+        /// <summary>
+        /// 回复消息
+        /// </summary>
+        /// <param name="otherMsg">对方发的信息</param>
+        /// <param name="otherQQ">对方QQ</param>
+        /// <param name="msgrectime">消息接收时间</param>
+        /// <param name="msgreq">消息req</param>
+        /// <param name="random">消息random</param>
+        /// <returns></returns>
+        public string ReplyTxt(string otherMsg, long otherQQ, int msgrectime, int msgreq, long random)
+        {
+            return $"[Reply,Content={otherMsg},SendQQID={otherQQ},Req={msgreq.ToString()},Random={random.ToString()},SendTime={msgrectime.ToString()}]";
+        }
+        /// <summary>
+        /// 自定义猜拳
+        /// </summary>
+        /// <param name="num">1-3,1石头,2剪刀,3布,不在1-3的范围时,默认无结果(无限改变猜拳结果)</param>
+        /// <returns></returns>
+        public string GetGuessing(int num = 0)
+        {
+            return "[bigFace,Id=11415,name=[猜拳]" + ((num < 1 || num > 3) ? "" : num.ToString()) + ",hash=83C8A293AE65CA140F348120A77448EE,flag=7de39febcf45e6db]";
         }
     }
 

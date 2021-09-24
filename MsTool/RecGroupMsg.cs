@@ -85,6 +85,26 @@ namespace MsTool
                 string ordernum = "5021052104147250481442793577";
                 Common.xlzAPI.SelectGroupCollectionStatus_(e.ThisQQ, ordernum);
             }
+            if (e.MessageContent.Equals("文本解析"))
+            {
+                XLZTextCodecnalysis xLZText = Common.xlzAPI.TextCodeAnalysis_();
+                EarrayList[] earrayLists = new EarrayList[1];
+                //xLZText.Parsing("[Shake,name=戳一戳,Type=2,Id=1]", ref earrayLists);
+                //string command = xLZText.GetCommand("[Shake,name=戳一戳,Type=2,Id=1]");
+            }
+            if (e.MessageContent.Contains("翻译"))
+            {
+                string result = string.Empty;
+                string ret = Common.xlzAPI.Translate_(e.ThisQQ, "zh", "en", e.MessageContent.Substring("翻译".Length), ref result);
+                Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, result);
+            }
+            if (e.MessageContent.Contains("文字转语音"))
+            {
+                byte[] result = new byte[1024 * 100];
+                string ret = Common.xlzAPI.Text2speech_(e.ThisQQ, e.MessageContent, ref result);
+                string audioret = Common.xlzAPI.UploadGroupAudio(e.ThisQQ, e.MessageGroupQQ, SDK.Enum.AudioTypeEnum.Normal, "", result);
+                Common.xlzAPI.SendGroupMessage(e.ThisQQ, e.MessageGroupQQ, audioret);
+            }
         }
 
         /// <summary>

@@ -53,7 +53,7 @@ namespace RobotCore
 
         private static void SetAppInfo(AppInfo appInfo)
         {
-            appInfo.sdkv = "3.4.2.0";
+            appInfo.sdkv = "3.6.4.0";
             appInfo.appname = "小栗子 C# SDK 空壳";
             appInfo.author = "福建-兮";
             appInfo.describe = string.Concat(new string[]
@@ -65,7 +65,7 @@ namespace RobotCore
             appInfo.appv = "1.0.0";
         }
         /// <summary>
-        /// 设置权限
+        /// 设置权限<para>用不到的API可注释掉</para>
         /// </summary>
         /// <param name="json"></param>
         /// <param name="appInfo"></param>
@@ -282,6 +282,15 @@ namespace RobotCore
             json = appInfo.SetPermission(214, "群收款_催单", json);
             json = appInfo.SetPermission(215, "取好友Diy名片数据", json);
             json = appInfo.SetPermission(216, "设置Diy名片", json);
+            json = appInfo.SetPermission(217, "好友生僻字红包", json);
+            json = appInfo.SetPermission(218, "群聊生僻字红包", json);
+            json = appInfo.SetPermission(219, "讨论组生僻字红包", json);
+            json = appInfo.SetPermission(220, "支付代付请求", json);
+            json = appInfo.SetPermission(221, "查询代付状态", json);
+            json = appInfo.SetPermission(222, "拉起代付", json);
+            json = appInfo.SetPermission(223, "取好友能量值与QID", json);
+            json = appInfo.SetPermission(224, "文字转语音", json);
+            json = appInfo.SetPermission(225, "翻译", json);
             return json;
         }
     }

@@ -132,10 +132,8 @@ namespace SDK.Core
             PermiCon.Add("API[120]", "登录网页取ck");
             PermiCon.Add("API[121]", "发送群公告");
             PermiCon.Add("API[122]", "取群成员信息");
-            PermiCon.Add("API[123]", "发送邮件");
             PermiCon.Add("API[124]", "取钱包cookie");
             PermiCon.Add("API[125]", "取群网页cookie");
-            PermiCon.Add("API[126]", "取手Q邮箱cookie");
             PermiCon.Add("API[127]", "转账");
             PermiCon.Add("API[128]", "余额提现");
             PermiCon.Add("API[129]", "取收款链接");
@@ -223,6 +221,15 @@ namespace SDK.Core
             PermiCon.Add("API[214]", "群收款_催单");
             PermiCon.Add("API[215]", "取好友Diy名片数据");
             PermiCon.Add("API[216]", "设置Diy名片");
+            PermiCon.Add("API[217]", "好友生僻字红包");
+            PermiCon.Add("API[218]", "群聊生僻字红包");
+            PermiCon.Add("API[219]", "讨论组生僻字红包");
+            PermiCon.Add("API[220]", "支付代付请求");
+            PermiCon.Add("API[221]", "查询代付状态");
+            PermiCon.Add("API[222]", "拉起代付");
+            PermiCon.Add("API[223]", "取好友能量值与QID");
+            PermiCon.Add("API[224]", "文字转语音");
+            PermiCon.Add("API[225]", "翻译");
         }
     }
 }
