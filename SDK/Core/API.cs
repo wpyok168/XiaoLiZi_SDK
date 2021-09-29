@@ -46,13 +46,6 @@ namespace SDK.Core
         delegate void FriendverificationEvent(string pkey, long thisQQ, long triggerQQ, long message_seq, FriendVerificationOperateEnum operate_type);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SaveFileToWeiYun(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string file_id);
-        /// <summary>
-        /// 获取转发消息记录lerio.cn
-        /// </summary>
-        /// <param name="pkey"></param>
-        /// <param name="thisQQ"></param>
-        /// <param name="resID"></param>
-        /// <param name="groupMessageInfos"></param>
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void ReadForwardedChatHistory(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string resID, ref GroupMessageInfoDatList[] groupMessageInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
