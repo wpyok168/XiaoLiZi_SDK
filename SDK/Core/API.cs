@@ -46,8 +46,15 @@ namespace SDK.Core
         delegate void FriendverificationEvent(string pkey, long thisQQ, long triggerQQ, long message_seq, FriendVerificationOperateEnum operate_type);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate IntPtr SaveFileToWeiYun(string pkey, long thisQQ, long groupQQ, [MarshalAs(UnmanagedType.LPStr)] string file_id);
+        /// <summary>
+        /// 获取转发消息记录lerio.cn
+        /// </summary>
+        /// <param name="pkey"></param>
+        /// <param name="thisQQ"></param>
+        /// <param name="resID"></param>
+        /// <param name="groupMessageInfos"></param>
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        delegate void ReadForwardedChatHistory(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string resID, ref IntPtr intPtr);
+        delegate void ReadForwardedChatHistory(string pkey, long thisQQ, [MarshalAs(UnmanagedType.LPStr)] string resID, ref GroupMessageInfoDatList[] groupMessageInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GetFriendInfo(string pkey, long thisQQ, long otherQQ, ref GetFriendDataList[] friendInfos);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -649,24 +656,40 @@ namespace SDK.Core
 
 
         /// <summary>
-        /// 查看转发聊天记录内容
+        /// 查看转发聊天记录内容lerio.cn
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="resID"></param>
         /// <returns></returns>
-        public string ReadForwardedChatHistoryEvent(long thisQQ, string resID)
+        public List<GroupMessageInfo> ReadForwardedChatHistoryEvent(long thisQQ, string resID)
         {
-            string ret = string.Empty;
+            List<GroupMessageInfo> list = new List<GroupMessageInfo>();
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("查看转发聊天记录内容").ToString());
-            IntPtr intPtr = new IntPtr(MsgAddress);
-            ReadForwardedChatHistory sendmsg = (ReadForwardedChatHistory)Marshal.GetDelegateForFunctionPointer(intPtr, typeof(ReadForwardedChatHistory));
-            IntPtr intPtr1 = new IntPtr();
-            Marshal.StructureToPtr(typeof(MessageEvent), intPtr1, false);
-            sendmsg(pluginkey, thisQQ, resID, ref intPtr1);
-            MessageEvent messageEvent = (MessageEvent)Marshal.PtrToStructure(intPtr1, typeof(MessageEvent));
+            GroupMessageInfoDatList[] ptrArray = new GroupMessageInfoDatList[2];
+            ReadForwardedChatHistory sendmsg = (ReadForwardedChatHistory)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(ReadForwardedChatHistory));
+            sendmsg(pluginkey, thisQQ, resID, ref ptrArray);
+            
+            if(ptrArray[0].Amount>0)
+            {
+                byte[] pAddrBytes = ptrArray[0].pAddrList;
+                for (int i = 0; i < ptrArray[0].Amount; i++)
+                {
+                    byte[] readByte = new byte[4];
+                    Array.Copy(pAddrBytes, i * 4, readByte, 0, readByte.Length);
+                    IntPtr StuctPtr = new IntPtr(BitConverter.ToInt32(readByte, 0));
+                    GroupMessageInfo info = (GroupMessageInfo)Marshal.PtrToStructure(StuctPtr, typeof(GroupMessageInfo));
+
+                    if (!list.Exists(s => s.MessageReq == info.MessageReq && s.MessageRandom == info.MessageRandom))
+                    {
+                        list.Add(info);
+                    }
+                }
+            }
+           
             sendmsg = null;
-            return messageEvent.MessageContent;
+            return list;
         }
+        
         /// <summary>
         /// 查询好友信息
         /// </summary>
