@@ -19,3 +19,6 @@ xiaoLiZi项目AppRun类中可以配置插件说明SetAppInfo和权限SetProperty
 
 如需阻塞消息，请从分支TEST下载
 
+分支xiaolzVIP为3.0新框架
+
+分支master为2.9.3免费版框架
