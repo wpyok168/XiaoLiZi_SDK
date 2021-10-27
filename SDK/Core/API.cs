@@ -647,9 +647,8 @@ namespace SDK.Core
             }
         }
 
-
         /// <summary>
-        /// 查看转发聊天记录内容lerio.cn
+        /// 查看转发聊天记录内容
         /// </summary>
         /// <param name="thisQQ"></param>
         /// <param name="resID"></param>
@@ -1932,8 +1931,7 @@ namespace SDK.Core
         /// <returns>成功返回图片代码</returns>
         public string UploadFriendImageEvent(long thisQQ, long friendQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             //byte[] picture = System.Text.Encoding.UTF8.GetBytes(picpath); 
             //int picsize = picture.Length;
             //IntPtr intPtr = Marshal.AllocHGlobal(picture.Length);
@@ -1951,8 +1949,9 @@ namespace SDK.Core
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        private byte[] GetByteArrayByImage(Bitmap bitmap)
+        private byte[] GetByteArrayByImage(string picpath)
         {
+            Bitmap bitmap = new Bitmap(picpath);
             byte[] result;
             try
             {
@@ -1968,6 +1967,7 @@ namespace SDK.Core
             {
                 result = null;
             }
+            bitmap.Dispose();
             return result;
         }
         /// <summary>
@@ -1983,8 +1983,7 @@ namespace SDK.Core
         /// <returns>成功返回图片代码</returns>
         public string UploadGroupImage(long thisQQ, long groupQQ, string picpath, bool is_flash, int wide = 0, int high = 0, bool cartoon = false)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             //IntPtr picptr = Marshal.AllocHGlobal(picture.Length);
             //Marshal.Copy(picture, 0, picptr, picture.Length);
             //int picsize = picture.Length;
@@ -2021,8 +2020,7 @@ namespace SDK.Core
         /// <returns></returns>
         public bool UploadGroupAvatarEvent(long thisQQ, long groupQQ, string picpath)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             //IntPtr picptr = Marshal.AllocHGlobal(picture.Length);
             //Marshal.Copy(picture, 0, picptr, picture.Length);
             //int picsize = picture.Length;
@@ -2042,8 +2040,7 @@ namespace SDK.Core
         /// <returns></returns>
         public string UploadAvatarEvent(long thisQQ, string picpath)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             //IntPtr picptr = Marshal.AllocHGlobal(picture.Length);
             //Marshal.Copy(picture, 0, picptr, picture.Length);
             //int picsize = picture.Length;
@@ -2856,8 +2853,7 @@ namespace SDK.Core
             byte[] picture = null;
             if (!string.IsNullOrEmpty(picpath))
             {
-                Bitmap bitmap = new Bitmap(picpath);
-                picture = GetByteArrayByImage(bitmap);
+                picture = GetByteArrayByImage(picpath);
             }
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("发送群公告").ToString());
             SetAnnouncement sendmsg = (SetAnnouncement)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(SetAnnouncement));
@@ -3080,8 +3076,7 @@ namespace SDK.Core
         /// <returns>成功返回文本代码</returns>
         public string UploadVideoEvent(long thisQQ, long GroupQQ, string videopath, string picpath, int wide = 0, int high = 0, int time = 0)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传小视频").ToString());
             UploadVideo sendmsg = (UploadVideo)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadVideo));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, GroupQQ, videopath, picture, picture.Length));
@@ -3290,8 +3285,7 @@ namespace SDK.Core
         /// <returns>上传一照片至照片墙,成功返回带有‘上传成功’字样的json,失败或无权限返回json</returns>
         public string UploadPhotoWall(long thisQQ, string picpath)
         {
-            Bitmap bitmap = new Bitmap(picpath);
-            byte[] picture = GetByteArrayByImage(bitmap);
+            byte[] picture = GetByteArrayByImage(picpath);
             int MsgAddress = int.Parse(JObject.Parse(jsonstr).SelectToken("上传照片墙图片").ToString());
             UploadAvatar sendmsg = (UploadAvatar)Marshal.GetDelegateForFunctionPointer(new IntPtr(MsgAddress), typeof(UploadAvatar));
             string ret = Marshal.PtrToStringAnsi(sendmsg(pluginkey, thisQQ, picture, picture.Length));
